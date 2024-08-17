@@ -86,7 +86,7 @@ function Login() {
                                     </h2>
                                     {/* text-[#332f41] */}
                                     <p className=" mb-10 text-start font-semibold text-purple-500">
-                                        Enjoy fast, budget-friendly and stress-free shipping with CartTel. 
+                                        Enjoy fast, budget-friendly and stress-free shipping with CartTel.
                                     </p>
                                 </div>
                             </div>
@@ -204,23 +204,23 @@ function Login() {
                                                     <H2 className="text-primary ">Forgot Password?</H2>
                                                 </Link>
                                             </div>
-                                            
 
-                                            <CustomButton 
-                                            // onClick={handleLoginUser}
-                                            className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+
+                                            <CustomButton
+                                                // onClick={handleLoginUser}
+                                                className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                             >
                                                 <div className="text-xl">
-                                                    
+
                                                     <Image
-                                            src={'/images/Auth/login.svg'}
-                                            alt="logo"
-                                            width={20}
-                                            height={20}
-                                            priority
-                                            className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full fill-white"
-                                            style={{ filter: 'invert(100%) brightness(1000%)' }}
-                                        />
+                                                        src={'/images/Auth/login.svg'}
+                                                        alt="logo"
+                                                        width={20}
+                                                        height={20}
+                                                        priority
+                                                        className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full fill-white"
+                                                        style={{ filter: 'invert(100%) brightness(1000%)' }}
+                                                    />
                                                 </div>
                                                 <H2 className="ml-3">Sign In</H2>
                                             </CustomButton>

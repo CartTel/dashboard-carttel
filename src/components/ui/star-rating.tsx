@@ -42,8 +42,6 @@ const StarRating: React.FC<StarRatingProps> = ({ totalStars = 5, onRatingChange,
                         }`}
                     onClick={() => handleStarClick(index)}
                 >
-                    {/* &#9733; */}
-
                     <Image
                         src={index < rating ? '/images/star.svg' : '/images/empty-star.svg'}
                         alt={index < rating ? 'filled' : 'empty'}

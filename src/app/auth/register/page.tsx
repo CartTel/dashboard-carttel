@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { CustomButton, CustomSelect } from '@/components/custom-components';
 import { CustomInput } from '@/components/custom-components';
 import React from 'react'
-import { B1, B2, H2, H1, BMiddle } from '@/components/custom-typography';
+import { B1, B2, H2, H1, BMiddle, B2Regular } from '@/components/custom-typography';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
@@ -20,11 +20,13 @@ import {
 } from "react-phone-number-input";
 import tr from "react-phone-number-input/locale/tr";
 
+import CountrySelector from '@/components/custom-components/country-selector';
+
 
 
 
 function Register() {
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState<string | undefined>(undefined);
 
 
     const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -42,6 +44,10 @@ function Register() {
     const [testTwo, setTestTwo] = useState<boolean>(false);
     const [testThree, setTestThree] = useState<boolean>(false);
     const [testFour, setTestFour] = useState<boolean>(false);
+    const [discovery, setDiscovery] = useState<string>("");
+    const [businessType, setBusinessType] = useState<string>("");
+
+
 
     const [confirmPasswordToggle, setConfirmPasswordToggle] = useState<boolean>(true);
     const changeConfirmPasswordToggle = () => setConfirmPasswordToggle(!confirmPasswordToggle);
@@ -100,10 +106,16 @@ function Register() {
         }
     };
 
+    const handleReferenceChange = (value: string) => {
+        setDiscovery(value)
+    };
+
+    const handleOptionChange = (value: string) => {
+        setBusinessType(value)
+    };
+
     return (
         <div className="py-0 h-screen bg-white grid md:grid-cols-5 xs:grid-cols-1">
-
-
             <div className="md:col-span-2 xs:col bg-[#FCD3CD] md:flex xs:hidden flex-col ">
 
                 <div className="my-20 px-5">
@@ -119,25 +131,50 @@ function Register() {
 
             </div>
 
-
-            <div className="md:col-span-3 xs:col bg-white  md:mt-20 xs:mt-10 flex-col w-full items-center relative z-10 flex font-medium justify-between max-w-screen-xl mx-auto md:px-10 xs:px-0">
+            <div className="md:col-span-3 xs:col bg-white md:mt-20 xs:mt-10 flex-col w-full items-center relative z-10 flex font-medium justify-between max-w-screen-xl mx-auto md:px-10 xs:px-0">
                 <div className="flex items-center justify-center lg:w-full md:w-full">
-                    <div className="w-full flex flex-col p-0 max-w-4xl px-10">
+                    <div className="w-full flex flex-col p-0 max-w-4xl md:px-10 xs:px-4">
 
                         <div className="w-full flex-1 mt-0">
                             <div className="">
                                 <div className="">
-                                    <div className="mt-0 text-start">
-                                        <h1 className="md:text-[24px] xs:text-[20px] text-start text-black font-semibold">
-                                            Let’s start with your plan and details
-                                        </h1>
+                                    <div className=" w-full  flex flex-row justify-center">
+
+                                        <div className=" text-start justify-start mx-auto text-primary cursor-pointer w-full flex">
+                                            <div className="w-[200px]">
+                                                <Image
+                                                    src={'/images/Logo/CARTEL.png'}
+                                                    alt="logo"
+                                                    width={136}
+                                                    height={60}
+                                                    priority
+                                                    className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                                                />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* <div className="grid md:grid-cols-1 xs:grid-cols-1 justify-between">
+                                        <H1 className=" font-semibold text-start text-primary">
+                                        Let’s get you started with creating your account
+                                        </H1>
+
+                                        <H2 className=" text-start text-gray-500 my-3">
+                                            Please select the business type and fill the details below along with your contact details
+                                        </H2>
+                                    </div> */}
+                                    <div className="grid md:grid-cols-1 xs:grid-cols-1 justify-between mt-4">
+                                        <H1 className="md:text-[24px] xs:text-[20px] text-start text-primary font-semibold">
+                                            Let’s get you started with creating your account
+                                        </H1>
 
                                         <div className="mt-1 font-normal">
-                                            <p className="text-[#717171] text-start text-[12px]">
-                                                Please select the plan and fill the details below along with your contact details
-                                            </p>
+                                            <BMiddle className="text-[#717171] text-start text-[12px]">
+                                                Please select the business type and fill the details below along with your contact details
+                                            </BMiddle>
                                         </div>
-                                        <div className="text-start my-6 font-semibold md:text-[16px] xs:text-[13px]">Let’s start with your plan and details</div>
+                                        {/* <H2 className="text-start my-6 font-semibold md:text-[16px] xs:text-[13px]">Let’s start with your buiness type and details</H2> */}
                                     </div>
 
 
@@ -242,7 +279,6 @@ function Register() {
                                                             onChange={setPhone}
                                                             defaultCountry={defaultCountry} // Set the default country to Nigeria
                                                             international
-                                                            // defaultCountry="TR"
                                                         />
 
                                                     </div>
@@ -256,121 +292,186 @@ function Register() {
                                         (signInState == 2 || signInState == 3) && (
                                             <div>
                                                 <div className="flex md:flex-row xs:flex-col gap-10 my-10">
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                                        <CustomInput
-                                                            id="phone"
-                                                            type='text'
-                                                            required
-                                                            // setValue={setFormData}
-                                                            // value={phone}
-                                                            label={'Phone Number'}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     phone: value
-                                                            // }))}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
-                                                        />
+                                                    <div className={` w-[100%] text-[1rem] my-0`}>
+                                                        <CountrySelector />
                                                     </div>
                                                     <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                                        <CustomInput
-                                                            id="address"
-                                                            type='text'
-                                                            required
-                                                            // setValue={setFormData}
-                                                            // value={address}
-                                                            showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     address: value,
-                                                            //     country: "Canada"
-                                                            // }))}
-                                                            label={'Address'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex md:flex-row xs:flex-col gap-10 my-10">
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-
-                                                        {/* <CustomSelect
-                                                            wrapperClass=' !h-[58px] !w-full !px-[12px]'
-                                                            labelClass=' text-black w-full text-gray-500'
-                                                            optionsClass='!text-[0.875rem] !h-[48px] !w-[100%] !text-black'
-                                                            optionWrapperClass=' w-[100%] !w-full border-[1px] shadow-lg border-gray-200 xl:left-[0px] !left-[0px] !h-[400px] !bottom-[-410px] overflow-y-auto '
-                                                            required={false}
-                                                            label='Select a Country'
-                                                            setSelected={handleCountryChange}
-                                                            selected={country}
-                                                            options={selectedCity}
-                                                            otherOptions={true}
-                                                        /> */}
-                                                        <CustomInput
-                                                            id="country"
-                                                            type='text'
-                                                            required
-                                                            disabled={true}
-                                                            showRequirement={true}
-                                                            // setValue={setFormData}
-                                                            // value={'Canada'}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     yearsActive: value
-
-                                                            // }))}
-                                                            label={'Country'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
-                                                        />
-                                                    </div>
-                                                    {/* <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                                                         <CustomSelect
-                                                            wrapperClass=' !h-[58px] !w-full !px-[12px]'
-                                                            labelClass=' text-black w-full text-gray-500'
-                                                            optionsClass='!text-[0.875rem] !h-[48px] !w-[100%] !text-black'
-                                                            optionWrapperClass=' w-[100%] !w-full border-[1px] shadow-lg border-gray-200 xl:left-[0px] !left-[0px] !h-[400px] !bottom-[-410px] overflow-y-auto '
-                                                            required={false}
-                                                            label='Select a state'
-                                                            setSelected={handleCityChange}
-                                                            selected={province}
-                                                            options={states}
-                                                            otherOptions={true}
+                                                            wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
+                                                            labelClass='!text-[0.875rem] text-gray-500 w-full'
+                                                            optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
+                                                            optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
+                                                            label='How did you hear about us?'
+                                                            setSelected={handleReferenceChange}
+                                                            selected={discovery}
+                                                            options={[
+                                                                {
+                                                                    label: 'Family/Friend',
+                                                                    value: 'Family/Friend'
+                                                                },
+                                                                {
+                                                                    label: 'Email',
+                                                                    value: 'Email'
+                                                                },
+                                                                {
+                                                                    label: 'Webinar',
+                                                                    value: 'Webinar'
+                                                                },
+                                                                {
+                                                                    label: 'Billboard',
+                                                                    value: 'Billboard'
+                                                                },
+                                                                {
+                                                                    label: 'Instagram',
+                                                                    value: 'Instagram'
+                                                                },
+                                                                {
+                                                                    label: 'Twitter',
+                                                                    value: 'Twitter'
+                                                                },
+                                                                {
+                                                                    label: 'Quora',
+                                                                    value: 'Quora'
+                                                                },
+                                                                {
+                                                                    label: 'Whatsapp',
+                                                                    value: 'Whatsapp'
+                                                                },
+                                                                {
+                                                                    label: 'Facebook',
+                                                                    value: 'Facebook'
+                                                                },
+                                                                {
+                                                                    label: 'YouTube',
+                                                                    value: 'YouTube'
+                                                                },
+                                                                {
+                                                                    label: 'Online Ad',
+                                                                    value: 'Online Ad'
+                                                                },
+                                                                {
+                                                                    label: 'Radio',
+                                                                    value: 'Radio'
+                                                                },
+                                                                {
+                                                                    label: 'Reddit',
+                                                                    value: 'Reddit'
+                                                                },
+                                                                {
+                                                                    label: 'Others',
+                                                                    value: 'Others'
+                                                                }
+                                                            ]}
                                                         />
-                                                    </div> */}
+
+
+                                                    </div>
                                                 </div>
 
-                                                <div className="flex md:flex-row xs:flex-col gap-10 my-10">
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                                        <CustomInput
-                                                            id="postalCode"
-                                                            type='text'
-                                                            required
-                                                            // setValue={setFormData}
-                                                            // value={postalCode}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     postalCode: value
-                                                            // }))}
-                                                            label={'Postal Code'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
-                                                        />
-                                                    </div>
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                                        <CustomInput
-                                                            id="city"
-                                                            type='text'
-                                                            required
-                                                            // setValue={setFormData}
-                                                            // value={city}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     city: value
-                                                            // }))}
-                                                            label={'City'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
-                                                        />
+                                                <div>
+                                                    <B2Regular className='text-[1rem]'>Business Type</B2Regular>
+
+                                                    <div className="grid md:grid-cols-3 xs:grid-cols-3 md:gap-0 xs:gap-5 md:w-full xs:full my-5">
+
+
+                                                        <div className="mr-3 relative my-3 w-full ">
+                                                            <label
+                                                                htmlFor={`import`}
+                                                                className="flex items-center cursor-pointer"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id={`import`}
+                                                                    checked={businessType === 'Import'}
+                                                                    onChange={() => handleOptionChange('Import')}
+                                                                    className="hidden" // Hide the default checkbox
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleOptionChange('Import')}
+                                                                    className={`w-4 h-4 border-[1px] ${businessType === 'Import' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                >
+                                                                    {businessType === 'Import' && (
+                                                                        <svg
+                                                                            className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
+                                                                            viewBox="0 0 20 20"
+                                                                        >
+                                                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                                                        </svg>
+                                                                    )}
+                                                                </button>
+                                                                <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Import</span>
+                                                            </label>
+
+                                                        </div>
+
+                                                        <div className="mr-3 relative my-3 w-full ">
+                                                            <label
+                                                                htmlFor={`export`}
+                                                                className="flex items-center cursor-pointer"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id={`export`}
+                                                                    checked={businessType === 'Export'}
+                                                                    onChange={() => handleOptionChange('Export')}
+                                                                    className="hidden" // Hide the default checkbox
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleOptionChange('Export')}
+                                                                    className={`w-4 h-4 border-[1px] ${businessType === 'Export' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                >
+                                                                    {businessType === 'Export' && (
+                                                                        <svg
+                                                                            className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
+                                                                            viewBox="0 0 20 20"
+                                                                        >
+                                                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                                                        </svg>
+                                                                    )}
+                                                                </button>
+                                                                <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Export</span>
+                                                            </label>
+
+                                                        </div>
+
+                                                        <div className="mr-3 relative my-3 w-full ">
+                                                            <label
+                                                                htmlFor={`supplier`}
+                                                                className="flex items-center cursor-pointer"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    id={`supplier`}
+                                                                    checked={businessType === 'Supplier'}
+                                                                    onChange={() => handleOptionChange('Supplier')}
+                                                                    className="hidden" // Hide the default checkbox
+                                                                />
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleOptionChange('Supplier')}
+                                                                    className={`w-4 h-4 border-[1px] ${businessType === 'Supplier' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                >
+                                                                    {businessType === 'Supplier' && (
+                                                                        <svg
+                                                                            className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
+                                                                            viewBox="0 0 20 20"
+                                                                        >
+                                                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                                                        </svg>
+                                                                    )}
+                                                                </button>
+                                                                <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Supplier</span>
+                                                            </label>
+
+                                                        </div>
                                                     </div>
                                                 </div>
 
+
+
+                                                {/* PASSWORD  */}
                                                 <div className="flex md:flex-row xs:flex-col gap-10 my-10">
                                                     <div className={`form-group flex w-[100%] text-[1rem] my-0 flex-col`}>
                                                         <CustomInput
@@ -425,157 +526,11 @@ function Register() {
                                                     </div>
                                                 </div>
 
-                                                <div className="text-left text-gray-700">
-                                                    <h1 className="mb-0 p-0 text-2xl text-black">Functions</h1>
-
-                                                    <div className="flex md:flex-row xs:flex-col md:gap-10 xs:gap-0 md:my-10 xs:my-0">
-                                                        <div>
-                                                            <div className="flex items-center my-7">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6  text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="ml-4 md:text-base xs:text-xs w-full text-[#717171]">
-                                                                    Medical Doctor with property/room for rent
-                                                                </label>
-                                                            </div>
-                                                            <div className="flex items-center my-7">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6 text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="text-[#717171] ml-4 md:text-base xs:text-xs w-full">
-                                                                    Nurse, Physician Assistant or Nurse Practitioner
-                                                                </label>
-                                                            </div>
-                                                            <div className="flex items-center my-7">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6 text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="text-[#717171] ml-4 md:text-base xs:text-xs w-full">
-                                                                    Allied Healthcare Professional
-                                                                </label>
-                                                            </div>
-
-                                                            <div className="flex items-center my-7">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6 text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="text-[#717171] ml-4 md:text-base xs:text-xs w-full">
-                                                                    Medical Community landlord
-                                                                </label>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div>
-                                                            <div className="flex items-center md:my-7 xs:my-0">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6 text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="text-[#717171] ml-4 md:text-base xs:text-xs w-full">
-                                                                    Traveling Nurse
-                                                                </label>
-                                                            </div>
-
-                                                            <div className="flex items-center my-7">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6 text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="text-[#717171] ml-4 md:text-base xs:text-xs w-full">
-                                                                    Housing for Healthcare program
-                                                                </label>
-                                                            </div>
-                                                            <div className="flex items-center my-7">
-                                                                <input
-                                                                    type="radio"
-                                                                    id="radioButton"
-                                                                    name="radioButton"
-                                                                    className="h-6 w-6 text-third border-gray-500 focus:ring-sky-600"
-                                                                // onClick={handleRadioChange}
-                                                                />
-                                                                <label htmlFor="radioButton" className="text-[#717171] ml-4 md:text-base xs:text-xs w-full">
-                                                                    Others
-                                                                </label>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="mb-8 text-left">
-                                                    <h1 className="mb-3 text-sm">How did you discover Medirent?</h1>
-
-                                                    <CustomSelect
-                                                        wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-[400px] xs:w-full'
-                                                        labelClass='!text-[0.875rem] text-black'
-                                                        optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
-                                                        optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-[300px] xl:left-[0px] !left-[0px] !h-[400px] !bottom-[-410px] overflow-y-auto'
-                                                        label='Set Discovery Method'
-                                                        setSelected={handlePasswordChange}
-                                                        selected={confirmPassword}
-                                                        options={[
-                                                            {
-                                                                label: 'Facebook/socialmedia',
-                                                                value: 'Facebook/socialmedia'
-                                                            },
-                                                            {
-                                                                label: 'Medical school admin recommended',
-                                                                value: 'Medical school admin recommended'
-                                                            },
-                                                            {
-                                                                label: 'Friend/colleague',
-                                                                value: 'Friend/colleague'
-                                                            },
-                                                            {
-                                                                label: 'Real Estate Agent',
-                                                                value: 'Real Estate Agent'
-                                                            },
-                                                            {
-                                                                label: 'Internet browsing',
-                                                                value: 'Internet browsing'
-                                                            },
-                                                            {
-                                                                label: 'Journal/medical affiliated website',
-                                                                value: 'Journal/medical affiliated website'
-                                                            },
-                                                            {
-                                                                label: 'Others',
-                                                                value: 'Others'
-                                                            }
-                                                        ]}
-                                                    />
-                                                </div>
-
-
-
                                                 <div className="md:text-base xs:text-xs w-fit mt-2 text-rose-600">
                                                     {textValue}
                                                 </div>
 
-                                                <div className="flex justify-between  pb-10">
+                                                {/* <div className="flex justify-between  pb-10">
                                                     <div className="flex justify-end z-10 relative mt-4 ">
 
                                                         <button
@@ -603,7 +558,27 @@ function Register() {
                                                         </button>
                                                     </div>
 
-                                                </div>
+                                                </div> */}
+
+                                                <CustomButton
+                                                    // onClick={handleLoginUser}
+                                                    className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                                >
+                                                    <div className="text-xl">
+
+
+                                                    </div>
+                                                    <H2 className="ml-3">Create Account</H2>
+                                                </CustomButton>
+
+                                                <H2 className="text-sm flex justify-center z-50 relative mt-4 text-gray-500 mb-20">
+                                                    Have an account?
+                                                    <Link href="/auth/login" className="ml-1 cursor-pointer">
+                                                        <H2 className="text-primary cursor-pointer">
+                                                            Sign In
+                                                        </H2>
+                                                    </Link>
+                                                </H2>
 
                                             </div>
                                         )

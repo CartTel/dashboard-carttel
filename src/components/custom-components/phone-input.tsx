@@ -15,7 +15,8 @@ type PhoneInputProps = Omit<
     "onChange" | "value"
 > &
     Omit<RPNInput.Props<typeof RPNInput.default>, "onChange"> & {
-        onChange?: (value: RPNInput.Value) => void;
+        onChange?: (value: RPNInput.Value | undefined) => void; // Change here
+        defaultCountry?: RPNInput.Country; // Add defaultCountry prop
     };
 
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
@@ -28,7 +29,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
                     flagComponent={FlagComponent}
                     countrySelectComponent={CountrySelect}
                     inputComponent={InputComponent}
-                    onChange={(value) => onChange?.(value || "")}
+                    onChange={(value) => onChange?.(value === "" ? undefined : value)} 
                     {...props}
                 />
             );
@@ -41,7 +42,7 @@ const InputComponent = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, ...props }, ref) => (
         
         <input
-            className="flex w-[100%] h-[58px] text-[1rem] outline-none border-[1px] border-gray-200 border-l-0 rounded-tr-lg rounded-br-lg px-2"
+            className="flex w-[100%] h-[58px] text-[1rem] outline-none border-[1px] border-primary border-l-0 rounded-tr-lg rounded-br-lg px-2"
             {...props}
             ref={ref}
         />
@@ -83,7 +84,7 @@ const CountrySelect = ({
         <div className="relative">
             <button
                 type="button"
-                className={`flex gap-1 rounded-l-lg rounded-r-none px-3 py-[20px] h-[58px] border border-gray-200 border-r-0 ${disabled ? "opacity-50 cursor-not-allowed" : ""
+                className={`flex gap-1 rounded-l-lg rounded-r-none px-3 py-[20px] h-[58px] border border-primary border-r-0 ${disabled ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                 onClick={() => !disabled && setIsOpen((prev) => !prev)}
                 disabled={disabled}
@@ -97,7 +98,7 @@ const CountrySelect = ({
                     <input
                         type="text"
                         placeholder="Search country..."
-                        className="w-full p-2 border-b border-gray-300 focus:outline-none"
+                        className="w-full p-2 border-b border-gray-500 focus:outline-none"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -135,6 +136,7 @@ const CountrySelect = ({
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
