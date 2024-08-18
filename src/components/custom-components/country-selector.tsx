@@ -23,7 +23,7 @@ const CountrySelector: React.FC = () => {
             const response = await fetch('/countries-flag.json'); // Adjust path if needed
             const data: Record<string, Country> = await response.json();
 
-            console.log("object", data);
+            // console.log("object", data);
             setCountries(data);
             setFilteredCountries(Object.values(data)); // Convert object to array
         };
@@ -44,7 +44,7 @@ const CountrySelector: React.FC = () => {
     }, [searchTerm, countries]);
 
     const handleSelectCountry = (country: Country) => {
-        console.log("first", country)
+        // console.log("first", country)
         setSelectedCountry(country);
         setSearchTerm('');
         setIsOpen(false);

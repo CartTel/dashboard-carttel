@@ -47,6 +47,13 @@ function Register() {
     const [discovery, setDiscovery] = useState<string>("");
     const [businessType, setBusinessType] = useState<string>("");
 
+    const [terms, setTerms] = useState<boolean>(false);
+
+    const handleTermChange = (value: boolean) => {
+        console.log("call", value);
+        setTerms(!value)
+    };
+
 
 
     const [confirmPasswordToggle, setConfirmPasswordToggle] = useState<boolean>(true);
@@ -111,6 +118,7 @@ function Register() {
     };
 
     const handleOptionChange = (value: string) => {
+
         setBusinessType(value)
     };
 
@@ -131,9 +139,9 @@ function Register() {
 
             </div>
 
-            <div className="md:col-span-3 xs:col bg-white md:mt-20 xs:mt-10 flex-col w-full items-center relative z-10 flex font-medium justify-between max-w-screen-xl mx-auto md:px-10 xs:px-0">
+            <div className="md:col-span-3 xs:col bg-white md:mt-20 xs:mt-10 flex-col w-full items-center relative z-10 flex font-medium md:justify-between xs:justify-center max-w-screen-xl mx-auto md:px-10 xs:px-0">
                 <div className="flex items-center justify-center lg:w-full md:w-full">
-                    <div className="w-full flex flex-col p-0 max-w-4xl md:px-10 xs:px-4">
+                    <div className="w-full flex flex-col p-0 max-w-4xl md:px-10 xs:px-4 justify-center items-center h-full">
 
                         <div className="w-full flex-1 mt-0">
                             <div className="">
@@ -170,7 +178,7 @@ function Register() {
                                         </H1>
 
                                         <div className="mt-1 font-normal">
-                                            <BMiddle className="text-[#717171] text-start text-[12px]">
+                                            <BMiddle className="text-[#717171] text-start text-[10px] font-normal">
                                                 Please select the business type and fill the details below along with your contact details
                                             </BMiddle>
                                         </div>
@@ -205,7 +213,14 @@ function Register() {
                                                     <div className=" px-2 py-4 w-full bg-gray-100 flex justify-center items-center">
 
                                                         <div className="mr-3">
-                                                            {/* <img alt="" src={Mail} className="text-[1px] text-white w-full h-full" /> */}
+                                                            <Image
+                                                                src={'/images/Auth/Mail.svg'}
+                                                                alt="logo"
+                                                                width={136}
+                                                                height={60}
+                                                                priority
+                                                                className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                                                            />
                                                         </div>
                                                         <div className="text-[15px]">Sign up with Mail</div>
                                                     </div>
@@ -291,296 +306,331 @@ function Register() {
                                     {
                                         (signInState == 2 || signInState == 3) && (
                                             <div>
-                                                <div className="flex md:flex-row xs:flex-col gap-10 my-10">
-                                                    <div className={` w-[100%] text-[1rem] my-0`}>
-                                                        <CountrySelector />
-                                                    </div>
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                                        <CustomSelect
-                                                            wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
-                                                            labelClass='!text-[0.875rem] text-gray-500 w-full'
-                                                            optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
-                                                            optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
-                                                            label='How did you hear about us?'
-                                                            setSelected={handleReferenceChange}
-                                                            selected={discovery}
-                                                            options={[
-                                                                {
-                                                                    label: 'Family/Friend',
-                                                                    value: 'Family/Friend'
-                                                                },
-                                                                {
-                                                                    label: 'Email',
-                                                                    value: 'Email'
-                                                                },
-                                                                {
-                                                                    label: 'Webinar',
-                                                                    value: 'Webinar'
-                                                                },
-                                                                {
-                                                                    label: 'Billboard',
-                                                                    value: 'Billboard'
-                                                                },
-                                                                {
-                                                                    label: 'Instagram',
-                                                                    value: 'Instagram'
-                                                                },
-                                                                {
-                                                                    label: 'Twitter',
-                                                                    value: 'Twitter'
-                                                                },
-                                                                {
-                                                                    label: 'Quora',
-                                                                    value: 'Quora'
-                                                                },
-                                                                {
-                                                                    label: 'Whatsapp',
-                                                                    value: 'Whatsapp'
-                                                                },
-                                                                {
-                                                                    label: 'Facebook',
-                                                                    value: 'Facebook'
-                                                                },
-                                                                {
-                                                                    label: 'YouTube',
-                                                                    value: 'YouTube'
-                                                                },
-                                                                {
-                                                                    label: 'Online Ad',
-                                                                    value: 'Online Ad'
-                                                                },
-                                                                {
-                                                                    label: 'Radio',
-                                                                    value: 'Radio'
-                                                                },
-                                                                {
-                                                                    label: 'Reddit',
-                                                                    value: 'Reddit'
-                                                                },
-                                                                {
-                                                                    label: 'Others',
-                                                                    value: 'Others'
-                                                                }
-                                                            ]}
-                                                        />
-
-
-                                                    </div>
-                                                </div>
-
                                                 <div>
-                                                    <B2Regular className='text-[1rem]'>Business Type</B2Regular>
-
-                                                    <div className="grid md:grid-cols-3 xs:grid-cols-3 md:gap-0 xs:gap-5 md:w-full xs:full my-5">
-
-
-                                                        <div className="mr-3 relative my-3 w-full ">
-                                                            <label
-                                                                htmlFor={`import`}
-                                                                className="flex items-center cursor-pointer"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id={`import`}
-                                                                    checked={businessType === 'Import'}
-                                                                    onChange={() => handleOptionChange('Import')}
-                                                                    className="hidden" // Hide the default checkbox
-                                                                />
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => handleOptionChange('Import')}
-                                                                    className={`w-4 h-4 border-[1px] ${businessType === 'Import' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
-                                                                >
-                                                                    {businessType === 'Import' && (
-                                                                        <svg
-                                                                            className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
-                                                                            viewBox="0 0 20 20"
-                                                                        >
-                                                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                                                        </svg>
-                                                                    )}
-                                                                </button>
-                                                                <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Import</span>
-                                                            </label>
-
+                                                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                                                        <div className={` w-[100%] text-[1rem] my-0`}>
+                                                            <CountrySelector />
                                                         </div>
+                                                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                                                            <CustomSelect
+                                                                wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
+                                                                labelClass='!text-[0.875rem] text-gray-500 w-full'
+                                                                optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
+                                                                optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
+                                                                label='How did you hear about us?'
+                                                                setSelected={handleReferenceChange}
+                                                                selected={discovery}
+                                                                options={[
+                                                                    {
+                                                                        label: 'Family/Friend',
+                                                                        value: 'Family/Friend'
+                                                                    },
+                                                                    {
+                                                                        label: 'Email',
+                                                                        value: 'Email'
+                                                                    },
+                                                                    {
+                                                                        label: 'Webinar',
+                                                                        value: 'Webinar'
+                                                                    },
+                                                                    {
+                                                                        label: 'Billboard',
+                                                                        value: 'Billboard'
+                                                                    },
+                                                                    {
+                                                                        label: 'Instagram',
+                                                                        value: 'Instagram'
+                                                                    },
+                                                                    {
+                                                                        label: 'Twitter',
+                                                                        value: 'Twitter'
+                                                                    },
+                                                                    {
+                                                                        label: 'Quora',
+                                                                        value: 'Quora'
+                                                                    },
+                                                                    {
+                                                                        label: 'Whatsapp',
+                                                                        value: 'Whatsapp'
+                                                                    },
+                                                                    {
+                                                                        label: 'Facebook',
+                                                                        value: 'Facebook'
+                                                                    },
+                                                                    {
+                                                                        label: 'YouTube',
+                                                                        value: 'YouTube'
+                                                                    },
+                                                                    {
+                                                                        label: 'Online Ad',
+                                                                        value: 'Online Ad'
+                                                                    },
+                                                                    {
+                                                                        label: 'Radio',
+                                                                        value: 'Radio'
+                                                                    },
+                                                                    {
+                                                                        label: 'Reddit',
+                                                                        value: 'Reddit'
+                                                                    },
+                                                                    {
+                                                                        label: 'Others',
+                                                                        value: 'Others'
+                                                                    }
+                                                                ]}
+                                                            />
 
-                                                        <div className="mr-3 relative my-3 w-full ">
-                                                            <label
-                                                                htmlFor={`export`}
-                                                                className="flex items-center cursor-pointer"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id={`export`}
-                                                                    checked={businessType === 'Export'}
-                                                                    onChange={() => handleOptionChange('Export')}
-                                                                    className="hidden" // Hide the default checkbox
-                                                                />
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => handleOptionChange('Export')}
-                                                                    className={`w-4 h-4 border-[1px] ${businessType === 'Export' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
-                                                                >
-                                                                    {businessType === 'Export' && (
-                                                                        <svg
-                                                                            className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
-                                                                            viewBox="0 0 20 20"
-                                                                        >
-                                                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                                                        </svg>
-                                                                    )}
-                                                                </button>
-                                                                <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Export</span>
-                                                            </label>
-
-                                                        </div>
-
-                                                        <div className="mr-3 relative my-3 w-full ">
-                                                            <label
-                                                                htmlFor={`supplier`}
-                                                                className="flex items-center cursor-pointer"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id={`supplier`}
-                                                                    checked={businessType === 'Supplier'}
-                                                                    onChange={() => handleOptionChange('Supplier')}
-                                                                    className="hidden" // Hide the default checkbox
-                                                                />
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => handleOptionChange('Supplier')}
-                                                                    className={`w-4 h-4 border-[1px] ${businessType === 'Supplier' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
-                                                                >
-                                                                    {businessType === 'Supplier' && (
-                                                                        <svg
-                                                                            className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
-                                                                            viewBox="0 0 20 20"
-                                                                        >
-                                                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                                                        </svg>
-                                                                    )}
-                                                                </button>
-                                                                <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Supplier</span>
-                                                            </label>
 
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                    <div>
+                                                        <B2Regular className='text-[1rem]'>Business Type</B2Regular>
+
+                                                        <div className="grid md:grid-cols-3 xs:grid-cols-3 md:gap-0 xs:gap-5 md:w-full xs:full my-5">
 
 
+                                                            <div className="mr-3 relative my-3 w-full ">
+                                                                <label
+                                                                    htmlFor={`import`}
+                                                                    className="flex items-center cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`import`}
+                                                                        checked={businessType === 'Import'}
+                                                                        onChange={() => handleOptionChange('Import')}
+                                                                        className="hidden" // Hide the default checkbox
+                                                                    />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleOptionChange('Import')}
+                                                                        className={`w-4 h-4 border-[1px] ${businessType === 'Import' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                    >
+                                                                        {businessType === 'Import' && (
+                                                                            <svg
+                                                                                className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
+                                                                                viewBox="0 0 20 20"
+                                                                            >
+                                                                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                                                            </svg>
+                                                                        )}
+                                                                    </button>
+                                                                    <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Import</span>
+                                                                </label>
 
-                                                {/* PASSWORD  */}
-                                                <div className="flex md:flex-row xs:flex-col gap-10 my-10">
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0 flex-col`}>
-                                                        <CustomInput
-                                                            changeToggle={changeToggle}
-                                                            showToggle={true}
-                                                            isToggle={isToggle}
-                                                            id='password'
-                                                            type={`${isToggle ? 'text' : 'password'}`}
-                                                            label='Password'
-                                                            className='mb-[0px]'
-                                                            onChange={handlePasswordChange}
-                                                        />
-                                                        <div className="flex justify-between flex-wrap mt-2">
-                                                            <div className="ml-auto mt-2 w-min">
-                                                                <div className="password-strength">
-                                                                    <div className="strength-bars flex items-center justify-center gap-1">
-                                                                        <div className={`${testOne ? "bg-[#dc6969]" : "bg-[#b6a7a7]"} bar bar--weak filled h-[4px] w-6 rounded-l block`}>
-                                                                        </div>
+                                                            </div>
 
-                                                                        <div className={`${testTwo ? "bg-[#ffe48c]" : "bg-[#b6a7a7]"} bar bar--normal filled h-[4px] w-6 rounded-l block`}>
-                                                                        </div>
+                                                            <div className="mr-3 relative my-3 w-full ">
+                                                                <label
+                                                                    htmlFor={`export`}
+                                                                    className="flex items-center cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`export`}
+                                                                        checked={businessType === 'Export'}
+                                                                        onChange={() => handleOptionChange('Export')}
+                                                                        className="hidden" // Hide the default checkbox
+                                                                    />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleOptionChange('Export')}
+                                                                        className={`w-4 h-4 border-[1px] ${businessType === 'Export' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                    >
+                                                                        {businessType === 'Export' && (
+                                                                            <svg
+                                                                                className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
+                                                                                viewBox="0 0 20 20"
+                                                                            >
+                                                                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                                                            </svg>
+                                                                        )}
+                                                                    </button>
+                                                                    <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Export</span>
+                                                                </label>
 
-                                                                        <div className={`${testThree ? "bg-[#46c28e]" : "bg-[#b6a7a7]"} bar bar--strong filled h-[4px] w-6 rounded-l block`}>
-                                                                        </div>
+                                                            </div>
 
-                                                                        <div className={`${testFour ? "bg-[#208058]" : "bg-[#b6a7a7]"} bar bar--stronger filled h-[4px] w-6 rounded-l block`}>
-                                                                        </div>
-                                                                        {/* <div className="bar bar--stronger bg-[#e0e0e0] h-[4px] w-6 rounded-l block"></div> */}
+                                                            <div className="mr-3 relative my-3 w-full ">
+                                                                <label
+                                                                    htmlFor={`supplier`}
+                                                                    className="flex items-center cursor-pointer"
+                                                                >
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={`supplier`}
+                                                                        checked={businessType === 'Supplier'}
+                                                                        onChange={() => handleOptionChange('Supplier')}
+                                                                        className="hidden" // Hide the default checkbox
+                                                                    />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleOptionChange('Supplier')}
+                                                                        className={`w-4 h-4 border-[1px] ${businessType === 'Supplier' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                    >
+                                                                        {businessType === 'Supplier' && (
+                                                                            <svg
+                                                                                className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
+                                                                                viewBox="0 0 20 20"
+                                                                            >
+                                                                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                                                            </svg>
+                                                                        )}
+                                                                    </button>
+                                                                    <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Supplier</span>
+                                                                </label>
 
-                                                                    </div>
-                                                                    <p className="strength-text text-gray-600 text-xs whitespace-nowrap">
-                                                                        {text}
-                                                                    </p>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                                        <CustomInput
-                                                            changeToggle={changeConfirmPasswordToggle}
-                                                            showToggle={true}
-                                                            isToggle={confirmPasswordToggle}
-                                                            id='password'
-                                                            type={`${confirmPasswordToggle ? 'text' : 'password'}`}
-                                                            label='Confirm Password'
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     confirmPassword: value
-                                                            // }))}
-                                                            className='mb-[32px]'
-                                                        />
-                                                    </div>
-                                                </div>
 
-                                                <div className="md:text-base xs:text-xs w-fit mt-2 text-rose-600">
-                                                    {textValue}
-                                                </div>
 
-                                                {/* <div className="flex justify-between  pb-10">
-                                                    <div className="flex justify-end z-10 relative mt-4 ">
 
-                                                        <button
-                                                            // onClick={handleCreateTenantUser}
-                                                            className="flex justify-end items-center z-10 relative bg-[#F97262] text-white md:text-sm rounded-full md:py-3 md:px-12 xs:text-[15px] xs:py-1 xs:px-8"
-                                                        // disabled={userLoading} // Disable the button when userLoading is true
-                                                        >
-                                                            {isLoading ? ( // Display spinner if userLoading is true
-                                                                <div className="flex items-center px-6">
-                                                                    <div>
-                                                                        <Image
-                                                                            src={'/images/Auth/loading.svg'}
-                                                                            alt="logo"
-                                                                            width={136}
-                                                                            height={60}
-                                                                            priority
-                                                                            className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
-                                                                        />
+                                                    {/* PASSWORD  */}
+                                                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                                                        <div className={`form-group flex w-[100%] text-[1rem] my-0 flex-col`}>
+                                                            <CustomInput
+                                                                changeToggle={changeToggle}
+                                                                showToggle={true}
+                                                                isToggle={isToggle}
+                                                                id='password'
+                                                                type={`${isToggle ? 'text' : 'password'}`}
+                                                                label='Password'
+                                                                className='mb-[0px]'
+                                                                onChange={handlePasswordChange}
+                                                            />
+                                                            <div className="flex justify-between flex-wrap mt-2">
+                                                                <div className="ml-auto mt-2 w-min">
+                                                                    <div className="password-strength">
+                                                                        <div className="strength-bars flex items-center justify-center gap-1">
+                                                                            <div className={`${testOne ? "bg-[#dc6969]" : "bg-[#b6a7a7]"} bar bar--weak filled h-[4px] w-6 rounded-l block`}>
+                                                                            </div>
+
+                                                                            <div className={`${testTwo ? "bg-[#ffe48c]" : "bg-[#b6a7a7]"} bar bar--normal filled h-[4px] w-6 rounded-l block`}>
+                                                                            </div>
+
+                                                                            <div className={`${testThree ? "bg-[#46c28e]" : "bg-[#b6a7a7]"} bar bar--strong filled h-[4px] w-6 rounded-l block`}>
+                                                                            </div>
+
+                                                                            <div className={`${testFour ? "bg-[#208058]" : "bg-[#b6a7a7]"} bar bar--stronger filled h-[4px] w-6 rounded-l block`}>
+                                                                            </div>
+                                                                            {/* <div className="bar bar--stronger bg-[#e0e0e0] h-[4px] w-6 rounded-l block"></div> */}
+
+                                                                        </div>
+                                                                        <p className="strength-text text-gray-600 text-xs whitespace-nowrap">
+                                                                            {text}
+                                                                        </p>
                                                                     </div>
-
                                                                 </div>
-                                                            ) : (
-                                                                <span className="">Go</span> // Show the "Submit" text when isLoading is false
-                                                            )}
-                                                        </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                                                            <CustomInput
+                                                                changeToggle={changeConfirmPasswordToggle}
+                                                                showToggle={true}
+                                                                isToggle={confirmPasswordToggle}
+                                                                id='password'
+                                                                type={`${confirmPasswordToggle ? 'text' : 'password'}`}
+                                                                label='Confirm Password'
+                                                                // onChange={(value) => setFormData(prevFormData => ({
+                                                                //     ...prevFormData,
+                                                                //     confirmPassword: value
+                                                                // }))}
+                                                                className='mb-[32px]'
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                    <div className="md:text-base xs:text-xs w-fit mt-2 text-rose-600">
+                                                        {textValue}
                                                     </div>
 
-                                                </div> */}
+                                                    {/* <div className="flex justify-between  pb-10">
+                                                        <div className="flex justify-end z-10 relative mt-4 ">
 
-                                                <CustomButton
-                                                    // onClick={handleLoginUser}
-                                                    className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                                                >
-                                                    <div className="text-xl">
+                                                            <button
+                                                                // onClick={handleCreateTenantUser}
+                                                                className="flex justify-end items-center z-10 relative bg-[#F97262] text-white md:text-sm rounded-full md:py-3 md:px-12 xs:text-[15px] xs:py-1 xs:px-8"
+                                                            // disabled={userLoading} // Disable the button when userLoading is true
+                                                            >
+                                                                {isLoading ? ( // Display spinner if userLoading is true
+                                                                    <div className="flex items-center px-6">
+                                                                        <div>
+                                                                            <Image
+                                                                                src={'/images/Auth/loading.svg'}
+                                                                                alt="logo"
+                                                                                width={136}
+                                                                                height={60}
+                                                                                priority
+                                                                                className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                                                                            />
+                                                                        </div>
+
+                                                                    </div>
+                                                                ) : (
+                                                                    <span className="">Go</span> // Show the "Submit" text when isLoading is false
+                                                                )}
+                                                            </button>
+                                                        </div>
+
+                                                    </div> */}
+
+                                                    <CustomButton
+                                                        // onClick={handleLoginUser}
+                                                        className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                                    >
+                                                        <div className="text-xl">
 
 
+                                                        </div>
+                                                        <H2 className="ml-3">Create Account</H2>
+                                                    </CustomButton>
+
+                                                    <H2 className="text-sm flex justify-center z-50 relative mt-4 text-gray-500 mb-10">
+                                                        Have an account?
+                                                        <Link href="/auth/login" className="ml-1 cursor-pointer">
+                                                            <H2 className="text-primary cursor-pointer">
+                                                                Sign In
+                                                            </H2>
+                                                        </Link>
+                                                    </H2>
+                                                    <div className='mb-20 md:text-lg xs:text-[5px] w-fit '>
+                                                        <label
+                                                            htmlFor={`terms`}
+                                                            className="flex items-center cursor-pointer"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`terms`}
+                                                                checked={terms}
+                                                                onChange={() => setTerms(!terms)} // Toggle functionality
+                                                                className="hidden" // Hide the default checkbox
+                                                            />
+                                                            <div
+                                                                className={`w-4 h-4 border-[1px] border-primary bg-white rounded-[3px] flex justify-center items-center mr-1`}
+                                                                onClick={() => setTerms(!terms)} // Handle click on the custom checkbox
+                                                            >
+                                                                {terms && (
+                                                                    <div className="w-2 h-2 bg-primary" /> // Square inside when checked
+                                                                )}
+                                                            </div>
+                                                            <H2 className="select-none border-white md:text-[15px] text-black xs:text-[.775rem] font-normal ">
+                                                                I agree to CarTtel’s
+                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold mx-2 xs:mx-[1px]'>Terms</Link> and
+                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold mx-2 xs:mx-[1px]'>Privacy Policy</Link>
+                                                            </H2>
+                                                        </label>
                                                     </div>
-                                                    <H2 className="ml-3">Create Account</H2>
-                                                </CustomButton>
 
-                                                <H2 className="text-sm flex justify-center z-50 relative mt-4 text-gray-500 mb-20">
-                                                    Have an account?
-                                                    <Link href="/auth/login" className="ml-1 cursor-pointer">
-                                                        <H2 className="text-primary cursor-pointer">
-                                                            Sign In
-                                                        </H2>
-                                                    </Link>
-                                                </H2>
+
+                                                </div>
+
+
 
                                             </div>
+
                                         )
                                     }
                                 </div>
