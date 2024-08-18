@@ -541,7 +541,7 @@ function Register() {
                                                             />
                                                         </div>
                                                     </div>
-                                                    
+
 
                                                     <div className="md:text-base xs:text-xs w-fit mt-2 text-rose-600">
                                                         {textValue}
@@ -608,18 +608,30 @@ function Register() {
                                                                 onChange={() => setTerms(!terms)} // Toggle functionality
                                                                 className="hidden" // Hide the default checkbox
                                                             />
-                                                            <div
+                                                            <button
                                                                 className={`w-4 h-4 border-[1px] border-primary bg-white rounded-[3px] flex justify-center items-center mr-1`}
-                                                                onClick={() => setTerms(!terms)} // Handle click on the custom checkbox
+                                                                // onClick={() => setTerms(!terms)} // Handle click on the custom checkbox
+                                                                onClick={() => {
+                                                                    setTerms(!terms);
+                                                                    console.log('Terms:', terms); // Log the new state
+                                                                }}
                                                             >
-                                                                {terms && (
-                                                                    <div className="w-2 h-2 bg-primary" /> // Square inside when checked
+                                                                {terms ? (
+                                                                    <svg width="8" height="8" xmlns="http://www.w3.org/2000/svg">
+                                                                        <rect width="8" height="8" fill="#103f69" />
+                                                                    </svg>
+                                                                ) : (
+                                                                    <svg width="8" height="8" xmlns="http://www.w3.org/2000/svg">
+                                                                        <rect width="8" height="8" fill="none" stroke="#ffff" />
+                                                                    </svg>
+                                                                    // <div className='bg-white w-4 h-4'></div>
+
                                                                 )}
-                                                            </div>
+                                                            </button>
                                                             <H2 className="select-none border-white md:text-[15px] text-black xs:text-[.775rem] font-normal ">
                                                                 I agree to CarTtel’s
-                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold mx-2 xs:mx-[1px]'>Terms</Link> and
-                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold mx-2 xs:mx-[1px]'>Privacy Policy</Link>
+                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold md:mx-1 xs:mx-[1px]'>Terms</Link> and
+                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold md:mx-1 xs:mx-[1px]'>Privacy Policy</Link>
                                                             </H2>
                                                         </label>
                                                     </div>
