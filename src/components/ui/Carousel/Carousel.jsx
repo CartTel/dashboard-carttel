@@ -108,13 +108,13 @@ function Carousel () {
                     </div>
                 </div>
 
-                <div className="w-full flex justify-center items-center ">
+                <div className="w-full flex justify-center items-center mt-20">
 
                     <Image 
                         src={slides[currentIndex]?.imageUrl}
                         // src={'/images/Carousel/inventory.svg'} 
                         alt="carousel" 
-                        className='relative flex justify-center items-center duration-500 z-10' 
+                        className='relative w-full h-auto max-w-[30rem] max-h-[30rem] object-contain duration-500 z-10'
                         width={500}
                         height={500}
                     />
