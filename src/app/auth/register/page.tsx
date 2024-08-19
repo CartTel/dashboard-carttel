@@ -21,6 +21,7 @@ import {
 import tr from "react-phone-number-input/locale/tr";
 
 import CountrySelector from '@/components/custom-components/country-selector';
+import Carousel from "@/components/ui/Carousel/Carousel"
 
 
 
@@ -124,19 +125,13 @@ function Register() {
 
     return (
         <div className="py-0 h-screen bg-white grid md:grid-cols-5 xs:grid-cols-1">
-            <div className="md:col-span-2 xs:col bg-[#FCD3CD] md:flex xs:hidden flex-col ">
+            <div className="md:col-span-2 xs:col bg-slate-300 bg-opacity-40 md:flex xs:hidden flex-col ">
 
-                <div className="my-20 px-5">
-                    <div className="text-[#0E0C3D] font-semibold text-[24px] mb-5">Create your tenant account and start contacting Medirent landlords</div>
-                    <div className="text-black font-normal text-[16px]">Sign up to discover a variety of verified properties tailored for healthcare professionals. Provide your details below to start your journey towards finding a comfortable and convenient home that meets your unique needs.</div>
+                <div className="my-0 px-0">
+                    <Carousel/>
+                    {/* <div className="text-[#0E0C3D] font-semibold text-[24px] mb-5 text-center">Create your tenant account and start contacting Medirent landlords</div> */}
+                    {/* <div className="text-black font-normal text-[16px]">Sign up to discover a variety of verified properties tailored for healthcare professionals. Provide your details below to start your journey towards finding a comfortable and convenient home that meets your unique needs.</div> */}
                 </div>
-
-                <div className="px-10">
-                    <div>
-                        {/* <img alt="" src={PhotoTenants} className="text-[1px] text-white w-full h-full" /> */}
-                    </div>
-                </div>
-
             </div>
 
             <div className="md:col-span-3 xs:col bg-white md:mt-20 xs:mt-10 flex-col w-full items-center relative z-10 flex font-medium md:justify-between xs:justify-center max-w-screen-xl mx-auto md:px-10 xs:px-0">
@@ -152,6 +147,7 @@ function Register() {
                                             <div className="w-[200px]">
                                                 <Image
                                                     src={'/images/Logo/CARTEL.png'}
+                                                    // src={'/images/Carousel/inventory.svg'}
                                                     alt="logo"
                                                     width={136}
                                                     height={60}
@@ -182,6 +178,8 @@ function Register() {
                                                 Please select the business type and fill the details below along with your contact details
                                             </BMiddle>
                                         </div>
+
+
                                         {/* <H2 className="text-start my-6 font-semibold md:text-[16px] xs:text-[13px]">Let’s start with your buiness type and details</H2> */}
                                     </div>
 
@@ -384,13 +382,14 @@ function Register() {
                                                         </div>
                                                     </div>
 
+                                                    {/* BUSINESS TYPE  */}
                                                     <div>
-                                                        <B2Regular className='text-[1rem]'>Business Type</B2Regular>
+                                                        <B2Regular className='text-[1rem] text-gray-600'>Business Type</B2Regular>
 
                                                         <div className="grid md:grid-cols-3 xs:grid-cols-3 md:gap-0 xs:gap-5 md:w-full xs:full my-5">
 
 
-                                                            <div className="mr-3 relative my-3 w-full ">
+                                                            <div className="mr-3 relative my-3 w-fit">
                                                                 <label
                                                                     htmlFor={`import`}
                                                                     className="flex items-center cursor-pointer"
@@ -421,7 +420,7 @@ function Register() {
 
                                                             </div>
 
-                                                            <div className="mr-3 relative my-3 w-full ">
+                                                            <div className="mr-3 relative my-3 w-fit ">
                                                                 <label
                                                                     htmlFor={`export`}
                                                                     className="flex items-center cursor-pointer"
@@ -452,7 +451,7 @@ function Register() {
 
                                                             </div>
 
-                                                            <div className="mr-3 relative my-3 w-full ">
+                                                            <div className="mr-3 relative my-3 w-fit ">
                                                                 <label
                                                                     htmlFor={`supplier`}
                                                                     className="flex items-center cursor-pointer"
@@ -609,11 +608,11 @@ function Register() {
                                                                 className="hidden" // Hide the default checkbox
                                                             />
                                                             <button
-                                                                className={`w-4 h-4 border-[1px] border-primary bg-white rounded-[3px] flex justify-center items-center mr-1`}
+                                                                className={`${terms ? "border-primary" : "border-gray-500"} w-4 h-4 border-[1px] bg-white rounded-[3px] flex justify-center items-center mr-1`}
                                                                 // onClick={() => setTerms(!terms)} // Handle click on the custom checkbox
                                                                 onClick={() => {
                                                                     setTerms(!terms);
-                                                                    console.log('Terms:', terms); // Log the new state
+                                                                    // console.log('Terms:', terms); // Log the new state
                                                                 }}
                                                             >
                                                                 {terms ? (
@@ -624,14 +623,12 @@ function Register() {
                                                                     <svg width="8" height="8" xmlns="http://www.w3.org/2000/svg">
                                                                         <rect width="8" height="8" fill="none" stroke="#ffff" />
                                                                     </svg>
-                                                                    // <div className='bg-white w-4 h-4'></div>
-
                                                                 )}
                                                             </button>
-                                                            <H2 className="select-none border-white md:text-[15px] text-black xs:text-[.775rem] font-normal ">
+                                                            <H2 className="select-none border-white md:text-[15px] text-gray-500 xs:text-[.775rem] font-normal ">
                                                                 I agree to CarTtel’s
-                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold md:mx-1 xs:mx-[1px]'>Terms</Link> and
-                                                                <Link href={"/auth/login"} className='text-purple-600 font-semibold md:mx-1 xs:mx-[1px]'>Privacy Policy</Link>
+                                                                <Link href={"/auth/login"} className='text-primary font-semibold md:mx-1 xs:mx-[1px]'>Terms</Link> and
+                                                                <Link href={"/auth/login"} className='text-primary font-semibold md:mx-1 xs:mx-[1px]'>Privacy Policy</Link>
                                                             </H2>
                                                         </label>
                                                     </div>
