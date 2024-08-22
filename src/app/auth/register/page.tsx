@@ -21,7 +21,7 @@ import {
 import tr from "react-phone-number-input/locale/tr";
 
 import CountrySelector from '@/components/custom-components/country-selector';
-import Carousel from "@/components/ui/Carousel/Carousel"
+import Carousel from '@/components/ui/Carousel/Carousel';
 
 
 
