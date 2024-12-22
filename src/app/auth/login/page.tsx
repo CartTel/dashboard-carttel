@@ -126,7 +126,7 @@ function Login() {
 
                             {isThisForm(0) && (
                                 <div className="w-full flex-1 mt-4 ">
-                                    <div className=" flex-col items-center ">
+                                    <div className="hidden flex-col items-center ">
                                         <button className="w-full font-medium shadow-sm rounded-lg py-1 bg-gray-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                                             <div className="bg-white p-2 rounded-full">
                                                 <svg className="w-4" viewBox="0 0 533.5 544.3">
@@ -158,7 +158,7 @@ function Login() {
 
 
 
-                                    <div className='flex justify-center items-center h-[1px] my-10 w-full bg-[#d5d1d1] text-center font-[500] '>
+                                    <div className='hidden justify-center items-center h-[1px] my-10 w-full bg-[#d5d1d1] text-center font-[500] '>
                                         <span className='bg-white px-5 py-5 text-gray-600'>Or</span>
                                     </div>
 
@@ -233,74 +233,12 @@ function Login() {
                                                 </H2>
                                             </Link>
                                         </H2>
-                                        {/* <p className="mt-4 text-xs text-gray-600 text-center mb-2">
-                      I agree to abide by Carttel{" "}
-                      <span
-                        href="#"
-                        className="border-b border-gray-500 border-dotted"
-                      >
-                        Terms of Service{" "}
-                      </span>
-                      and its{" "}
-                      <span
-                        href="#"
-                        className="border-b border-gray-500 border-dotted"
-                      >
-                        Privacy Policy
-                      </span>
-                    </p> */}
+                                        
                                     </div>
                                 </div>
                             )}
 
-                            {/* {isThisForm(1) && (
-                                <div className="  w-full flex-1 mt-4">
-
-                                    
-
-                                    <div className="flex flex-col w-full">
-                                        <div className=" flex flex-col items-center">
-                                            <div className="form w-full ">
-
-                                                <div className="flex justify-center items-center md:space-x-8 xs:space-x-3 w-full ">
-                                                    {valueItems.map((digit, index) => {
-                                                        return (
-
-                                                            <input
-                                                                key={index}
-                                                                type="text"
-                                                                inputMode="numeric"
-                                                                autoComplete="one-time-code"
-                                                                pattern="\d{1}"
-                                                                maxLength={valueLength}
-                                                                value={digit}
-                                                                className="border-slate-200 w-full h-16 border-2 rounded bg-sky-50 outline-none text-center font-semibold text-xl spin-button-none  focus:border-blue-700 focus:text-gray-700 text-gray-700 transition"
-                                                                onChange={(e) => inputOnChange(e, index)}
-                                                                onKeyDown={inputOnKeyDown}
-                                                                onFocus={inputOnFocus}
-
-                                                            />
-                                                        );
-                                                    })}
-                                                </div>
-
-                                                {errMsg && <p className="mb-4 text-sm text-red-700 ">{errMsg}</p>}
-
-
-                                                <button
-                                                    onClick={verifyCode}
-                                                    type="submit"
-                                                    className="mt-10 bg-primary flex justify-center items-center flex-col text-center bg-blue-600 text-white w-full rounded h-2 font-medium text-base py-6 px-5  mb-2 opacity-100"
-                                                >
-                                                    NEXT
-                                                </button>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            )} */}
+                            
 
                         </div>
                     </div>

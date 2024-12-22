@@ -100,13 +100,13 @@ const CountrySelector: React.FC = () => {
                             className="border p-2 w-full outline-none pl-10 font-[400]" // Add padding to the left for the icon
                         />
                         <Image
-                                    src={'/images/Auth/search.svg'}
-                                    alt="search"
-                                    className="w-5 h-5 top-[10px] left-[10px] absolute"
+                            src={'/images/Auth/search.svg'}
+                            alt="search"
+                            className="w-5 h-5 top-[10px] left-[10px] absolute"
 
-                                    width={20}
-                                    height={20}
-                                />
+                            width={20}
+                            height={20}
+                        />
                     </div>
                     <ul className="max-h-72 overflow-y-auto">
                         {filteredCountries.map((country, index) => (

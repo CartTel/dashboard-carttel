@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 // import { Inter } from "next/font/google";
 import "./globals.css";
+import "./styles/fonts.css";
 
-// const inter = Inter({ subsets: ["latin"] });
+
+import ReactQueryProvider from '@/providers/react-query-provider'
+import { Toaster } from "@/components/ui/Toaster";
+
 
 export const metadata: Metadata = {
   title: "CartTel",
@@ -24,10 +28,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
-    <html lang="en">
-      <body >{children}</body>
-    </html>
-  );
+      <html lang="en">
+        <body>
+            <ReactQueryProvider>
+              {children}
+              <Toaster />
+            </ReactQueryProvider>
+        </body>
+      </html>
+
+  )
 }
+
+
+
+
+
+
 

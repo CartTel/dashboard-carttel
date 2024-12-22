@@ -1,0 +1,130 @@
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-Regular.eot');
+    src: local('Visa Dialect Regular'), local('VisaDialect-Regular'),
+        url('/fonts/VisaDialect-Regular.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-Regular.woff2') format('woff2'),
+        url('/fonts/VisaDialect-Regular.woff') format('woff'),
+        url('/fonts/VisaDialect-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-Medium.eot');
+    src: local('Visa Dialect Medium'), local('VisaDialect-Medium'),
+        url('/fonts/VisaDialect-Medium.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-Medium.woff2') format('woff2'),
+        url('/fonts/VisaDialect-Medium.woff') format('woff'),
+        url('/fonts/VisaDialect-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-Bold.eot');
+    src: local('Visa Dialect Bold'), local('VisaDialect-Bold'),
+        url('/fonts/VisaDialect-Bold.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-Bold.woff2') format('woff2'),
+        url('/fonts/VisaDialect-Bold.woff') format('woff'),
+        url('/fonts/VisaDialect-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-BoldItalic.eot');
+    src: local('Visa Dialect Bold Italic'), local('VisaDialect-BoldItalic'),
+        url('/fonts/VisaDialect-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-BoldItalic.woff2') format('woff2'),
+        url('/fonts/VisaDialect-BoldItalic.woff') format('woff'),
+        url('/fonts/VisaDialect-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-Light.eot');
+    src: local('Visa Dialect Light'), local('VisaDialect-Light'),
+        url('/fonts/VisaDialect-Light.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-Light.woff2') format('woff2'),
+        url('/fonts/VisaDialect-Light.woff') format('woff'),
+        url('/fonts/VisaDialect-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-SemiboldItalic.eot');
+    src: local('Visa Dialect SemiBold Italic'), local('VisaDialect-SemiboldItalic'),
+        url('/fonts/VisaDialect-SemiboldItalic.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-SemiboldItalic.woff2') format('woff2'),
+        url('/fonts/VisaDialect-SemiboldItalic.woff') format('woff'),
+        url('/fonts/VisaDialect-SemiboldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-RegularItalic.eot');
+    src: local('Visa Dialect Regular Italic'), local('VisaDialect-RegularItalic'),
+        url('/fonts/VisaDialect-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-RegularItalic.woff2') format('woff2'),
+        url('/fonts/VisaDialect-RegularItalic.woff') format('woff'),
+        url('/fonts/VisaDialect-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-Semibold.eot');
+    src: local('Visa Dialect SemiBold'), local('VisaDialect-Semibold'),
+        url('/fonts/VisaDialect-Semibold.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-Semibold.woff2') format('woff2'),
+        url('/fonts/VisaDialect-Semibold.woff') format('woff'),
+        url('/fonts/VisaDialect-Semibold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-MediumItalic.eot');
+    src: local('Visa Dialect Medium Italic'), local('VisaDialect-MediumItalic'),
+        url('/fonts/VisaDialect-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-MediumItalic.woff2') format('woff2'),
+        url('/fonts/VisaDialect-MediumItalic.woff') format('woff'),
+        url('/fonts/VisaDialect-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Visa Dialect';
+    src: url('/fonts/VisaDialect-LightItalic.eot');
+    src: local('Visa Dialect Light Italic'), local('VisaDialect-LightItalic'),
+        url('/fonts/VisaDialect-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/VisaDialect-LightItalic.woff2') format('woff2'),
+        url('/fonts/VisaDialect-LightItalic.woff') format('woff'),
+        url('/fonts/VisaDialect-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+

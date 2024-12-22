@@ -10,6 +10,9 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Link from 'next/link';
 import * as RPNInput from "react-phone-number-input";
+import axios from "axios";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { PhoneInput, defaultCountry } from '@/components/custom-components/phone-input';
 import {
@@ -25,20 +28,26 @@ import Carousel from '@/components/ui/Carousel/Carousel';
 
 
 
+const validateEmail = (email: string) => {
+    return email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
 
 function Register() {
-    const [phone, setPhone] = useState<string | undefined>(undefined);
+    const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
 
 
     const [isToggle, setIsToggle] = useState<boolean>(true);
-    const [signInState, setSignInState] = useState<number>(1);
+    const [signInState, setSignInState] = useState<number>(3);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter()
     const changeToggle = () => setIsToggle(!isToggle);
 
-    const [password, setPassword] = useState<string>('');
-    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [passwordData, setPasswordData] = useState<string>('');
+    const [confirmPasswordData, setConfirmPasswordData] = useState<string>('');
     const [text, setText] = useState<string>('');
     const [textValue, setTextValue] = useState<string>('');
     const [testOne, setTestOne] = useState<boolean>(false);
@@ -55,6 +64,30 @@ function Register() {
         setTerms(!value)
     };
 
+    const [formData, setFormData] = useState({
+        firstname: "",
+        lastname: "",
+        password: "",
+        confirmPassword: "",
+        email: "",
+        phone: "+2349046107959",
+        roles: ["Import"],
+        country: "Nigeria",
+        hearAboutUs: "",
+    });
+
+    var {
+        firstname,
+        lastname,
+        password,
+        confirmPassword,
+        country,
+        phone,
+        email,
+        roles,
+        hearAboutUs,
+    } = formData;
+
 
 
     const [confirmPasswordToggle, setConfirmPasswordToggle] = useState<boolean>(true);
@@ -62,13 +95,17 @@ function Register() {
 
     const handlePasswordChange = (value: any) => {
         const userValue = value;
-        setPassword(userValue);
+        setPasswordData(userValue);
         checkForTextOne(userValue);
         checkForTextTwo(userValue);
         checkForTextThree(userValue);
         checkForTextFour(userValue);
-    };
 
+        setFormData(prevState => ({
+            ...prevState,
+            password: value,
+        }));
+    };
 
     const checkForTextOne = (userValue: string) => {
         // CHARACTER MUST BE MORE THAN 8 CHARACTER
@@ -116,11 +153,95 @@ function Register() {
 
     const handleReferenceChange = (value: string) => {
         setDiscovery(value)
+        setFormData(prevState => ({
+            ...prevState,
+            hearAboutUs: value,
+        }));
     };
 
     const handleOptionChange = (value: string) => {
-
         setBusinessType(value)
+    };
+
+    const handleCheckLandLord = async () => {
+        // setFormData(prevFormData => ({
+        //     ...prevFormData,
+        //     phone : `${phoneNumber}`
+        // }));
+        console.log("drink in the code", formData, phoneNumber);
+        try {
+
+            if (
+                !firstname ||
+                !lastname ||
+                !email ||
+                !country ||
+                !phone ||
+                !hearAboutUs 
+            ) {
+                toast.warning('Please fill in all required fields.');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                return toast.error("password does not match with confirmPassword");
+            }
+
+            // VALIDATE EMAIL ADDRESS 
+            if (!validateEmail(email)) {
+                return toast.error("Please enter a valid email");
+            }
+
+            // TESTING STRENGTH OF PASSWORD
+            if (!testOne) {
+                toast.error('Password is too weak');
+                return;
+            }
+
+            if (!testTwo) {
+                toast.error('Password could be stronger');
+                return;
+            }
+
+            if (!testFour) {
+                toast.error('Password not strong enough');
+                return;
+            }
+
+            // setLandLoading(true);
+
+            // const response = await axios.post(`https://medirent-api-3gwy.onrender.com/account/landlord-registration`,
+            //     formData,
+            // );
+
+            console.log("first..", formData)
+
+            const response = await axios.post("http://localhost:6565/api/v1/auth/register", formData);
+
+            console.log("safe..", response)
+
+
+
+
+            if (response?.data?.Success === true) {
+                console.log("safe in the code..", response?.data?.Success)
+                toast.success("Landlord's account Created");
+
+                // setLoginData(prevState => ({
+                //     ...prevState,
+                //     email: formData?.email,
+                //     password: formData?.password
+                // }));
+
+                // await handleLoginUser()
+            }
+
+
+        } catch (error) {
+            // setLandLoading(false);
+            // console.log("error in the landlord..", error, error?.response?.data?.Message)
+            // toast.error(error?.response?.data?.Message)
+        }
     };
 
     return (
@@ -239,12 +360,12 @@ function Register() {
                                                             type='text'
                                                             required
                                                             // setValue={setFormData}
-                                                            // value={firstName}
+                                                            value={firstname}
                                                             showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     firstName: value
-                                                            // }))}
+                                                            onChange={(value) => setFormData(prevFormData => ({
+                                                                ...prevFormData,
+                                                                firstname: value
+                                                            }))}
                                                             label={'First Name'}
                                                             className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
                                                         />
@@ -255,12 +376,12 @@ function Register() {
                                                             type='text'
                                                             required
                                                             // setValue={setFormData}
-                                                            // value={lastName}
+                                                            value={lastname}
                                                             showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     lastName: value
-                                                            // }))}
+                                                            onChange={(value) => setFormData(prevFormData => ({
+                                                                ...prevFormData,
+                                                                lastname: value
+                                                            }))}
                                                             label={'Last Name'}
                                                             className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
                                                         />
@@ -274,12 +395,12 @@ function Register() {
                                                             type='email'
                                                             required
                                                             // setValue={setFormData}
-                                                            // value={email}
+                                                            value={email}
                                                             showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     email: value
-                                                            // }))}
+                                                            onChange={(value) => setFormData(prevFormData => ({
+                                                                ...prevFormData,
+                                                                email: value
+                                                            }))}
                                                             label={'Email'}
                                                             className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
                                                         />
@@ -288,8 +409,8 @@ function Register() {
                                                         {/* <PhoneInput/> */}
 
                                                         <PhoneInput
-                                                            value={phone}
-                                                            onChange={setPhone}
+                                                            value={phoneNumber}
+                                                            onChange={setPhoneNumber}
                                                             defaultCountry={defaultCountry} // Set the default country to Nigeria
                                                             international
                                                         />
@@ -532,10 +653,10 @@ function Register() {
                                                                 id='password'
                                                                 type={`${confirmPasswordToggle ? 'text' : 'password'}`}
                                                                 label='Confirm Password'
-                                                                // onChange={(value) => setFormData(prevFormData => ({
-                                                                //     ...prevFormData,
-                                                                //     confirmPassword: value
-                                                                // }))}
+                                                                onChange={(value) => setFormData(prevFormData => ({
+                                                                    ...prevFormData,
+                                                                    confirmPassword: value
+                                                                }))}
                                                                 className='mb-[32px]'
                                                             />
                                                         </div>
@@ -577,7 +698,7 @@ function Register() {
                                                     </div> */}
 
                                                     <CustomButton
-                                                        // onClick={handleLoginUser}
+                                                        onClick={handleCheckLandLord}
                                                         className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                                     >
                                                         <div className="text-xl">

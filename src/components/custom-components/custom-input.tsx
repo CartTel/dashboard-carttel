@@ -70,7 +70,7 @@ export function CustomInput({ showRequirement = false, value, wrapperClass, cale
                     ref={inputRef}
                 />
             )}
-            {showLabel && <label htmlFor={id}>{label} {showRequirement && <span className="text-red-600 text-[10px]">*</span>}</label>}
+            {showLabel && <label htmlFor={id}>{label} {showRequirement && <span className="text-red-600 text-[20px]">*</span>}</label>}
             {
                 showToggle && (
                     <div

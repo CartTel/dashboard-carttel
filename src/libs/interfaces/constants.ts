@@ -26,8 +26,6 @@ interface ICustomInputOnChange {
     (index: number, fieldName: string, value: string | number): void;
 }
 
-
-
 export interface ICustomInput {
     value?: string | number | undefined;
     setValue?: (e: any) => void;
