@@ -1,15 +1,20 @@
 "use client";
 
 import Image from 'next/image'
-import { CustomButton } from '@/components/custom-components';
-import { CustomInput } from '@/components/custom-components';
+import { CustomButton, CustomInput } from '@/components/custom-components';
 import React from 'react'
 import { B1, B2, H2, H1, BMiddle } from '@/components/custom-typography';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Link from 'next/link';
+import axios from 'axios';
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ArrowRight } from "lucide-react";
+import { z } from "zod";
+import { toast } from "@/hooks/use-toast";
 
 
 interface FormStep {
@@ -17,7 +22,45 @@ interface FormStep {
     index: number;
 }
 
+const formSchema = z.object({
+    email: z
+        .string()
+        .trim()
+        .email("Invalid email format") // Customize error for invalid email
+        .nonempty("Email is required"), // Shortcut for `min(1)`
+    password: z
+        .string()
+        .trim()
+        .nonempty("Password is required") // Shortcut for `min(1)`
+        .min(8, "Password must be at least 8 characters") // Enforce a minimum length
+        .regex(/[A-Z]/, "Password must include at least one uppercase letter") // Require uppercase letters
+        .regex(/[a-z]/, "Password must include at least one lowercase letter") // Require lowercase letters
+        .regex(/\d/, "Password must include at least one number") // Require numbers
+        .regex(/[@$!%*?&#]/, "Password must include at least one special character"), // Require special characters
+});
+
+// Define types for the form data
+type FormSchema = z.infer<typeof formSchema>;
+
+
+enum GenderEnum {
+    female = "female",
+    male = "male",
+    other = "other",
+}
+
+interface IFormInput {
+    firstName: string
+    gender: GenderEnum
+}
+
+
 function Login() {
+
+    const [formData, setFormData] = useState<FormSchema>({ email: "", password: "" });
+    const [errors, setErrors] = useState<Partial<FormSchema>>({});
+
+
 
     const [isToggle, setIsToggle] = useState<boolean>(true);
 
@@ -37,6 +80,61 @@ function Login() {
     const isThisForm = (formStepIndex: number) => {
         return currentFormKey === formSteps[formStepIndex].index;
     };
+
+
+
+
+    // Handle input change
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        if (name) {
+          setFormData((prev) => ({ ...prev, [name]: value }));
+        } else {
+          console.error("Input element is missing the 'name' attribute.");
+        }
+      };
+
+    // Handle form submission
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setErrors({});
+
+        // Validate using Zod
+        const validation = formSchema.safeParse(formData);
+        if (!validation.success) {
+            // Map Zod errors to display on the form
+            const fieldErrors: Partial<FormSchema> = {};
+            validation.error.errors.forEach((error) => {
+                const field = error.path[0] as keyof FormSchema;
+                fieldErrors[field] = error.message;
+            });
+            setErrors(fieldErrors);
+            return;
+        }
+
+        // If validation succeeds, proceed with API call
+        setIsLoading(true);
+        try {
+            const response = await axios.post("/api/login", formData);
+            toast({
+                title: "Success",
+                description: "Login successful!",
+                variant: "default",
+            });
+            router.push("/dashboard"); // Redirect to the dashboard or another page
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Login failed. Please check your credentials.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+
 
     return (
         <div className="w-full min-h-screen pt-0">
@@ -93,11 +191,11 @@ function Login() {
                         </div>
                     </div>
                 </div>
+
                 <div className="flex bg-white md:flex-1 min-h-screen flex-col w-full  justify-center items-center relative z-50">
                     <div className="flex  items-center justify-center h-screen lg:w-4/5 md:w-full">
                         <div className="w-full flex flex-col p-5 max-w-lg">
                             <div className=" w-full  flex flex-row justify-center">
-
                                 <div className=" text-start justify-start mx-auto text-primary cursor-pointer w-full flex">
                                     <div className="w-[200px]">
                                         <Image
@@ -108,7 +206,6 @@ function Login() {
                                             priority
                                             className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
                                         />
-
                                     </div>
                                 </div>
                             </div>
@@ -156,45 +253,46 @@ function Login() {
                                         </button>
                                     </div>
 
-
-
                                     <div className='hidden justify-center items-center h-[1px] my-10 w-full bg-[#d5d1d1] text-center font-[500] '>
                                         <span className='bg-white px-5 py-5 text-gray-600'>Or</span>
                                     </div>
 
                                     <div className="">
-                                        <form action="" method="post" autoComplete="off">
+                                        <form onSubmit={handleSubmit} className="space-y-6">
+                                            {/* Email Input */}
                                             <div className="group relative mt-5">
+
                                                 <CustomInput
                                                     id="email"
-                                                    type='email'
+                                                    name="email"
+                                                    type="email"
+                                                    label="Email Address"
                                                     required
-
-                                                    // value={email}
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    errorMessage={errors.email}
                                                     showRequirement={true}
-                                                    // onChange={(value) => setFormData(prevFormData => ({
-                                                    //     ...prevFormData,
-                                                    //     email: value
-                                                    // }))}
-                                                    label={'Email Adddress'}
-                                                    className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
+                                                    className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                                                 />
-
                                             </div>
 
+                                            {/* Password Input */}
                                             <div className="group relative mt-5">
                                                 <CustomInput
-                                                    changeToggle={changeToggle}
+                                                    id="password"
+                                                    name="password"
+                                                    type={isToggle ? "text" : "password"}
+                                                    label="Password"
+                                                    required
+                                                    value={formData.password}
+                                                    onChange={handleChange}
+                                                    errorMessage={errors.password}
                                                     showToggle={true}
                                                     isToggle={isToggle}
-                                                    id='password'
-                                                    type={`${isToggle ? 'text' : 'password'}`}
-                                                    label='Password'
-                                                    className='mb-[0px]'
+                                                    changeToggle={changeToggle}
                                                     showRequirement={true}
-                                                // onChange={handlePasswordChange}
+                                                    className="mb-[0px]"
                                                 />
-
                                             </div>
                                             <div className="flex justify-end z-50 relative mt-4 ">
                                                 <Link
@@ -207,24 +305,24 @@ function Login() {
 
 
                                             <CustomButton
-                                                // onClick={handleLoginUser}
-                                                className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                                type="submit" // Explicitly set as "submit"
+                                                className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                             >
                                                 <div className="text-xl">
-
                                                     <Image
-                                                        src={'/images/Auth/login.svg'}
+                                                        src="/images/Auth/login.svg"
                                                         alt="logo"
                                                         width={20}
                                                         height={20}
                                                         priority
-                                                        className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full fill-white"
-                                                        style={{ filter: 'invert(100%) brightness(1000%)' }}
+                                                        style={{ filter: "invert(100%) brightness(1000%)" }}
                                                     />
                                                 </div>
-                                                <H2 className="ml-3">Sign In</H2>
+                                                <span className="ml-3">Sign In</span>
                                             </CustomButton>
+
                                         </form>
+
                                         <H2 className="text-sm flex justify-start z-50 relative mt-4 text-gray-500">
                                             Don’t have an account?
                                             <Link href="/auth/register" className="ml-1 cursor-pointer">
@@ -233,13 +331,24 @@ function Login() {
                                                 </H2>
                                             </Link>
                                         </H2>
-                                        
+
+                                        <B2 className="text-xs dark:text-slate- font-normal mt-7">
+                                            By signing in, you agree to our{" "}
+                                            <a className="text-primary hover:underline" href="#">
+                                                Terms of Service
+                                            </a>{" "}
+                                            and{" "}
+                                            <a className="text-primary hover:underline" href="#">
+                                                Privacy Policy
+                                            </a>
+                                            .
+                                        </B2>
+
                                     </div>
+
+
                                 </div>
                             )}
-
-                            
-
                         </div>
                     </div>
                 </div>

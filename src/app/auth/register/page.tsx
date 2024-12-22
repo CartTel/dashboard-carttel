@@ -177,7 +177,7 @@ function Register() {
                 !email ||
                 !country ||
                 !phone ||
-                !hearAboutUs 
+                !hearAboutUs
             ) {
                 toast.warning('Please fill in all required fields.');
                 return;
@@ -249,7 +249,7 @@ function Register() {
             <div className="md:col-span-2 xs:col bg-slate-300 bg-opacity-40 md:flex xs:hidden flex-col ">
 
                 <div className="my-0 px-0">
-                    <Carousel/>
+                    <Carousel />
                     {/* <div className="text-[#0E0C3D] font-semibold text-[24px] mb-5 text-center">Create your tenant account and start contacting Medirent landlords</div> */}
                     {/* <div className="text-black font-normal text-[16px]">Sign up to discover a variety of verified properties tailored for healthcare professionals. Provide your details below to start your journey towards finding a comfortable and convenient home that meets your unique needs.</div> */}
                 </div>
@@ -362,10 +362,10 @@ function Register() {
                                                             // setValue={setFormData}
                                                             value={firstname}
                                                             showRequirement={true}
-                                                            onChange={(value) => setFormData(prevFormData => ({
-                                                                ...prevFormData,
-                                                                firstname: value
-                                                            }))}
+                                                            // onChange={(value) => setFormData(prevFormData => ({
+                                                            //     ...prevFormData,
+                                                            //     firstname: value
+                                                            // }))}
                                                             label={'First Name'}
                                                             className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
                                                         />
@@ -378,10 +378,10 @@ function Register() {
                                                             // setValue={setFormData}
                                                             value={lastname}
                                                             showRequirement={true}
-                                                            onChange={(value) => setFormData(prevFormData => ({
-                                                                ...prevFormData,
-                                                                lastname: value
-                                                            }))}
+                                                            // onChange={(value) => setFormData(prevFormData => ({
+                                                            //     ...prevFormData,
+                                                            //     lastname: value
+                                                            // }))}
                                                             label={'Last Name'}
                                                             className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
                                                         />
@@ -397,10 +397,10 @@ function Register() {
                                                             // setValue={setFormData}
                                                             value={email}
                                                             showRequirement={true}
-                                                            onChange={(value) => setFormData(prevFormData => ({
-                                                                ...prevFormData,
-                                                                email: value
-                                                            }))}
+                                                            // onChange={(value) => setFormData(prevFormData => ({
+                                                            //     ...prevFormData,
+                                                            //     email: value
+                                                            // }))}
                                                             label={'Email'}
                                                             className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
                                                         />
@@ -653,10 +653,10 @@ function Register() {
                                                                 id='password'
                                                                 type={`${confirmPasswordToggle ? 'text' : 'password'}`}
                                                                 label='Confirm Password'
-                                                                onChange={(value) => setFormData(prevFormData => ({
-                                                                    ...prevFormData,
-                                                                    confirmPassword: value
-                                                                }))}
+                                                                // onChange={(value) => setFormData(prevFormData => ({
+                                                                //     ...prevFormData,
+                                                                //     confirmPassword: value
+                                                                // }))}
                                                                 className='mb-[32px]'
                                                             />
                                                         </div>
@@ -746,11 +746,22 @@ function Register() {
                                                                     </svg>
                                                                 )}
                                                             </button>
-                                                            <H2 className="select-none border-white md:text-[15px] text-gray-500 xs:text-[.775rem] font-normal ">
+                                                            {/* <B2 className="select-none border-white md:text-[15px] text-gray-500 xs:text-[.775rem] font-normal ">
                                                                 I agree to CarTtel’s
-                                                                <Link href={"/auth/login"} className='text-primary font-semibold md:mx-1 xs:mx-[1px]'>Terms</Link> and
+                                                                <Link href={"/auth/login"} className='text-primary font-semibold md:mx-1 xs:mx-[1px]'>Terms of Service</Link> and
                                                                 <Link href={"/auth/login"} className='text-primary font-semibold md:mx-1 xs:mx-[1px]'>Privacy Policy</Link>
-                                                            </H2>
+                                                            </B2> */}
+                                                            <B2 className="select-none border-white md:text-[15px] text-gray-500 xs:text-[.775rem] font-normal">
+                                                                I agree to CarTtel’s{" "}
+                                                                <a className="text-primary hover:underline" href="/auth/login">
+                                                                    Terms of Service
+                                                                </a>{" "}
+                                                                and{" "}
+                                                                <a className="text-primary hover:underline" href="/auth/login">
+                                                                    Privacy Policy
+                                                                </a>
+                                                                .
+                                                            </B2>
                                                         </label>
                                                     </div>
 

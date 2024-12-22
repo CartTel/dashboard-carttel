@@ -27,11 +27,12 @@ interface ICustomInputOnChange {
 }
 
 export interface ICustomInput {
-    value?: string | number | undefined;
-    setValue?: (e: any) => void;
+    value?: string | number; // Default to string or number
+    setValue?: (value: string | number) => void; // Explicit type for setValue
     className?: string;
+    wrapperClass?: string;
     id?: string;
-    type?: React.HTMLInputTypeAttribute;
+    type?: React.HTMLInputTypeAttribute; // HTML input types
     label: string;
     showLabel?: boolean;
     disabled?: boolean;
@@ -39,10 +40,12 @@ export interface ICustomInput {
     isToggle?: boolean;
     showToggle?: boolean;
     changeToggle?: () => void;
-    inputType?: "input" | "textarea";
-    onChange?: (value: string) => void;
+    inputType?: "input" | "textarea"; // Specify input or textarea
+    onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
     calendar?: boolean;
-    wrapperClass?: string;
     showRequirement?: boolean;
-}
+    errorMessage?: string;
+  }
+  
+
 
