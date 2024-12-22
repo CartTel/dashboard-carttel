@@ -82,22 +82,22 @@ function Login() {
     };
 
 
-
-
     // Handle input change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         if (name) {
-          setFormData((prev) => ({ ...prev, [name]: value }));
+            setFormData((prev) => ({ ...prev, [name]: value }));
         } else {
-          console.error("Input element is missing the 'name' attribute.");
+            console.error("Input element is missing the 'name' attribute.");
         }
-      };
+    };
 
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrors({});
+
+        console.log("first..", errors)
 
         // Validate using Zod
         const validation = formSchema.safeParse(formData);
@@ -270,10 +270,13 @@ function Login() {
                                                     required
                                                     value={formData.email}
                                                     onChange={handleChange}
-                                                    errorMessage={errors.email}
+                                                    // errorMessage={errors.email}
                                                     showRequirement={true}
                                                     className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                                                 />
+                                                {errors && (
+                                                    <p className="mt-1 text-sm text-red-600 error-message">{errors.email}</p>
+                                                )}
                                             </div>
 
                                             {/* Password Input */}
@@ -286,13 +289,16 @@ function Login() {
                                                     required
                                                     value={formData.password}
                                                     onChange={handleChange}
-                                                    errorMessage={errors.password}
+                                                    // errorMessage={errors.password}
                                                     showToggle={true}
                                                     isToggle={isToggle}
                                                     changeToggle={changeToggle}
                                                     showRequirement={true}
                                                     className="mb-[0px]"
                                                 />
+                                                {errors && (
+                                                    <p className="mt-1 text-sm text-red-600 error-message">{errors.password}</p>
+                                                )}
                                             </div>
                                             <div className="flex justify-end z-50 relative mt-4 ">
                                                 <Link
