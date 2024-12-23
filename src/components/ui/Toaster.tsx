@@ -19,7 +19,7 @@ export function Toaster() {
     <ToastProvider>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
-          <Toast key={id} {...props} className="!p-4">
+          <Toast key={id} {...props} className="!p-4 bg-white">
             <div className="flex justify-center items-center gap-1">
               <div className="pr-2">
                 {title === "Success" ? (

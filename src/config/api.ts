@@ -7,6 +7,11 @@ type OrganizationType = {
   contact_email: string;  company_id: string
 }
 
+export type LoginType = {
+  email: string;
+  password: string;
+};
+
 export const getUsers = async () => await apiClient.get('/users');
 export const getTrades = async () => await apiClient.get('/users/trades')
 export const getTechnicians = async () =>  await apiClient.get('/users/technicians')
@@ -27,5 +32,18 @@ const submitEquipmentCategoriesForm = async (formData: any) => {
       throw error;
     }
 };
+
+export const loginUser = async (credentials: LoginType) => {
+  try {
+    const response = await apiClient.post('/api/v1/auth/login', credentials);
+    console.log("Login Submission Successful:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting onboarding form:", error);
+    throw error;
+  }
+};
+
+
 
 

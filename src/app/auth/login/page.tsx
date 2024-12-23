@@ -9,12 +9,15 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Link from 'next/link';
 import axios from 'axios';
+import { loginUser } from '@/config/api';
+import { useMutation } from '@tanstack/react-query';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { ArrowRight } from "lucide-react";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { useForm, SubmitHandler } from "react-hook-form";
+// import { ArrowRight } from "lucide-react";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
+import { useLoginMutation } from '@/store/onboarding';
 
 
 interface FormStep {
@@ -81,7 +84,6 @@ function Login() {
         return currentFormKey === formSteps[formStepIndex].index;
     };
 
-
     // Handle input change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -91,6 +93,18 @@ function Login() {
             console.error("Input element is missing the 'name' attribute.");
         }
     };
+
+    const { mutate: login } = useLoginMutation(
+        (data) => {
+            console.log('User logged in:', data);
+            router.push("/auth/register");
+            // Redirect or update UI here
+        },
+        (error) => {
+            console.error('Login error:', error);
+            // Show error message
+        }
+    );
 
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -115,13 +129,9 @@ function Login() {
         // If validation succeeds, proceed with API call
         setIsLoading(true);
         try {
-            const response = await axios.post("/api/login", formData);
-            toast({
-                title: "Success",
-                description: "Login successful!",
-                variant: "default",
-            });
-            router.push("/dashboard"); // Redirect to the dashboard or another page
+            login(formData)
+
+             // Redirect to the dashboard or another page
         } catch (error) {
             toast({
                 title: "Error",
@@ -311,20 +321,46 @@ function Login() {
 
 
                                             <CustomButton
+                                                disabled={isLoading}
                                                 type="submit" // Explicitly set as "submit"
                                                 className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                             >
-                                                <div className="text-xl">
-                                                    <Image
-                                                        src="/images/Auth/login.svg"
-                                                        alt="logo"
-                                                        width={20}
-                                                        height={20}
-                                                        priority
-                                                        style={{ filter: "invert(100%) brightness(1000%)" }}
-                                                    />
+                                                {/* {isLoading ? 'Logging in...' : 'Login'} */}
+                                                <div>
+                                                    {isLoading ? ( // Display spinner if userLoading is true
+                                                        <div className="flex items-center px-6">
+                                                            <div>
+
+                                                                <Image
+                                                                    src={'/images/Spinner.svg'}
+                                                                    alt="logo"
+                                                                    width={60}
+                                                                    height={60}
+                                                                    priority
+                                                                    className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                                                                />
+
+                                                            </div>
+
+                                                        </div>
+                                                    ) : (
+                                                        <div className='flex'>
+                                                            <div className="text-xl">
+                                                                <Image
+                                                                    src="/images/Auth/login.svg"
+                                                                    alt="logo"
+                                                                    width={20}
+                                                                    height={20}
+                                                                    priority
+                                                                    style={{ filter: "invert(100%) brightness(1000%)" }}
+                                                                />
+                                                            </div>
+                                                            <span className="ml-3">Sign In</span>
+                                                        </div>
+                                                    )}
+                                                    
+
                                                 </div>
-                                                <span className="ml-3">Sign In</span>
                                             </CustomButton>
 
                                         </form>
