@@ -1,41 +1,21 @@
 import apiClient from "./api-clients";
-
-type equipmentCategoriesType = { email: string };
-type OrganizationType = {
-  logo: any; name: string, address: string, country_id: string;
-  industry: string; code: string; contact_person: string;
-  contact_email: string;  company_id: string
-}
+import axios from "axios";
+import { apiCall } from "./api-clients";
+import { toast } from "@/hooks/use-toast";
 
 export type LoginType = {
   email: string;
   password: string;
 };
 
-export const getUsers = async () => await apiClient.get('/users');
-export const getTrades = async () => await apiClient.get('/users/trades')
-export const getTechnicians = async () =>  await apiClient.get('/users/technicians')
-export const getOrganizations = async (company_id: string) => await apiClient.get("/organizations", {params:{company_id: company_id}});
-export const getOrganizationById = async (id: string) => await apiClient.get("/organizations/"+ id);
-export const getEquipmentCategories = async () => await apiClient.get('/equipments/categories');
-export const getEquimentBrands = async () => await apiClient.get('/equipments/brands');
-export const createOrganization = async (data: OrganizationType | any) => await apiClient.post('/organizations', data)
-export const createEquipmentCategories =  async (data: equipmentCategoriesType) => await apiClient.post(`/equipments/categories`, data);
-
-const submitEquipmentCategoriesForm = async (formData: any) => {
-    try {
-      const response = await apiClient.post(`/equipments/categories`, formData);
-      console.log("Onboarding Submission Successful:", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error submitting onboarding form:", error);
-      throw error;
-    }
+export type ForgotPasswordType = {
+  email: string;
 };
+
 
 export const loginUser = async (credentials: LoginType) => {
   try {
-    const response = await apiClient.post('/api/v1/auth/login', credentials);
+    const response = await apiCall.post('/api/v1/auth/login', credentials);
     console.log("Login Submission Successful:", response.data);
     return response.data;
   } catch (error) {
@@ -44,6 +24,35 @@ export const loginUser = async (credentials: LoginType) => {
   }
 };
 
+export const forgotPassword = async (credentials: ForgotPasswordType) => {
+  try {
+    const response = await apiCall.post('/api/v1/auth/forgotpassword', credentials);
+    console.log("Forgot Password Successful:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting onboarding form:", error);
+    throw error;
+  }
+};
+
+
+export const getToken = async (id: number | string) => {
+  console.log("all the params..", id)
+  try {
+
+    const response = await apiCall.get("/api/v1/token/get-token/" + id);
+    console.log("Retrieve Token Successfully:", response.data);
+    return response.data;
+  } catch (error: Error | any) {
+    // console.error("Error Getting Token:", error);
+    toast({
+      title: "Error",
+      description: `${error?.response?.data.message}`,
+      variant: "destructive",
+  });
+    // throw error;
+  }
+};
 
 
 

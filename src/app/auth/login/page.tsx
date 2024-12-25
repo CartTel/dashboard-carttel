@@ -46,27 +46,12 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 
-enum GenderEnum {
-    female = "female",
-    male = "male",
-    other = "other",
-}
-
-interface IFormInput {
-    firstName: string
-    gender: GenderEnum
-}
-
 
 function Login() {
 
     const [formData, setFormData] = useState<FormSchema>({ email: "", password: "" });
     const [errors, setErrors] = useState<Partial<FormSchema>>({});
-
-
-
     const [isToggle, setIsToggle] = useState<boolean>(true);
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter()
     const changeToggle = () => setIsToggle(!isToggle);
@@ -96,7 +81,7 @@ function Login() {
 
     const { mutate: login } = useLoginMutation(
         (data) => {
-            console.log('User logged in:', data);
+            // console.log('User logged in:', data);
             router.push("/auth/register");
             // Redirect or update UI here
         },
@@ -133,11 +118,7 @@ function Login() {
 
              // Redirect to the dashboard or another page
         } catch (error) {
-            toast({
-                title: "Error",
-                description: "Login failed. Please check your credentials.",
-                variant: "destructive",
-            });
+            console.log("error in the code ..", error)
         } finally {
             setIsLoading(false);
         }

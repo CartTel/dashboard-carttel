@@ -12,6 +12,8 @@ const options = {
 // Create an Axios instance
 const apiClient = axios.create(options);
 
+export const apiCall = axios.create(options);
+
 export const APIRefresh = axios.create(options);
 
 // Request Interceptor
