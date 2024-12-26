@@ -45,7 +45,7 @@ export interface ICustomInput {
     calendar?: boolean;
     showRequirement?: boolean;
     errorMessage?: string;
-  }
+}
   
 
 

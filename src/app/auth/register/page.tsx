@@ -5,14 +5,12 @@ import { CustomButton, CustomSelect } from '@/components/custom-components';
 import { CustomInput } from '@/components/custom-components';
 import React from 'react'
 import { B1, B2, H2, H1, BMiddle, B2Regular } from '@/components/custom-typography';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Link from 'next/link';
 import * as RPNInput from "react-phone-number-input";
 import axios from "axios";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 import { PhoneInput, defaultCountry } from '@/components/custom-components/phone-input';
 import {
@@ -26,6 +24,17 @@ import tr from "react-phone-number-input/locale/tr";
 import CountrySelector from '@/components/custom-components/country-selector';
 import Carousel from '@/components/ui/Carousel/Carousel';
 
+import { z } from "zod";
+import { useRegisterMutation } from '@/store/onboarding';
+import { toast } from "@/hooks/use-toast";
+import { createUserSchema } from '@/Interface';
+
+
+
+
+
+// Define types for the form data
+type FormSchema = z.infer<typeof createUserSchema>;
 
 
 const validateEmail = (email: string) => {
@@ -37,7 +46,7 @@ const validateEmail = (email: string) => {
 
 function Register() {
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
-
+    const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
     const [isToggle, setIsToggle] = useState<boolean>(true);
     const [signInState, setSignInState] = useState<number>(3);
@@ -64,15 +73,17 @@ function Register() {
         setTerms(!value)
     };
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormSchema>({
         firstname: "",
         lastname: "",
         password: "",
         confirmPassword: "",
         email: "",
-        phone: "+2349046107959",
-        roles: ["Import"],
-        country: "Nigeria",
+        phone: "",
+        // phone: "+2349046107959",
+        // roles: ["Import"],
+        roles: [],
+        country: "",
         hearAboutUs: "",
     });
 
@@ -88,22 +99,48 @@ function Register() {
         hearAboutUs,
     } = formData;
 
-
-
     const [confirmPasswordToggle, setConfirmPasswordToggle] = useState<boolean>(true);
     const changeConfirmPasswordToggle = () => setConfirmPasswordToggle(!confirmPasswordToggle);
 
-    const handlePasswordChange = (value: any) => {
-        const userValue = value;
-        setPasswordData(userValue);
-        checkForTextOne(userValue);
-        checkForTextTwo(userValue);
-        checkForTextThree(userValue);
-        checkForTextFour(userValue);
+    const handlePhoneChange = (value: string) => {
+        setPhoneNumber(value);
+    };
 
-        setFormData(prevState => ({
-            ...prevState,
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        
+        if (name) {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        } else {
+            console.error("Input element is missing the 'name' attribute.");
+        }
+    };
+
+    const handleCountryChange = (value: string) => {
+        setFormData((prev) => ({ ...prev, country: value })); // Update the country in formData
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { value } = e.target;
+        // Update the password state
+        setPasswordData(value);
+        setFormData((prevData) => ({
+            ...prevData,
             password: value,
+        }));
+        // Call validation functions with the new password value
+        checkForTextOne(value);
+        checkForTextTwo(value);
+        checkForTextThree(value);
+        checkForTextFour(value);
+    };
+
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { value } = e.target;
+        setConfirmPasswordData(value);
+        setFormData((prevData) => ({
+            ...prevData,
+            confirmPassword: value,
         }));
     };
 
@@ -159,90 +196,168 @@ function Register() {
         }));
     };
 
-    const handleOptionChange = (value: string) => {
-        setBusinessType(value)
+    // const handleOptionChange = (value: string) => {
+    //     setBusinessType(value)
+    // };
+
+    const handleOptionChange = (role: string) => {
+        setFormData((prev) => {
+            const roles = prev.roles.includes(role)
+                ? prev.roles.filter(r => r !== role) // Remove role if already included
+                : [...prev.roles, role]; // Add role if not included
+
+            return { ...prev, roles };
+        });
     };
 
-    const handleCheckLandLord = async () => {
-        // setFormData(prevFormData => ({
-        //     ...prevFormData,
-        //     phone : `${phoneNumber}`
-        // }));
-        console.log("drink in the code", formData, phoneNumber);
+    const { mutate: register } = useRegisterMutation(
+        (data) => {
+            // console.log('User logged in:', data);
+            router.push("/auth/login");
+        },
+        (error) => {
+            console.error('Login error:', error);
+        }
+    );
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setErrors({});
+
+        console.log("first..", errors)
+
+        // Validate using Zod
+        const validation = createUserSchema.safeParse(formData);
+
+        console.log("validation ..", validation);
+        if (!validation.success) {
+            console.log("shot..", validation);
+            // Map Zod errors to display on the form
+            const fieldErrors: Partial<Record<keyof FormData, string>> = {};
+
+            console.log("error..", fieldErrors);
+            validation.error.errors.forEach((error) => {
+                console.log("object", error);
+                const field = error.path[0] as keyof FormData;
+
+                console.log("form", field);
+                fieldErrors[field] = error.message;
+                console.log("all the code..", fieldErrors[field], fieldErrors);
+            });
+            setErrors(fieldErrors); // Ensure this matches the expected type
+
+            Object.values(errors).forEach((errorMessage) => {
+                
+                console.log("sorry..", errorMessage);
+                toast({
+                    title: "Error",
+                    description: errorMessage,
+                    variant: "destructive",
+                });
+            });
+
+            return;
+        }
+
+        console.log("small..");
+        // Clear errors if validation is successful
+        setErrors({});
+
+
+        // If validation succeeds, proceed with API call
+        // setIsLoading(true);
+
         try {
-
-            if (
-                !firstname ||
-                !lastname ||
-                !email ||
-                !country ||
-                !phone ||
-                !hearAboutUs
-            ) {
-                toast.warning('Please fill in all required fields.');
-                return;
-            }
-
+            // TESTING FOR PASSWORD MATCHING WITH CONFIRMPASSWORD
             if (password !== confirmPassword) {
-                return toast.error("password does not match with confirmPassword");
-            }
-
-            // VALIDATE EMAIL ADDRESS 
-            if (!validateEmail(email)) {
-                return toast.error("Please enter a valid email");
+                toast({
+                    title: "Error",
+                    description: 'password does not match with confirmPassword',
+                    variant: "destructive",
+                });
+                return
             }
 
             // TESTING STRENGTH OF PASSWORD
             if (!testOne) {
-                toast.error('Password is too weak');
+                toast({
+                    title: "Error",
+                    description: 'Password must be at least 8 characters',
+                    variant: "destructive",
+                });
                 return;
             }
 
             if (!testTwo) {
-                toast.error('Password could be stronger');
+                toast({
+                    title: "Error",
+                    description: 'Password must include at least one uppercase letter',
+                    variant: "destructive",
+                });
+                return;
+            }
+
+            if (!testThree) {
+                toast({
+                    title: "Error",
+                    description: 'Password must include at least one number',
+                    variant: "destructive",
+                });
                 return;
             }
 
             if (!testFour) {
-                toast.error('Password not strong enough');
+                toast({
+                    title: "Error",
+                    description: 'Password must include at least one special character',
+                    variant: "destructive",
+                });
                 return;
             }
 
-            // setLandLoading(true);
-
-            // const response = await axios.post(`https://medirent-api-3gwy.onrender.com/account/landlord-registration`,
-            //     formData,
-            // );
-
-            console.log("first..", formData)
-
-            const response = await axios.post("http://localhost:6565/api/v1/auth/register", formData);
-
-            console.log("safe..", response)
-
-
-
-
-            if (response?.data?.Success === true) {
-                console.log("safe in the code..", response?.data?.Success)
-                toast.success("Landlord's account Created");
-
-                // setLoginData(prevState => ({
-                //     ...prevState,
-                //     email: formData?.email,
-                //     password: formData?.password
-                // }));
-
-                // await handleLoginUser()
+            if (!terms) {
+                toast({
+                    title: "Error",
+                    description: 'You have not agreed to the terms&service and privacy policy',
+                    variant: "destructive",
+                });
+                return;
             }
 
+            console.log("final", formData)
+
+            // If validation succeeds, proceed with API call
+            // setIsLoading(true);
+            // try {
+            //     register(formData)
+
+            //     // Redirect to the dashboard or another page
+            // } catch (error) {
+            //     console.log("error in the code ..", error)
+            // } finally {
+            //     setIsLoading(false);
+            // }
 
         } catch (error) {
-            // setLandLoading(false);
-            // console.log("error in the landlord..", error, error?.response?.data?.Message)
-            // toast.error(error?.response?.data?.Message)
+            // toast.error("User creation Failed");
+            console.log("Apparently the Message..", error);
+            // errRef.current.focus();
         }
-    };
+
+    }
+
+    useEffect(() => {
+        // Render all toast messages based on the errors object
+        Object.values(errors).forEach((errorMessage) => {
+                
+            console.log("sorry..", errorMessage);
+            toast({
+                title: "Error",
+                description: errorMessage,
+                variant: "destructive",
+            });
+        });
+    }, [errors]);
 
     return (
         <div className="py-0 h-screen bg-white grid md:grid-cols-5 xs:grid-cols-1">
@@ -304,8 +419,6 @@ function Register() {
                                         {/* <H2 className="text-start my-6 font-semibold md:text-[16px] xs:text-[13px]">Let’s start with your buiness type and details</H2> */}
                                     </div>
 
-
-
                                     {
                                         signInState == 1 && (
                                             <div className="mb-10 ">
@@ -355,35 +468,32 @@ function Register() {
                                             <div>
                                                 <div className="flex md:flex-row xs:flex-col gap-10 my-10">
                                                     <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+
                                                         <CustomInput
                                                             id="firstname"
-                                                            type='text'
+                                                            name="firstname"
+                                                            type="text"
+                                                            label="First Name"
                                                             required
-                                                            // setValue={setFormData}
-                                                            value={firstname}
+                                                            value={formData.firstname}
+                                                            onChange={handleChange}
+                                                            // errorMessage={errors.firstname}
                                                             showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     firstname: value
-                                                            // }))}
-                                                            label={'First Name'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
+                                                            className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                                                         />
                                                     </div>
                                                     <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                                                         <CustomInput
                                                             id="lastname"
-                                                            type='text'
+                                                            name="lastname"
+                                                            type="text"
+                                                            label="Last Name"
                                                             required
-                                                            // setValue={setFormData}
-                                                            value={lastname}
+                                                            value={formData.lastname}
+                                                            onChange={handleChange}
+                                                            // errorMessage={errors.firstname}
                                                             showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     lastname: value
-                                                            // }))}
-                                                            label={'Last Name'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
+                                                            className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                                                         />
                                                     </div>
                                                 </div>
@@ -392,25 +502,28 @@ function Register() {
                                                     <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                                                         <CustomInput
                                                             id="email"
-                                                            type='email'
+                                                            name="email"
+                                                            type="email"
+                                                            label="Email Address"
                                                             required
-                                                            // setValue={setFormData}
-                                                            value={email}
+                                                            value={formData.email}
+                                                            onChange={handleChange}
+                                                            // errorMessage={errors.email}
                                                             showRequirement={true}
-                                                            // onChange={(value) => setFormData(prevFormData => ({
-                                                            //     ...prevFormData,
-                                                            //     email: value
-                                                            // }))}
-                                                            label={'Email'}
-                                                            className='px-0 mb-[5px] md:w-full xs:w-full text-[16px]'
+                                                            className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                                                         />
+
                                                     </div>
                                                     <div className={` w-[100%] text-[1rem] my-0`}>
                                                         {/* <PhoneInput/> */}
 
                                                         <PhoneInput
                                                             value={phoneNumber}
-                                                            onChange={setPhoneNumber}
+                                                            // onChange={() => { setPhoneNumber(phoneNumber) }}
+                                                            onChange={(value: string | undefined) => {
+                                                                setPhoneNumber(value); // Update the state with the new phone number
+                                                                setFormData((prev) => ({ ...prev, phone: value || "" })); // Update formData, default to empty string if value is undefined
+                                                            }}
                                                             defaultCountry={defaultCountry} // Set the default country to Nigeria
                                                             international
                                                         />
@@ -428,7 +541,12 @@ function Register() {
                                                 <div>
                                                     <div className="flex md:flex-row xs:flex-col gap-10 my-10">
                                                         <div className={` w-[100%] text-[1rem] my-0`}>
-                                                            <CountrySelector />
+                                                            
+                                                            
+                                                        <CountrySelector
+                                                            onChange={handleCountryChange} // Pass the handleChange function
+                                                            value={formData.country} // Control the value if needed
+                                                        />
                                                         </div>
                                                         <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                                                             <CustomSelect
@@ -498,8 +616,6 @@ function Register() {
                                                                     }
                                                                 ]}
                                                             />
-
-
                                                         </div>
                                                     </div>
 
@@ -508,26 +624,21 @@ function Register() {
                                                         <B2Regular className='text-[1rem] text-gray-600'>Business Type</B2Regular>
 
                                                         <div className="grid md:grid-cols-3 xs:grid-cols-3 md:gap-0 xs:gap-5 md:w-full xs:full my-5">
-
-
                                                             <div className="mr-3 relative my-3 w-fit">
-                                                                <label
-                                                                    htmlFor={`import`}
-                                                                    className="flex items-center cursor-pointer"
-                                                                >
+                                                                <label htmlFor={`import`} className="flex items-center cursor-pointer">
                                                                     <input
                                                                         type="checkbox"
                                                                         id={`import`}
-                                                                        checked={businessType === 'Import'}
+                                                                        checked={formData.roles.includes('Import')}
                                                                         onChange={() => handleOptionChange('Import')}
                                                                         className="hidden" // Hide the default checkbox
                                                                     />
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => handleOptionChange('Import')}
-                                                                        className={`w-4 h-4 border-[1px] ${businessType === 'Import' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                        className={`w-4 h-4 border-[1px] ${formData.roles.includes('Import') ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
                                                                     >
-                                                                        {businessType === 'Import' && (
+                                                                        {formData.roles.includes('Import') && (
                                                                             <svg
                                                                                 className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
                                                                                 viewBox="0 0 20 20"
@@ -538,27 +649,23 @@ function Register() {
                                                                     </button>
                                                                     <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Import</span>
                                                                 </label>
-
                                                             </div>
 
-                                                            <div className="mr-3 relative my-3 w-fit ">
-                                                                <label
-                                                                    htmlFor={`export`}
-                                                                    className="flex items-center cursor-pointer"
-                                                                >
+                                                            <div className="mr-3 relative my-3 w-fit">
+                                                                <label htmlFor={`export`} className="flex items-center cursor-pointer">
                                                                     <input
                                                                         type="checkbox"
                                                                         id={`export`}
-                                                                        checked={businessType === 'Export'}
+                                                                        checked={formData.roles.includes('Export')}
                                                                         onChange={() => handleOptionChange('Export')}
                                                                         className="hidden" // Hide the default checkbox
                                                                     />
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => handleOptionChange('Export')}
-                                                                        className={`w-4 h-4 border-[1px] ${businessType === 'Export' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                        className={`w-4 h-4 border-[1px] ${formData.roles.includes('Export') ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
                                                                     >
-                                                                        {businessType === 'Export' && (
+                                                                        {formData.roles.includes('Export') && (
                                                                             <svg
                                                                                 className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
                                                                                 viewBox="0 0 20 20"
@@ -569,27 +676,26 @@ function Register() {
                                                                     </button>
                                                                     <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Export</span>
                                                                 </label>
-
                                                             </div>
 
-                                                            <div className="mr-3 relative my-3 w-fit ">
-                                                                <label
-                                                                    htmlFor={`supplier`}
-                                                                    className="flex items-center cursor-pointer"
-                                                                >
+                                                            
+
+
+                                                            <div className="mr-3 relative my-3 w-fit">
+                                                                <label htmlFor={`supplier`} className="flex items-center cursor-pointer">
                                                                     <input
                                                                         type="checkbox"
                                                                         id={`supplier`}
-                                                                        checked={businessType === 'Supplier'}
+                                                                        checked={formData.roles.includes('Supplier')}
                                                                         onChange={() => handleOptionChange('Supplier')}
                                                                         className="hidden" // Hide the default checkbox
                                                                     />
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => handleOptionChange('Supplier')}
-                                                                        className={`w-4 h-4 border-[1px] ${businessType === 'Supplier' ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
+                                                                        className={`w-4 h-4 border-[1px] ${formData.roles.includes('Supplier') ? 'border-primary bg-primary' : 'border-primary bg-white'} rounded-[3px] flex justify-center items-center mr-2`}
                                                                     >
-                                                                        {businessType === 'Supplier' && (
+                                                                        {formData.roles.includes('Supplier') && (
                                                                             <svg
                                                                                 className="fill-white w-5 h-5 p-0 pointer-events-none flex justify-center items-center mb-[0px]"
                                                                                 viewBox="0 0 20 20"
@@ -600,7 +706,6 @@ function Register() {
                                                                     </button>
                                                                     <span className="select-none border-gray-500 whitespace-nowrap md:text-[15px] text-gray-700 xs:text-[12px]">Supplier</span>
                                                                 </label>
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -608,17 +713,22 @@ function Register() {
 
 
                                                     {/* PASSWORD  */}
-                                                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                                                    <div className="flex md:flex-row xs:flex-col gap-5 ">
                                                         <div className={`form-group flex w-[100%] text-[1rem] my-0 flex-col`}>
                                                             <CustomInput
-                                                                changeToggle={changeToggle}
+                                                                id="password"
+                                                                name="password"
+                                                                type={isToggle ? "text" : "password"}
+                                                                label="Password"
+                                                                required
+                                                                value={password}
+                                                                onChange={handlePasswordChange}
+                                                                // errorMessage={errors.password}
                                                                 showToggle={true}
                                                                 isToggle={isToggle}
-                                                                id='password'
-                                                                type={`${isToggle ? 'text' : 'password'}`}
-                                                                label='Password'
-                                                                className='mb-[0px]'
-                                                                onChange={handlePasswordChange}
+                                                                changeToggle={changeToggle}
+                                                                showRequirement={true}
+                                                                className="mb-[0px]"
                                                             />
                                                             <div className="flex justify-between flex-wrap mt-2">
                                                                 <div className="ml-auto mt-2 w-min">
@@ -647,17 +757,19 @@ function Register() {
                                                         </div>
                                                         <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                                                             <CustomInput
-                                                                changeToggle={changeConfirmPasswordToggle}
+                                                                id="confirmpassword"
+                                                                name="confirmpassword"
+                                                                type={confirmPasswordToggle ? "text" : "password"}
+                                                                label="Confirm Password"
+                                                                required
+                                                                value={confirmPassword}
+                                                                onChange={handleConfirmPasswordChange}
+                                                                // errorMessage={errors.password}
                                                                 showToggle={true}
                                                                 isToggle={confirmPasswordToggle}
-                                                                id='password'
-                                                                type={`${confirmPasswordToggle ? 'text' : 'password'}`}
-                                                                label='Confirm Password'
-                                                                // onChange={(value) => setFormData(prevFormData => ({
-                                                                //     ...prevFormData,
-                                                                //     confirmPassword: value
-                                                                // }))}
-                                                                className='mb-[32px]'
+                                                                changeToggle={changeConfirmPasswordToggle}
+                                                                showRequirement={true}
+                                                                className="mb-[0px]"
                                                             />
                                                         </div>
                                                     </div>
@@ -697,15 +809,41 @@ function Register() {
 
                                                     </div> */}
 
+
+
                                                     <CustomButton
-                                                        onClick={handleCheckLandLord}
-                                                        className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full  rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                                        disabled={isLoading}
+                                                        onClick={handleSubmit}
+                                                        type="submit" // Explicitly set as "submit"
+                                                        className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                                     >
-                                                        <div className="text-xl">
+                                                        {/* {isLoading ? 'Logging in...' : 'Login'} */}
+                                                        <div>
+                                                            {isLoading ? ( // Display spinner if userLoading is true
+                                                                <div className="flex items-center px-6">
+                                                                    <div>
+
+                                                                        <Image
+                                                                            src={'/images/Spinner.svg'}
+                                                                            alt="logo"
+                                                                            width={60}
+                                                                            height={60}
+                                                                            priority
+                                                                            className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                                                                        />
+
+                                                                    </div>
+
+                                                                </div>
+                                                            ) : (
+                                                                <div className='flex'>
+
+                                                                    <H2 className="ml-3">Create Account</H2>
+                                                                </div>
+                                                            )}
 
 
                                                         </div>
-                                                        <H2 className="ml-3">Create Account</H2>
                                                     </CustomButton>
 
                                                     <H2 className="text-sm flex justify-center z-50 relative mt-4 text-gray-500 mb-10">

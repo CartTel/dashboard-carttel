@@ -9,14 +9,9 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Link from 'next/link';
 import axios from 'axios';
-import { loginUser } from '@/config/api';
-import { useMutation } from '@tanstack/react-query';
 
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { useForm, SubmitHandler } from "react-hook-form";
 // import { ArrowRight } from "lucide-react";
 import { z } from "zod";
-import { toast } from "@/hooks/use-toast";
 import { useLoginMutation } from '@/store/onboarding';
 
 

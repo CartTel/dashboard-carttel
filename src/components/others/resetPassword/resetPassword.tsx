@@ -107,11 +107,9 @@ function ResetPassword({ userId }: { userId: string }) {
     };
 
     const getToken = async (id: number | string) => {
-        // console.log("all the params..", id)
+        
         try {
-
             const response = await apiCall.get("/api/v1/token/get-token/" + id);
-            // console.log("Retrieve Token Successfully:", response.data);
             setShowReset(true)
             setShowError("")
             return response.data;
