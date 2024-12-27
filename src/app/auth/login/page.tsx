@@ -13,6 +13,7 @@ import axios from 'axios';
 // import { ArrowRight } from "lucide-react";
 import { z } from "zod";
 import { useLoginMutation } from '@/store/onboarding';
+import { loginSchema } from '@/Interface';
 
 
 interface FormStep {
@@ -20,27 +21,9 @@ interface FormStep {
     index: number;
 }
 
-const formSchema = z.object({
-    email: z
-        .string()
-        .trim()
-        .email("Invalid email format") // Customize error for invalid email
-        .nonempty("Email is required"), // Shortcut for `min(1)`
-    password: z
-        .string()
-        .trim()
-        .nonempty("Password is required") // Shortcut for `min(1)`
-        .min(8, "Password must be at least 8 characters") // Enforce a minimum length
-        .regex(/[A-Z]/, "Password must include at least one uppercase letter") // Require uppercase letters
-        .regex(/[a-z]/, "Password must include at least one lowercase letter") // Require lowercase letters
-        .regex(/\d/, "Password must include at least one number") // Require numbers
-        .regex(/[@$!%*?&#]/, "Password must include at least one special character"), // Require special characters
-});
 
 // Define types for the form data
-type FormSchema = z.infer<typeof formSchema>;
-
-
+type FormSchema = z.infer<typeof loginSchema>;
 
 function Login() {
 
@@ -94,7 +77,7 @@ function Login() {
         console.log("first..", errors)
 
         // Validate using Zod
-        const validation = formSchema.safeParse(formData);
+        const validation = loginSchema.safeParse(formData);
         if (!validation.success) {
             // Map Zod errors to display on the form
             const fieldErrors: Partial<FormSchema> = {};
@@ -118,9 +101,6 @@ function Login() {
             setIsLoading(false);
         }
     };
-
-
-
 
     return (
         <div className="w-full min-h-screen pt-0">

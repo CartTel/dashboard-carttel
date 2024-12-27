@@ -32,10 +32,6 @@ function ResetPassword({ userId }: { userId: string }) {
     const [showReset, setShowReset] = useState<boolean>(true);
     const [showError, setShowError] = useState<string>('');
 
-
-
-    // const [textValue, setTextValue] = useState<boolean>(false);
-
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [text, setText] = useState<string>('');

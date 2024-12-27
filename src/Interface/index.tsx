@@ -37,3 +37,29 @@ export const createUserSchema = z.object({
         path: ["confirmPassword"],
     });
 ;
+
+export const forgotSchema = z.object({
+    email: z
+        .string()
+        .trim()
+        .email("Invalid email format") // Customize error for invalid email
+        .nonempty("Email is required"), // Shortcut for `min(1)`
+});
+;
+
+export const loginSchema = z.object({
+    email: z
+        .string()
+        .trim()
+        .email("Invalid email format") // Customize error for invalid email
+        .nonempty("Email is required"), // Shortcut for `min(1)`
+    password: z
+        .string()
+        .trim()
+        .nonempty("Password is required") // Shortcut for `min(1)`
+        .min(8, "Password must be at least 8 characters") // Enforce a minimum length
+        .regex(/[A-Z]/, "Password must include at least one uppercase letter") // Require uppercase letters
+        .regex(/[a-z]/, "Password must include at least one lowercase letter") // Require lowercase letters
+        .regex(/\d/, "Password must include at least one number") // Require numbers
+        .regex(/[@$!%*?&#]/, "Password must include at least one special character"), // Require special characters
+});

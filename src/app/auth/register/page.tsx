@@ -196,10 +196,6 @@ function Register() {
         }));
     };
 
-    // const handleOptionChange = (value: string) => {
-    //     setBusinessType(value)
-    // };
-
     const handleOptionChange = (role: string) => {
         setFormData((prev) => {
             const roles = prev.roles.includes(role)
@@ -223,32 +219,28 @@ function Register() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrors({});
-
-        console.log("first..", errors)
-
         // Validate using Zod
         const validation = createUserSchema.safeParse(formData);
 
-        console.log("validation ..", validation);
+        // console.log("validation ..", validation);
         if (!validation.success) {
-            console.log("shot..", validation);
+            
             // Map Zod errors to display on the form
             const fieldErrors: Partial<Record<keyof FormData, string>> = {};
 
-            console.log("error..", fieldErrors);
+            // console.log("error..", fieldErrors);
             validation.error.errors.forEach((error) => {
-                console.log("object", error);
                 const field = error.path[0] as keyof FormData;
 
-                console.log("form", field);
+                // console.log("form", field);
                 fieldErrors[field] = error.message;
-                console.log("all the code..", fieldErrors[field], fieldErrors);
+                // console.log("all the code..", fieldErrors[field], fieldErrors);
             });
             setErrors(fieldErrors); // Ensure this matches the expected type
 
             Object.values(errors).forEach((errorMessage) => {
                 
-                console.log("sorry..", errorMessage);
+                // console.log("sorry..", errorMessage);
                 toast({
                     title: "Error",
                     description: errorMessage,
@@ -259,13 +251,21 @@ function Register() {
             return;
         }
 
-        console.log("small..");
         // Clear errors if validation is successful
         setErrors({});
 
+        if (!terms) {
+            toast({
+                title: "Error",
+                description: 'You have not agreed to the terms&service and privacy policy',
+                variant: "destructive",
+            });
+            return;
+        }
+
 
         // If validation succeeds, proceed with API call
-        // setIsLoading(true);
+        setIsLoading(true);
 
         try {
             // TESTING FOR PASSWORD MATCHING WITH CONFIRMPASSWORD
@@ -315,28 +315,21 @@ function Register() {
                 return;
             }
 
-            if (!terms) {
-                toast({
-                    title: "Error",
-                    description: 'You have not agreed to the terms&service and privacy policy',
-                    variant: "destructive",
-                });
-                return;
-            }
+            
 
             console.log("final", formData)
 
             // If validation succeeds, proceed with API call
-            // setIsLoading(true);
-            // try {
-            //     register(formData)
+            setIsLoading(true);
+            try {
+                register(formData)
 
-            //     // Redirect to the dashboard or another page
-            // } catch (error) {
-            //     console.log("error in the code ..", error)
-            // } finally {
-            //     setIsLoading(false);
-            // }
+                // Redirect to the dashboard or another page
+            } catch (error) {
+                console.log("error in the code ..", error)
+            } finally {
+                setIsLoading(false);
+            }
 
         } catch (error) {
             // toast.error("User creation Failed");
@@ -871,7 +864,7 @@ function Register() {
                                                                 // onClick={() => setTerms(!terms)} // Handle click on the custom checkbox
                                                                 onClick={() => {
                                                                     setTerms(!terms);
-                                                                    // console.log('Terms:', terms); // Log the new state
+                                                                    
                                                                 }}
                                                             >
                                                                 {terms ? (

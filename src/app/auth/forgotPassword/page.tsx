@@ -10,21 +10,12 @@ import { useRouter } from 'next/navigation';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Link from 'next/link';
 import { useForgotPasswordMutation } from '@/store/onboarding';
+import { forgotSchema } from '@/Interface';
 
 import { z } from "zod";
 
-
-const formSchema = z.object({
-    email: z
-        .string()
-        .trim()
-        .email("Invalid email format") // Customize error for invalid email
-        .nonempty("Email is required"), // Shortcut for `min(1)`
-});
-
-
 // Define types for the form data
-type FormSchema = z.infer<typeof formSchema>;
+type FormSchema = z.infer<typeof forgotSchema>;
 
 
 function ForgotPassword() {
@@ -49,12 +40,9 @@ function ForgotPassword() {
     const { mutate: forgotPassword } = useForgotPasswordMutation(
         (data) => {
             console.log('User logged in:', data);
-            // router.push("/auth/register");
-            // Redirect or update UI here
         },
         (error) => {
             console.error('Login error:', error);
-            // Show error message
         }
     );
 
@@ -66,7 +54,7 @@ function ForgotPassword() {
         console.log("first..", errors)
 
         // Validate using Zod
-        const validation = formSchema.safeParse(formData);
+        const validation = forgotSchema.safeParse(formData);
         if (!validation.success) {
             // Map Zod errors to display on the form
             const fieldErrors: Partial<FormSchema> = {};
@@ -77,8 +65,6 @@ function ForgotPassword() {
             setErrors(fieldErrors);
             return;
         }
-
-        // If validation succeeds, proceed with API call
         setIsLoading(true);
         try {
             forgotPassword(formData)
@@ -91,7 +77,6 @@ function ForgotPassword() {
             setIsLoading(false);
         }
     };
-
 
     return (
         <div className="w-full min-h-screen pt-0">
