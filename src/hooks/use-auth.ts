@@ -1,15 +1,17 @@
 "use client";
 
-// import { getUserSessionQueryFn } from "@/lib/api";
+// hooks/useAuth.js
 import { useQuery } from "@tanstack/react-query";
+import { fetchSingleUser } from "@/config/api";
 
-const useAuth = () => {
-  const query = useQuery({
-    queryKey: ["authUser"],
-    // queryFn: getUserSessionQueryFn,
-    staleTime: Infinity,
-  });
-  return query;
+const useAuth = (associations = []) => {
+    const query = useQuery({
+        queryKey: ["authUser"],
+        queryFn: () => fetchSingleUser(associations), // Pass associations to the fetch function
+        staleTime: Infinity,
+    });
+    return query;
 };
 
 export default useAuth;
+

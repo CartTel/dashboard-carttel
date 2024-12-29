@@ -1,7 +1,7 @@
 
 export const buttonColors = [
-    '#B7383C', // Red
-    '#1984E6', // SkyBlue
+    '#103f69', // Primary
+    '#1d428a', // Secondary
     '#33BD83', // Green
     '#080934', // black
     '#F47F12', // Orange
@@ -9,41 +9,52 @@ export const buttonColors = [
 
 export const userRoleOptions = [
     {
-        label: 'Facility Manager',
-        value: 'facility-manager'
+        code: 'IMP',
+        name: 'Import',
+        value: "import"
     },
     {
-        label: 'Property Manager',
-        value: 'property-manager'
+        code: 'EXP',
+        name: 'Export',
+        value: "export"
     },
     {
-        label: 'Procurement Manager',
-        value: 'procurement-manager'
+        code: 'SUP',
+        name: 'Supplier',
+        value: "supplier"
     },
     {
-        label: 'Customer Administrator',
-        value: 'customer-administrator'
+        code: 'SYS',
+        name: 'System Administrator',
+        value: "admin"
     },
     {
-        label: 'Operations Manager',
-        value: 'operations-manager'
+        code: 'SA',
+        name: 'Super Administrator',
+        value: "admin"
+    },
+    {
+        code: 'VND',
+        name: 'Vendor',
+        value: "vendor"
+    },
+    {
+        code: 'MANGR',
+        name: 'Manager',
+        value: "manager"
     },
 ]
 
-export const authRoleOptions = [
-    {
-        label: 'Admin',
-        value: 'admin'
-    },
-    {
-        label: 'Editor',
-        value: 'editor'
-    },
-    {
-        label: 'Viewer',
-        value: 'viewer'
-    },
-]
+export const primaryColor = {
+    name: "CartTel Color",
+    theme: "#103f69",
+  };
+  
+  export const secondaryColor = {
+    name: "CartTel Color",
+    theme: "#1d428a",
+  };
+
 
 
 

@@ -12,6 +12,9 @@ export const useLoginMutation = (onSuccess?: (data: any) => void, onError?: (err
             console.log('Login successful:', data);
             localStorage.setItem('user', JSON.stringify(data));
 
+            const expirationTime: number = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
+            localStorage.setItem("expirationTime", expirationTime.toString());
+
             toast({
                 title: "Success",
                 description: `${data.message}`,
@@ -23,9 +26,9 @@ export const useLoginMutation = (onSuccess?: (data: any) => void, onError?: (err
         onError: (error: Error | any) => {
             console.error('Login failed:', error);
             let errorMessage = error?.response?.data.message ? error?.response?.data.message : error.message
-            
+
             console.error("error in the code ..", error.message)
-            
+
             toast({
                 title: "Error",
                 description: `${errorMessage}`,
@@ -51,10 +54,10 @@ export const useForgotPasswordMutation = (onSuccess?: (data: any) => void, onErr
             if (onSuccess) onSuccess(data); // Call the success callback
         },
         onError: (error: Error | any) => {
-            
+
             console.error('ForgotPassword failed:', error);
             let errorMessage = error?.response?.data.message ? error?.response?.data.message : error.message
-                        
+
             toast({
                 title: "Error",
                 description: `${errorMessage}`,
@@ -84,9 +87,9 @@ export const useRegisterMutation = (onSuccess?: (data: any) => void, onError?: (
         onError: (error: Error | any) => {
             console.error('Login failed:', error);
             let errorMessage = error?.response?.data.message ? error?.response?.data.message : error.message
-            
+
             console.error("error in the code ..", error.message)
-            
+
             toast({
                 title: "Error",
                 description: `${errorMessage}`,

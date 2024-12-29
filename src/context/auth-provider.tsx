@@ -3,19 +3,19 @@
 import useAuth from "@/hooks/use-auth";
 import React, { createContext, useContext } from "react";
 
-type UserType = {
-  name: string;
-  email: string;
-  isEmailVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  userPreferences: {
-    enable2FA: boolean;
-  };
-};
+// type UserType = {
+//   name: string;
+//   email: string;
+//   isEmailVerified: boolean;
+//   createdAt: Date;
+//   updatedAt: Date;
+//   userPreferences: {
+//     enable2FA: boolean;
+//   };
+// };
 
 type AuthContextType = {
-  user?: UserType;
+  user?: Object | any;
   error: any;
   isLoading: boolean;
   isFetching: boolean;
@@ -28,7 +28,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { data, error, isLoading, isFetching, refetch } = useAuth();
-  const user = data?.data?.user;
+  console.log("data..", data);
+  const user = data?.user;
 
   return (
     <AuthContext.Provider

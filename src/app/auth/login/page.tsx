@@ -11,7 +11,7 @@ import Link from 'next/link';
 import axios from 'axios';
 
 // import { ArrowRight } from "lucide-react";
-import { z } from "zod";
+import { object, z } from "zod";
 import { useLoginMutation } from '@/store/onboarding';
 import { loginSchema } from '@/Interface';
 
@@ -59,13 +59,32 @@ function Login() {
 
     const { mutate: login } = useLoginMutation(
         (data) => {
-            // console.log('User logged in:', data);
-            router.push("/auth/register");
-            // Redirect or update UI here
+
+            const hasImport = data.user.roles.some((item: any) => item.name === "Import");
+            const hasAdmin = data.user.roles.some((item: any) => 
+                item.name === "Super Administrator" || item.name === "System Administrator"
+            );
+            const hasManager = data.user.roles.some((item: any) => item.name === "Manager");
+
+            // console.log("object", hasImport, hasAdmin, hasManager);
+
+            if (data.user.userMfa) {
+                router.replace(`/verify-mfa?email=${data.user.email}`);
+                return;
+            } else{
+                if (hasImport) {
+                    router.push("/dashboard/import");
+                }
+                if (hasAdmin) {
+                    router.push("/dashboard/admin");
+                }
+                if (hasManager) {
+                    router.push("/dashboard/manager");
+                }
+            }
         },
         (error) => {
             console.error('Login error:', error);
-            // Show error message
         }
     );
 
@@ -94,7 +113,7 @@ function Login() {
         try {
             login(formData)
 
-             // Redirect to the dashboard or another page
+            // Redirect to the dashboard or another page
         } catch (error) {
             console.log("error in the code ..", error)
         } finally {
@@ -314,7 +333,7 @@ function Login() {
                                                             <span className="ml-3">Sign In</span>
                                                         </div>
                                                     )}
-                                                    
+
 
                                                 </div>
                                             </CustomButton>
