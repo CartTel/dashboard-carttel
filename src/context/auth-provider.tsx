@@ -2,6 +2,8 @@
 
 import useAuth from "@/hooks/use-auth";
 import React, { createContext, useContext } from "react";
+import { usePathname } from "next/navigation";
+import { userRoleOptions } from "@/libs/data";
 
 // type UserType = {
 //   name: string;
@@ -16,6 +18,7 @@ import React, { createContext, useContext } from "react";
 
 type AuthContextType = {
   user?: Object | any;
+  role: string;
   error: any;
   isLoading: boolean;
   isFetching: boolean;
@@ -28,12 +31,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { data, error, isLoading, isFetching, refetch } = useAuth();
-  console.log("data..", data);
-  const user = data?.user;
+  const pathname = usePathname();
+
+  const userString = localStorage.getItem("user")
+  // const roleString = localStorage.getItem("roles")
+
+
+  if (!userString) {
+    throw new Error("User not found in local storage");
+  }
+  const savedUser = JSON.parse(userString);
+
+  const role = userRoleOptions.find((roleOption) => pathname.includes(roleOption.value))?.value ||
+    savedUser ||
+    "Super Administrator";
+
+  console.log("all the roles..", role);
+
+  localStorage.setItem("roles", role)
+
+
+  // console.log("data..", roleString);
+  const user = data?.user ? data?.user : savedUser.user;
+
+  console.log("real user.", user)
 
   return (
     <AuthContext.Provider
-      value={{ user, error, isLoading, isFetching, refetch }}
+      value={{ user, role, error, isLoading, isFetching, refetch }}
     >
       {children}
     </AuthContext.Provider>
