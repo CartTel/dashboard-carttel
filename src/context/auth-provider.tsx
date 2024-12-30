@@ -1,74 +1,40 @@
 "use client";
 
-import useAuth from "@/hooks/use-auth";
-import React, { createContext, useContext } from "react";
-import { usePathname } from "next/navigation";
-import { userRoleOptions } from "@/libs/data";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-// type UserType = {
-//   name: string;
-//   email: string;
-//   isEmailVerified: boolean;
-//   createdAt: Date;
-//   updatedAt: Date;
-//   userPreferences: {
-//     enable2FA: boolean;
-//   };
-// };
+interface AuthContextProps {
+  user: string | null;
+  setUser: (user: string | null) => void;
+}
 
-type AuthContextType = {
-  user?: Object | any;
-  role: string;
-  error: any;
-  isLoading: boolean;
-  isFetching: boolean;
-  refetch: () => void;
-};
+const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<string | null>(null);
+  const router = useRouter();
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const { data, error, isLoading, isFetching, refetch } = useAuth();
-  const pathname = usePathname();
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (!savedUser) {
+      router.push("/auth/login"); // Redirect if not authenticated
+      return;
+    }
 
-  const userString = localStorage.getItem("user")
-  // const roleString = localStorage.getItem("roles")
-
-
-  if (!userString) {
-    throw new Error("User not found in local storage");
-  }
-  const savedUser = JSON.parse(userString);
-
-  const role = userRoleOptions.find((roleOption) => pathname.includes(roleOption.value))?.value ||
-    savedUser ||
-    "Super Administrator";
-
-  console.log("all the roles..", role);
-
-  localStorage.setItem("roles", role)
-
-
-  // console.log("data..", roleString);
-  const user = data?.user ? data?.user : savedUser.user;
-
-  console.log("real user.", user)
+    setUser(savedUser);
+  }, [router]);
 
   return (
-    <AuthContext.Provider
-      value={{ user, role, error, isLoading, isFetching, refetch }}
-    >
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuthContext = () => {
-  const conext = useContext(AuthContext);
-  if (!conext) {
-    throw new Error("useAuthContext must be used within a AuthProvider");
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  return conext;
+  return context;
 };

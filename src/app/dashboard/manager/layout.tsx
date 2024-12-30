@@ -1,39 +1,34 @@
 "use client";
 
 import { ManagerDashboardWrapper } from "@/components/wrappers";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function RootLayout({
+export default function ManagerLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const [userRole, setUserRole] = useState("");
+}) {
+  const [isHydrated, setIsHydrated] = useState(false); // Prevent rehydration mismatches
+  const router = useRouter();
 
   useEffect(() => {
-    const handleUserRole = () => {
-      const savedRole = localStorage.getItem("roles");
-      console.log("love in the code ..", savedRole);
-      const role = savedRole === "manager" ? savedRole : "manager";
-      setUserRole(role);
-      localStorage.setItem("roles", userRole);
-    };
+    setIsHydrated(true); // Ensure hydration is complete before rendering
 
-    console.log("date", userRole);
+    const savedRole = localStorage.getItem("roles");
 
-    if (typeof window !== "undefined") {
-      handleUserRole();
+    if (savedRole !== "manager") {
+      router.push("/auth/login"); // Redirect if user is not a manager
     }
-  }, [userRole]);
+  }, [router]);
+
+  if (!isHydrated) {
+    return null; // Prevent rendering until hydration is complete
+  }
 
   return (
-    <html lang="en">
-      <body>
-      {/* <div className="mt-20 lg:mt-0"> {children}</div> */}
-        <ManagerDashboardWrapper>
-          <div className="mt-20 lg:mt-0"> {children}</div>
-        </ManagerDashboardWrapper>
-      </body>
-    </html>
+    <ManagerDashboardWrapper>
+      <div className="mt-20 lg:mt-0">{children}</div>
+    </ManagerDashboardWrapper>
   );
 }

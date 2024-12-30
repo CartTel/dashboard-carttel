@@ -1,75 +1,59 @@
 "use client";
 
-import { AdminDashboardWrapper, ManagerDashboardWrapper, DashboardWrapper } from "@/components/wrappers";
-import { usePathname } from "next/navigation";
-import { userRoleOptions } from "@/libs/data";
-import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { AuthProvider } from "@/context/auth-provider";
-import { useRouter } from "next/navigation";
+import Spinner from "@/components/ui/Spinner/Spinner";
 
-interface UserRoleOption {
-  code: string;
-  name: string;
-  value: string;
-}
-
-export default function RootLayout({
+export default function DashboardLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false); // Prevent rehydration mismatches
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    const handleUserRole = () => {
-      const savedRole = localStorage.getItem("user"); // User role or user data
-      const savedRoles = localStorage.getItem("roles");
+    setIsHydrated(true); // Ensure hydration is complete before rendering
 
-      // Redirect to login if no user exists in localStorage
+    const fetchUserRole = () => {
+      const savedRole = localStorage.getItem("roles");
       if (!savedRole) {
         router.push("/auth/login");
         return;
       }
 
-      // Determine the user's role
-      const role =
-        userRoleOptions.find((roleOption) => pathname.includes(roleOption.value))?.value ||
-        savedRoles ||
-        "Super Administrator";
-
-      setUserRole(role);
+      setUserRole(savedRole); // Set the role from localStorage
     };
 
-    console.log("roles..", userRole);
+    fetchUserRole();
+  }, [router]);
 
-    handleUserRole();
-  }, [pathname, router, userRole]);
+  if (!isHydrated) {
+    return null; // Prevent rendering until hydration is complete
+  }
 
   if (!userRole) {
-    return null; // Optional: Replace with a loading spinner
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner /> {/* Show loading spinner until role is determined */}
+      </div>
+    );
+  }
+
+  if (!pathname.includes(userRole)) {
+    console.log("path name ..", userRole)
+    router.push("/auth/login"); // Redirect if the user role doesn't match the URL
+    return null;
   }
 
   return (
-    <html lang="en">
-      <AuthProvider>
-        <body>
-          {userRole === "admin" ? (
-            <AdminDashboardWrapper>
-              <div className="mt-20 lg:mt-0">{children}</div>
-            </AdminDashboardWrapper>
-          ) : userRole === "manager" ? (
-            <ManagerDashboardWrapper>
-              <div className="mt-20 lg:mt-0">{children}</div>
-            </ManagerDashboardWrapper>
-          ) : (
-            <DashboardWrapper>
-              <div className="mt-20 lg:mt-0">{children}</div>
-            </DashboardWrapper>
-          )}
-        </body>
-      </AuthProvider>
-    </html>
+    <AuthProvider>
+      <div>
+        <div>{children}</div>
+      </div>
+    </AuthProvider>
   );
 }

@@ -66,21 +66,39 @@ function Login() {
             );
             const hasManager = data.user.roles.some((item: any) => item.name === "Manager");
 
-            // console.log("object", hasImport, hasAdmin, hasManager);
+            console.log("object", hasImport, hasAdmin, hasManager);
+
+            if (hasImport) {
+                localStorage.setItem("roles", "import")
+            }
+            if (hasAdmin) {
+                localStorage.setItem("roles", "admin");
+            }
+            if (hasManager) {
+                localStorage.setItem("roles", "manager")
+            }
+
+
+
+            console.log("renting in the building..", localStorage.getItem("roles"))
 
             if (data.user.userMfa) {
                 router.replace(`/verify-mfa?email=${data.user.email}`);
                 return;
             } else{
                 if (hasImport) {
+                    console.log("first")
                     router.push("/dashboard/import");
                 }
                 if (hasAdmin) {
+                    console.log("second")
                     router.push("/dashboard/admin");
                 }
                 if (hasManager) {
+                    console.log("third")
                     router.push("/dashboard/manager");
                 }
+                // router.push("/dashboard")
             }
         },
         (error) => {
