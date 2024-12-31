@@ -28,7 +28,7 @@ import {
     HelpFilledIcon,
     HelpIcon
 } from "../custom-icons";
-import { B2, BMiddle, BodySmallestMedium } from '../custom-typography';
+import { B2, BMiddle, BodySmallestMedium, B1 } from '../custom-typography';
 import { CustomButton, CustomSearch } from '../custom-components';
 import { primaryColor } from '@/libs/data';
 import { useAuthContext } from "@/context/auth-provider";
@@ -108,18 +108,18 @@ const SIDEBAR = [
                 label: "Upgrade Plan",
                 link: "/dashboard/manager/plan",
             },
-            {
-                Icon: InviteIcon,
-                ActiveIcon: InviteFilledIcon,
-                label: "Invite & Earn",
-                link: "/dashboard/manager/invite",
-            },
-            {
-                Icon: HelpIcon,
-                ActiveIcon: HelpFilledIcon,
-                label: "FAQs",
-                link: "/dashboard/manager/faqs",
-            },
+            // {
+            //     Icon: InviteIcon,
+            //     ActiveIcon: InviteFilledIcon,
+            //     label: "Invite & Earn",
+            //     link: "/dashboard/manager/invite",
+            // },
+            // {
+            //     Icon: HelpIcon,
+            //     ActiveIcon: HelpFilledIcon,
+            //     label: "FAQs",
+            //     link: "/dashboard/manager/faqs",
+            // },
         ],
     },
 
@@ -195,10 +195,10 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
             {isClient && (
                 <main className="relative bg-off_white min-h-[100vh] ">
                     {/* MOBILE SIDEBAR */}
-                    <nav className="bg-white flex justify-between items-center px-3 py-4 lg:hidden fixed top-0 right-0 left-0 w-full z-[999]">
+                    <nav className="bg-white flex flex-row-reverse justify-between items-center border-[1px] border-b-gray-100 shadow-md px-3 py-4 lg:hidden fixed top-0 right-0 left-0 w-full z-[999]">
                         <div className="flex items-center gap-8 ">
                             <div className="flex items-center gap-8">
-                                <div className="flex items-center gap-[8px]">
+                                {/* <div className="flex items-center gap-[8px]">
                                     <Image
                                         src={"/images/man.jpeg"}
                                         alt="profile"
@@ -207,7 +207,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                         className={`min-w-[48px] min-h-[48px] object-cover rounded-full border-[1px] border-[${primaryColor.theme}]`}
                                     />
                                 </div>
-                                <div className="bg-gray w-[1px] lg:h-[50px] h-10" />
+                                <div className="bg-gray w-[1px] lg:h-[50px] h-10" /> */}
 
                                 <div className='relative '>
                                         <button>
@@ -224,6 +224,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
 
                                     </div>
                             </div>
+
                             <Link
                                     href={"/dashboard/manager"}
                                     // ref={trigger}
@@ -287,7 +288,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                     onFocus={() => setDropdownOpen(true)}
                                     onClick={() => setDropdownOpen(!dropdownOpen)}
                                     onBlur={() => setDropdownOpen(false)}
-                                    className={`md:w-fit xs:w-fit absolute right-4 mt-48 flex flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  ${dropdownOpen === true ? 'block' : 'hidden'
+                                    className={`md:w-fit xs:w-fit absolute right-2 mt-48 flex flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  ${dropdownOpen === true ? 'block' : 'hidden'
                                         }`}
                                 >
                                     <ul className="w-fit flex flex-col gap-5 border-b border-stroke px-2 py-2 dark:border-strokedark">
@@ -377,7 +378,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                     {/* <!-- Hamburger Toggle BTN --> */}
                                 </div>
 
-                                <svg
+                                {/* <svg
                                     width="24"
                                     height="24"
                                     viewBox="0 0 24 24"
@@ -402,15 +403,22 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                         strokeWidth="2"
                                         strokeLinecap="round"
                                     />
-                                </svg>
+                                </svg> */}
                             </div>
                         </div>
 
                     </nav>
 
+                    {isOpen && (
+            <div
+              className="fixed inset-0 bg-black opacity-50 z-[59999] w-full h-full overflow-y-auto left-0 top-0  min-h-screen"
+              onClick={() => setOpen(false)}
+            ></div>
+          )}
+
                     <section
-                        className={` ${isOpen ? "w-[300px] translate-x-0" : "-translate-x-full"
-                            } lg:hidden transition-all ease-in-out duration-150 fixed top-0 left-0 h-full bg-white py-[37px] px-[12px] overflow-y-auto z-[60000]`}
+                        className={` ${isOpen ? "w-[280px] translate-x-0" : "-translate-x-full"
+                            } lg:hidden transition-all border-[1px] border-r-gray-300 duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 fixed top-0 left-0 h-full bg-white py-[37px] px-[12px] overflow-y-auto z-[60000]`}
                     >
                         <Link href={"/dashboard/manager"}>
                             <div className=''>
@@ -492,7 +500,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                     {/* SIDEBAR */}
                     <section
                         className={
-                            "lg:block hidden fixed top-[0] w-[251px] h-[100vh] bg-white py-[37px] px-[12px] overflow-y-auto z-[60000]"
+                            "lg:block hidden fixed top-[0] w-[251px] h-[100vh] bg-white border-r-[1px] border-gray-100 shadow-md py-[37px] px-[12px] overflow-y-auto z-[60000]"
                         }
                     >
                         <Link href={"/dashboard/manager"}>
@@ -560,12 +568,16 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                     </section>
 
                     <section className="lg:ml-[251px]  lg:w-[calc(100vw_-_251px)] ">
-                        <div className="hidden z-[5000] w-[calc(100vw_-_253px)] left-[253px]  fixed top-[0] h-[96px] px-[36px] lg:flex items-center justify-between bg-white">
+                        <div className="hidden z-[5000] w-[calc(100vw_-_253px)] left-[253px]  fixed top-[0] h-[80px] px-[36px] lg:flex items-center justify-between bg-white shadow-md">
                             <div className="w-[432px]">
-                                <CustomSearch
+                                {/* <CustomSearch
                                     className="!mb-[0px] !h-[48px] text-[0.875rem]"
                                     placeholder="Start typing here to search"
-                                />
+                                /> */}
+                                {/* <B2></B2> */}
+                                <B1 className='uppercase text-primary'>
+                                                Welcome Back, {user.firstname}
+                                            </B1>
                             </div>
                             <div className="flex items-center gap-[30px]">
                                 <div className="flex items-center gap-[36px]">

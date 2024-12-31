@@ -1,36 +1,38 @@
 "use client";
 
-import { AdminDashboardWrapper } from "@/components/wrappers";
-import React, { useState, useEffect } from "react";
+import { ManagerDashboardWrapper, AdminDashboardWrapper } from "@/components/wrappers";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/auth-provider"; // Import the auth context
 
-export default function RootLayout({
+
+export default function AdminLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
-  const [userRole, setUserRole] = useState("");
+}) {
+  const [isHydrated, setIsHydrated] = useState(false); // Prevent rehydration mismatches
+  const router = useRouter();
+  const { user } = useAuthContext(); // Get user and loading state from context
 
   useEffect(() => {
-    const handleUserRole = () => {
-      const savedRole = localStorage.getItem("roles");
-      const role = savedRole === "admin" ? savedRole : "import";
-      setUserRole(role);
-      localStorage.setItem("roles", userRole);
-    };
+    setIsHydrated(true); // Ensure hydration is complete before rendering
 
-    if (typeof window !== "undefined") {
-      handleUserRole();
+    const savedRole = localStorage.getItem("roles");
+
+    if (savedRole !== "admin") {
+      router.push("/auth/login"); // Redirect if user is not a manager
     }
-  }, [userRole]);
+  }, [router]);
+
+  if (!isHydrated) {
+    return null; // Prevent rendering until hydration is complete
+  }
 
   return (
-    <html lang="en">
-      <body>
-      {/* <div className="mt-20 lg:mt-0"> {children}</div> */}
-        <AdminDashboardWrapper>
-          <div className="mt-20 lg:mt-0"> {children}</div>
-        </AdminDashboardWrapper>
-      </body>
-    </html>
+    <AdminDashboardWrapper>
+      <div className="mt-20 lg:mt-0">{children}</div>
+    </AdminDashboardWrapper>
   );
 }
+

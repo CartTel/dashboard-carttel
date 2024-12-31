@@ -16,7 +16,7 @@ function Page() {
     return (
         <div className='flex justify-center'>
             {/* <Dashboard /> */}
-            <div>Hello</div>
+            <div>User</div>
         </div>
     )
 }
