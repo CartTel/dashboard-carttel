@@ -47,7 +47,7 @@ export const userRoleOptions = [
 
 export const primaryColor = {
     name: "CartTel Color",
-    theme: "#103f69",
+    theme: "#1d4188",
   };
   
   export const secondaryColor = {

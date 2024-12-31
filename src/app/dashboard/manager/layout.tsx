@@ -3,6 +3,8 @@
 import { ManagerDashboardWrapper } from "@/components/wrappers";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/auth-provider"; // Import the auth context
+
 
 export default function ManagerLayout({
   children,
@@ -11,6 +13,7 @@ export default function ManagerLayout({
 }) {
   const [isHydrated, setIsHydrated] = useState(false); // Prevent rehydration mismatches
   const router = useRouter();
+  const { user } = useAuthContext(); // Get user and loading state from context
 
   useEffect(() => {
     setIsHydrated(true); // Ensure hydration is complete before rendering
@@ -32,3 +35,4 @@ export default function ManagerLayout({
     </ManagerDashboardWrapper>
   );
 }
+

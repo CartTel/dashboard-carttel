@@ -32,7 +32,7 @@ import { B2, BMiddle, BodySmallestMedium } from "../custom-typography";
 import { CustomButton, CustomSearch } from "../custom-components";
 import { usePathname, useRouter } from "next/navigation";
 import { primaryColor } from "@/libs/data";
-import { useAuthContext } from "@/context/auth-provider";
+// import { useAuthContext } from "@/context/auth-provider";
 // import { Twirl as Hamburger } from "hamburger-react";
 // import { useCurrentUser } from "@/utils/hooks";
 // import { logout } from "@/redux/features/loginSlice";

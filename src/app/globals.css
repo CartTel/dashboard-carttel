@@ -621,6 +621,43 @@ input[type="date"]:focus::-webkit-datetime-edit {
 }
 
 
+/* SIDEBAR */
+
+.sidebar-item {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-item .item {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-active .active-icon {
+  display: block !important;
+}
+
+.sidebar-active .icon {
+  display: none !important;
+}
+
+.sidebar-item .active-icon {
+  display: none;
+}
+
+.sidebar-item:hover .active-icon {
+  display: block;
+}
+
+.sidebar-item:hover .icon {
+  display: none;
+}
+
+/* SHADOW */
+.shadow {
+  box-shadow: 0px 22px 40px 0px #0000001a;
+}
+
 
 
 

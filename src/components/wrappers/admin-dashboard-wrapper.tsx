@@ -31,7 +31,7 @@ import { B2, BMiddle, BodySmallestMedium } from '../custom-typography';
 import { CustomButton, CustomSearch } from '../custom-components';
 import { usePathname, useRouter } from 'next/navigation';
 import { primaryColor } from '@/libs/data';
-import { useAuthContext } from "@/context/auth-provider";
+// import { useAuthContext } from "@/context/auth-provider";
 
 
 const SIDEBAR = [
