@@ -4,6 +4,7 @@ import { ImportDashboardWrapper } from "@/components/wrappers";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthContext } from "@/context/auth-provider"; // Import the auth context
+import Spinner from "@/components/ui/Spinner/Spinner";
 
 
 export default function ImportLayout({
@@ -26,7 +27,12 @@ export default function ImportLayout({
   }, [router]);
 
   if (!isHydrated) {
-    return null; // Prevent rendering until hydration is complete
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner /> {/* Show loading spinner until role is determined */}
+      </div>
+    );
+    // return null; // Prevent rendering until hydration is complete
   }
 
   return (

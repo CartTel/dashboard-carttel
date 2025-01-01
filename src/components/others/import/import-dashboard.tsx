@@ -7,6 +7,8 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ShipmentOverview from "./shipment-overview";
 import ServiceOverview from "./service-overview";
+import FinancialOverview from "./financial-overview";
+import Resources from "./resources";
 
 
 export function ImportDashboard() {
@@ -14,12 +16,21 @@ export function ImportDashboard() {
 
   return (
     <div className="w-[100%]">
+      
       <div>
-        <ShipmentOverview/>
+        <ShipmentOverview />
       </div>
 
       <div>
-        <ServiceOverview/>
+        <ServiceOverview />
+      </div>
+
+      <div>
+        <FinancialOverview />
+      </div>
+
+      <div>
+        <Resources />
       </div>
 
       
