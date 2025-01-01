@@ -1,5 +1,7 @@
 import React from 'react'
 import { ResolvingMetadata, Metadata } from 'next'
+// import { ImportDashboard } from '@/components/others/import'
+import { ImportDashboard } from '@/components/others/import'
 // import Dashboard from '@/components/others/hagul/main-dashboard';
 
 
@@ -15,8 +17,8 @@ export const metadata: Metadata = {
 function Page() {
     return (
         <div className='flex justify-center'>
-            {/* <Dashboard /> */}
-            <div>User</div>
+            <ImportDashboard />
+            {/* <div>User</div> */}
         </div>
     )
 }

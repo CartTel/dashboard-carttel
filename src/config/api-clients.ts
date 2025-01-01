@@ -33,7 +33,7 @@ apiClient.interceptors.request.use(
         if (token) {
             // Parse only if the value exists
             const parsedToken: any = JSON.parse(token);
-            console.log("token..", parsedToken, "all the keys.."); // Use the parsed token
+            // console.log("token..", parsedToken, "all the keys.."); // Use the parsed token
 
             config.headers.Authorization = `Bearer ${parsedToken.accessToken}`;
 
@@ -45,7 +45,7 @@ apiClient.interceptors.request.use(
             config.headers["Onboarding-Flow"] = "true";
         }
 
-        console.log("Request Config:", config); // Debugging/logging request
+        // console.log("Request Config:", config); // Debugging/logging request
         return config;
     },
     (error) => {
@@ -60,7 +60,7 @@ APIRefresh.interceptors.response.use((response) => response);
 apiClient.interceptors.response.use(
     (response) => {
         // You can handle onboarding-specific responses here
-        console.log("Response Data:", response.data); // Debugging/logging response
+        // console.log("Response Data:", response.data); // Debugging/logging response
         return response;
     },
     async (error) => {

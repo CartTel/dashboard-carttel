@@ -32,7 +32,12 @@ export default function DashboardLayout({
   }, [router]);
 
   if (!isHydrated) {
-    return null; // Prevent rendering until hydration is complete
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Spinner /> {/* Show loading spinner until role is determined */}
+      </div>
+    );
+    // return null; // Prevent rendering until hydration is complete
   }
 
   if (!userRole) {

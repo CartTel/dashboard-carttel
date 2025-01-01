@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // const user = data?.data?.user;
   const router = useRouter();
 
-  console.log("user context", data?.user, isLoading, isFetching)
+  // console.log("user context", data?.user, isLoading, isFetching)
 
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const userString = JSON.parse(savedUser)
 
-    console.log("some user ..", userString?.user)
+    // console.log("some user ..", userString?.user)
 
     const getUser = data?.user ? data?.user : userString?.user
 

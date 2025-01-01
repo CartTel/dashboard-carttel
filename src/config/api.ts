@@ -38,7 +38,7 @@ const userassociations = [
 export const loginUser = async (credentials: LoginType) => {
   try {
     const response = await apiCall.post('/api/v1/auth/login', credentials);
-    console.log("Login Submission Successful:", response.data);
+    // console.log("Login Submission Successful:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error submitting onboarding form:", error);
@@ -49,7 +49,7 @@ export const loginUser = async (credentials: LoginType) => {
 export const forgotPassword = async (credentials: ForgotPasswordType) => {
   try {
     const response = await apiCall.post('/api/v1/auth/forgotpassword', credentials);
-    console.log("Forgot Password Successful:", response.data);
+    // console.log("Forgot Password Successful:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error submitting onboarding form:", error);
@@ -60,7 +60,7 @@ export const forgotPassword = async (credentials: ForgotPasswordType) => {
 export const registerUser = async (credentials: CreateUserType) => {
   try {
     const response = await apiCall.post('/api/v1/auth/register', credentials);
-    console.log("User Created Successfully:", response.data);
+    // console.log("User Created Successfully:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error submitting onboarding form:", error);
@@ -71,7 +71,7 @@ export const registerUser = async (credentials: CreateUserType) => {
 export const logoutUser = async () => {
   try {
     const response = await apiCall.get('/api/v1/auth/logout');
-    console.log("Logout User Successfully:", response.data);
+    // console.log("Logout User Successfully:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error submitting onboarding form:", error);
@@ -90,7 +90,7 @@ export const fetchSingleUsers = async (associations = []) => {
         associations: ["roles", "business", "session"],
       },
     });
-    console.log("single user..", response.data);
+    // console.log("single user..", response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching user:', error);
@@ -112,7 +112,7 @@ export const fetchSingleUser = async (associations = []) => {
       throw new Error("Invalid user data format in local storage");
     }
 
-    console.log("user all the result ..", user.user);
+    // console.log("user all the result ..", user.user);
 
     if (!user.user || !user.user.id) {
       throw new Error("User ID not found in local storage");
@@ -125,7 +125,7 @@ export const fetchSingleUser = async (associations = []) => {
     });
 
 
-    console.log("single user..", response.data);
+    // console.log("single user..", response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching user:', error);
