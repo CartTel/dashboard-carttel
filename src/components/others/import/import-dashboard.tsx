@@ -1,14 +1,14 @@
-"use client";
 
-import dynamic from "next/dynamic";
 import { CustomButton } from "@/components/custom-components";
 import { B1, H2 } from "@/components/custom-typography";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ShipmentOverview from "./shipment-overview";
 import ServiceOverview from "./service-overview";
-import FinancialOverview from "./financial-overview";
 import Resources from "./resources";
+
+import FinancialOverview from "./financial-overview";
+
 
 
 export function ImportDashboard() {

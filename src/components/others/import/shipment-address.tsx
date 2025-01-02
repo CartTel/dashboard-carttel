@@ -7,7 +7,8 @@ import { MdOutlineContentCopy } from 'react-icons/md';
 
 import { toast } from "@/hooks/use-toast";
 
-const ShipmentAddress: React.FC = () => {
+
+export default function ShipmentAddress () {
     const textRef = useRef<HTMLInputElement | null>(null);
     const countryRef = useRef<HTMLInputElement | null>(null);
     const zipRef = useRef<HTMLInputElement | null>(null);
@@ -206,4 +207,3 @@ const ShipmentAddress: React.FC = () => {
     );
 };
 
-export default ShipmentAddress;

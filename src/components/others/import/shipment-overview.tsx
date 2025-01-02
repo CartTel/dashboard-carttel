@@ -12,7 +12,7 @@ import { MdOutlineLocalShipping } from "react-icons/md";
 import { LuPackageOpen, LuPackageCheck } from "react-icons/lu";
 
 
-export function ShipmentOverview() {
+const ShipmentOverview = () => {
   
 
   return (
@@ -134,3 +134,4 @@ export function ShipmentOverview() {
 }
 
 export default ShipmentOverview;
+

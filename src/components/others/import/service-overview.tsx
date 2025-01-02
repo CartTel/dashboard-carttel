@@ -9,7 +9,9 @@ import { PiHouseLineDuotone } from "react-icons/pi";
 import { MdOutlineCalculate } from "react-icons/md";
 import { B1, H2, B2 } from "@/components/custom-typography";
 
-const ServiceOverview: React.FC = () => {
+
+
+export default function ServiceOverview () {
     const [naming, setNaming] = useState<string>("Track Shipment");
 
     const [linkName] = useState<{
@@ -97,4 +99,3 @@ const ServiceOverview: React.FC = () => {
     );
 };
 
-export default ServiceOverview;

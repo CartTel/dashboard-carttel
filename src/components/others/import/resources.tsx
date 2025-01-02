@@ -4,7 +4,9 @@ import { B1, H2, B2 } from "@/components/custom-typography";
 
 import Image from 'next/image'
 
-const Resources: React.FC = () => {
+
+
+export default function Resources () {
     return (
         <div className="my-20">
             <B1 className='text-slate-700 text-center'>Helpful resources</B1>
@@ -130,4 +132,3 @@ const Resources: React.FC = () => {
     );
 };
 
-export default Resources;

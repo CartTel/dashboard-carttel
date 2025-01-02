@@ -12,7 +12,9 @@ import { FaEye } from "react-icons/fa";
 import Image from 'next/image'
 import { B1, B2, H2, H1, BMiddle } from '@/components/custom-typography';
 
-const FinancialOverview: React.FC = () => {
+
+
+const FinancialOverview = () => {
     const [startDate, setStartDate] = useState<Date | any>(null);
     const [endDate, setEndDate] = useState<Date | any>(null);
     const [isToggle, setIsToggle] = useState<boolean>(true);
@@ -250,3 +252,5 @@ const FinancialOverview: React.FC = () => {
 };
 
 export default FinancialOverview;
+
+

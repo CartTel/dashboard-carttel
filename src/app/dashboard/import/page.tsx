@@ -1,7 +1,9 @@
 import React from 'react'
 import { ResolvingMetadata, Metadata } from 'next'
 // import { ImportDashboard } from '@/components/others/import'
-import { ImportDashboard } from '@/components/others/import'
+// import { ImportDashboard } from '@/components/others/'
+
+import ImportDashboard from '@/components/others/import/import-dashboard'
 // import Dashboard from '@/components/others/hagul/main-dashboard';
 
 

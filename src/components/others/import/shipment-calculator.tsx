@@ -13,7 +13,7 @@ interface BusinessData {
     businesssize: string;
 }
 
-const ShipmentCalculator: React.FC = () => {
+export default function ShipmentCalculator (){
     const textRef = useRef<HTMLInputElement | null>(null);
     const phoneRef = useRef<HTMLInputElement | null>(null);
 
@@ -245,4 +245,3 @@ const ShipmentCalculator: React.FC = () => {
     );
 };
 
-export default ShipmentCalculator;
