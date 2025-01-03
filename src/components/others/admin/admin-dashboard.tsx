@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { CustomButton } from "@/components/custom-components";
-import { B1, H2 } from "@/components/custom-typography";
+import { B1, H2, B2 } from "@/components/custom-typography";
 import React, { useState, useEffect, ComponentType } from "react";
 import Image from "next/image";
 // import {
@@ -12,6 +12,11 @@ import Image from "next/image";
 
 import { adminDashboardStatisitcs, AdminDashboardCharts } from "@/libs/data";
 import { AdminstatCard } from "@/libs/interfaces";
+import RecentlyAddedUsers from "./recent-added-user";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
+import { fetchAllRecentUsers } from "@/config/api";
 
 
 import { AllAdminStatCard } from "./admin-stats";
@@ -44,6 +49,11 @@ import { AllAdminStatCard } from "./admin-stats";
 // };
 
 const AdminDashboard = () => {
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ["recentUsers"],
+        queryFn: fetchAllRecentUsers,
+    });
+
     const [selectedStats, setSelectedStats] = useState<string[]>([
         "total-shipment-made",
         "total-importers",
@@ -83,43 +93,71 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div className="!w-full">
-            <B1 className='text-slate-700 '>Operational Overview</B1>
+        <div className="!w-full flex flex-col gap-16">
             <div>
-                <div className="grid lg:grid-cols-4 gap-[15px] md:grid-cols-2 grid-cols-1 mt-5">
-                    {selectedStats.length
-                        ? stats.map(({ title, value, icon, color, textColor, status }, index) => (
-                            <AllAdminStatCard
-                                key={index}
-                                title={title}
-                                value={value}
-                                icon={icon}
-                                color={color}
-                                textColor={textColor}
-                                status={status}
-                            />
-                        ))
-                        : null}
-                </div>
-                <div className="mt-[24px] flex gap-[25px] lg:flex-row flex-col items-stretch">
-                    <div className="flex-[8] max-[1537px]:flex-[6] w-full">
-                        {graphs
-                            .filter((g) => g.position === "left")
-                            ?.map(({ Graph }, index) => (
-                                <Graph key={index} />
-                            ))}
+                <B1 className='text-slate-700 '>Operational Overview</B1>
+                <div>
+                    <div className="grid lg:grid-cols-4 gap-[15px] md:grid-cols-2 grid-cols-1 mt-5">
+                        {selectedStats.length
+                            ? stats.map(({ title, value, icon, color, textColor, status }, index) => (
+                                <AllAdminStatCard
+                                    key={index}
+                                    title={title}
+                                    value={value}
+                                    icon={icon}
+                                    color={color}
+                                    textColor={textColor}
+                                    status={status}
+                                />
+                            ))
+                            : null}
                     </div>
-                    <div className="flex-[4]">
-                        {graphs
-                            .filter((g) => g.position === "right")
-                            ?.map(({ Graph }, index) => (
-                                <Graph key={index} />
-                            ))}
-                    </div>
+                    {/* <div className="mt-[24px] flex gap-[25px] lg:flex-row flex-col items-stretch">
+                        <div className="flex-[8] max-[1537px]:flex-[6] w-full">
+                            {graphs
+                                .filter((g) => g.position === "left")
+                                ?.map(({ Graph }, index) => (
+                                    <Graph key={index} />
+                                ))}
+                        </div>
+                        <div className="flex-[4]">
+                            {graphs
+                                .filter((g) => g.position === "right")
+                                ?.map(({ Graph }, index) => (
+                                    <Graph key={index} />
+                                ))}
+                        </div>
+                    </div> */}
                 </div>
+
             </div>
             <div className="mt-5">
                 <B1 className='text-slate-700 '>Recent Activities Feed</B1>
+                <div className="grid lg:grid-cols-3 gap-4 md:grid-cols-2 xs:grid-cols-1 mt-5">
+                    {isLoading ? (
+                        <Skeleton className="w-[160px] h-[160px]" />
+                    ) : (
+                        <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-lg border border-gray-200 mb-10">
+                            <div>
+                                <B1 className="md:text-[14px] xs:text-[14px] text-slate-700 px-4 py-2 mb-4">
+                                    Recently Added User
+                                </B1>
+                            </div>
+
+                            {data?.map((user: any, index: number) => (
+                                <div key={user.id} 
+                                className={`border-b-slate-200 border-b-[1px] ${
+                                    index === data.length - 1 ? "border-none pb-[30px]" : ""
+                                  }`}
+                                >
+                                    {/* {data.length} */}
+                                    <RecentlyAddedUsers user={user} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                </div>
 
             </div>
 

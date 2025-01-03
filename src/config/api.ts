@@ -79,19 +79,22 @@ export const logoutUser = async () => {
   }
 };
 
-export const fetchSingleUsers = async (associations = []) => {
+export const fetchAllRecentUsers = async () => {
   try {
     const user: any = localStorage.getItem("user")
     const userId = user.id
 
-    const response = await apiClient.get(`/api/v1/users/get-user/${userId}`, {
+    const response = await apiClient.get(`api/v1/users/get-all-users`, {
       params: {
         // associations: associations.join(','), // Convert array to comma-separated string
-        associations: ["roles", "business", "session"],
+        associations: ["roles"],
+        byRoleId: 2,
+        sortOrder: 'DESC',
       },
     });
-    // console.log("single user..", response.data);
-    return response.data;
+    // console.log("all user..", response.data);
+    const firstTenItems = response.data.data.slice(0, 10);
+    return firstTenItems;
   } catch (error) {
     console.error('Error fetching user:', error);
     throw error; // Rethrow the error for handling in the component
