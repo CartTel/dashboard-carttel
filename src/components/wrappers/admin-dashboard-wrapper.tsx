@@ -26,7 +26,11 @@ import {
   ShipmentFilledIcon,
   ShipmentIcon,
   HelpFilledIcon,
-  HelpIcon
+  HelpIcon, 
+  ReportsFilledIcon,
+  ReportsIcon,
+  UsersFilledIcon,
+  UsersIcon
 } from "../custom-icons";
 import { B2, BMiddle, BodySmallestMedium, B1 } from '../custom-typography';
 import { CustomButton, CustomSearch } from '../custom-components';
@@ -58,7 +62,7 @@ const SIDEBAR = [
       {
         Icon: WalletIcon,
         ActiveIcon: WalletFilledIcon,
-        label: "Wallet",
+        label: "Wallet & Transactions",
         link: "/dashboard/admin/wallet",
       },
       {
@@ -99,30 +103,30 @@ const SIDEBAR = [
     ],
   },
   {
-    title: "Preference",
+    title: "Analytics",
     links: [
 
-      // {
-      //     Icon: PlanIcon,
-      //     ActiveIcon: PlanFilledIcon,
-      //     label: "Upgrade Plan",
-      //     link: "/dashboard/admin/plan",
-      // },
       {
-        Icon: InviteIcon,
-        ActiveIcon: InviteFilledIcon,
-        label: "Invite & Earn",
-        link: "/dashboard/admin/invite",
+        Icon: PlanIcon,
+        ActiveIcon: PlanFilledIcon,
+        label: "Plans",
+        link: "/dashboard/admin/plan",
       },
-      // {
-      //     Icon: HelpIcon,
-      //     ActiveIcon: HelpFilledIcon,
-      //     label: "FAQs",
-      //     link: "/dashboard/admin/faqs",
-      // },
+      {
+        Icon: ReportsIcon,
+        ActiveIcon: ReportsFilledIcon,
+        label: "Reports & Analytics",
+        link: "/dashboard/admin/reports",
+      },
+      {
+        Icon: UsersIcon,
+        ActiveIcon: UsersFilledIcon,
+        label: "Users",
+        link: "/dashboard/admin/users",
+      },
     ],
+    
   },
-
 ];
 
 interface IAdminDashboardWrapper {

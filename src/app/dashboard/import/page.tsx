@@ -8,19 +8,22 @@ import ImportDashboard from '@/components/others/import/import-dashboard'
 
 
 
-export const metadata: Metadata = {
-    title: "Filmo Real Estate . Dashboard",
-    icons: '/images/filmo-favicon.ico',
+export const metadata = {
+    title: "CartTel Import . Dashboard",
+    icons: {
+      icon: "/images/carttel-favicon.ico", // Path to your favicon
+      shortcut: "/images/carttel-favicon.ico", // Optional: Shortcut icon
+      apple: "/images/carttel-favicon.ico", // Optional: Apple touch icon
+    },
     openGraph: {
-        images: ['https://web.vampfi.com/images/filmo-favicon.ico']
-    }
-}
+      images: ["https://app.carttel.africa/images/carttel-favicon.ico"], // OpenGraph image
+    },
+  };
 
 function Page() {
     return (
         <div className='flex justify-center'>
             <ImportDashboard />
-            {/* <div>User</div> */}
         </div>
     )
 }

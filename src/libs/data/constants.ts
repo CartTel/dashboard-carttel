@@ -48,14 +48,88 @@ export const userRoleOptions = [
 export const primaryColor = {
     name: "CartTel Color",
     theme: "#1d4188",
-  };
-  
-  export const secondaryColor = {
+};
+
+export const secondaryColor = {
     name: "CartTel Color",
     theme: "#1d428a",
-  };
+};
 
 
+export const adminDashboardStatisitcs = [
+    {
+      title: "Total Shipment Made",
+      ref: "total-shipment-made",
+      value: "23,400",
+      icon: "/images/Home/package.svg",
+      color: "#ffe3cf",
+      textColor: "#f9812d",
+      status: true
+    },
+    {
+      title: "Total Number of Importers",
+      ref: "total-importers",
+      value: "180",
+      icon: "/images/Home/users.svg",
+      color: "#EDE3FA",
+      textColor: "#a967fe",
+      status: false
+    },
+    {
+      title: "Avg Shipment Completion Time",
+      ref: "avg-shipment-completion-time",
+      value: "14 days",
+      icon: "/images/Home/calendar-tick.svg",
+      color: "#F8E3E4",
+      textColor: "#ea3a3f",
+      status: true
+    },
+    {
+      title: "Customer Satification Rating",
+      ref: "customer-satification-rating",
+      value: "93%",
+      icon: "/images/Home/like.svg",
+      color: "#bfccf8",
+      textColor: "#0235dd",
+      status: false
+    },
+  ];
 
+  export const AdminDashboardCharts = [
+    {
+      title: "Spend Analysis",
+      ref: "spend-analysis",
+      graph: "SpendAnalysis",
+  
+      selected: false,
+      type: "chart",
+      position: "left",
+    },
+    {
+      title: "Request Trend",
+      ref: "request-trend",
+      graph: "RequestTrend",
+      selected: false,
+      type: "chart",
+      position: "right",
+    },
+  
+    {
+      title: "Transaction History",
+      ref: "transaction-history",
+      graph: "TransactionHistory",
+      selected: false,
+      type: "chart",
+      position: "left",
+    },
+    {
+      title: "Invoice Management",
+      ref: "invoice-management",
+      graph: "InvoiceManagement",
+      selected: false,
+      type: "chart",
+      position: "right",
+    },
+  ];
 
 

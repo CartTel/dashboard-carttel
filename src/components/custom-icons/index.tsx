@@ -20,3 +20,7 @@ export * from "./warehouse-filled-icon";
 export * from "./warehouse-icon";
 export * from "./help-filled-icon";
 export * from "./help-icon";
+export * from "./reports-filled-icon"
+export * from "./reports-icon"
+export * from "./users-filled-icon"
+export * from "./users-icon"

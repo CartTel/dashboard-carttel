@@ -35,7 +35,7 @@ export default function TrackShipment() {
 
                     </div> */}
                     <div
-                        className={`text-[1rem] text-black  bg-white border-gray-400 border flex items-center h-[58px] rounded-[10px] w-[100%] px-[18px] gap-[10px]`}
+                        className={`text-[1rem] text-black  bg-white border-gray-400 border flex items-center h-[48px] rounded-[10px] w-[100%] px-[18px] gap-[10px]`}
                     >
                         <Image
                             src={'/images/Home/search.svg'}

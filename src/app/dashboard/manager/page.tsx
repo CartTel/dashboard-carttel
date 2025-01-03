@@ -5,10 +5,10 @@ import { ResolvingMetadata, Metadata } from 'next'
 
 
 export const metadata: Metadata = {
-    title: "Filmo Real Estate . Dashboard",
-    icons: '/images/filmo-favicon.ico',
+    title: "CartTel Manager . Dashboard",
+    icons: '/images/carttel-favicon.ico',
     openGraph: {
-        images: ['https://web.vampfi.com/images/filmo-favicon.ico']
+        images: ['https://app.carttel.africa/images/carttel-favicon.ico']
     }
 }
 
