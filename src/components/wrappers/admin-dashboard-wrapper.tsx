@@ -747,7 +747,7 @@ export function AdminDashboardWrapper({ children }: IAdminDashboardWrapper) {
               </div>
             </div>
 
-            <div className="lg:mt-[96px] lg:p-[36px] p-4 flex justify-center">
+            <div className="lg:mt-[80px] lg:p-[36px] p-4 flex justify-center bg-[#f9f9f9]">
               <div className="max-w-[1300px] w-[100%]">{children}</div>
             </div>
           </section>

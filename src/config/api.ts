@@ -3,6 +3,9 @@ import axios from "axios";
 import { apiCall } from "./api-clients";
 import { toast } from "@/hooks/use-toast";
 
+import qs from 'qs';
+
+
 export type LoginType = {
   email: string;
   password: string;
@@ -132,6 +135,33 @@ export const fetchSingleUser = async (associations = []) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching user:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const fetchAllRecentTransaction = async () => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/transactions/get-all-transactions`, {
+      params: {
+        associations: ['wallet', 'currency'], // Specify the relationships to include
+        sortOrder: 'DESC', // Optional: sorting order
+        sortBy: 'created_at', // Optional: sorting field
+        page: 1, // Optional: pagination
+        perPage: 100, // Optional: pagination limit
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+      
+    });
+    console.log("all transaction..", response.data);
+    const firstTenItems = response.data.data.slice(0, 10);
+    console.log("result ..", firstTenItems);
+    return firstTenItems;
+  } catch (error) {
+    console.error('Error fetching transaction:', error);
     throw error; // Rethrow the error for handling in the component
   }
 };

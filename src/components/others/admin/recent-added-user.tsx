@@ -35,7 +35,7 @@ export default function RecentlyAddedUserCard({ user }: { user: User }) {
 
     return (
         <div 
-            className="px-2 py-5 flex flex-wrap justify-between items-center gap-2 xs:gap-1 "
+            className="md:px-4 xs:px-2 py-5 flex flex-wrap justify-between items-center gap-2 xs:gap-1 "
         >
             {/* <div>{id}</div> */}
             <div className="flex-shrink-0">
@@ -69,8 +69,8 @@ export default function RecentlyAddedUserCard({ user }: { user: User }) {
                 <B2 className="text-md font-normal text-orange-500 truncate">
                     {code}
                 </B2>
-                <BMiddle className="text-xs text-gray-500 truncate">{role}</BMiddle>
-                <BMiddleRegular className="text-xs text-gray-400 truncate">
+                <BMiddle className="text-xs truncate text-rose-700">{role}</BMiddle>
+                <BMiddleRegular className="text-xs text-gray-600 truncate">
                     {formatDate(created_at)}
                 </BMiddleRegular>
             </div>

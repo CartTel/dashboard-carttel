@@ -4,6 +4,7 @@ import { CustomButton } from "@/components/custom-components";
 import { B1, H2, B2 } from "@/components/custom-typography";
 import React, { useState, useEffect, ComponentType } from "react";
 import Image from "next/image";
+import { BsThreeDots } from "react-icons/bs";
 // import {
 //   fmaasDashboardStatisitcs,
 //   FmaasDashboardCharts,
@@ -13,10 +14,11 @@ import Image from "next/image";
 import { adminDashboardStatisitcs, AdminDashboardCharts } from "@/libs/data";
 import { AdminstatCard } from "@/libs/interfaces";
 import RecentlyAddedUsers from "./recent-added-user";
+import RecentlyTranscationCard from "./recent-transaction";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchAllRecentUsers } from "@/config/api";
+import { fetchAllRecentUsers, fetchAllRecentTransaction } from "@/config/api";
 
 
 import { AllAdminStatCard } from "./admin-stats";
@@ -54,6 +56,11 @@ const AdminDashboard = () => {
         queryFn: fetchAllRecentUsers,
     });
 
+    const { data: transaction } = useQuery({
+        queryKey: ["recentTransactions"],
+        queryFn: fetchAllRecentTransaction,
+    });
+
     const [selectedStats, setSelectedStats] = useState<string[]>([
         "total-shipment-made",
         "total-importers",
@@ -83,7 +90,7 @@ const AdminDashboard = () => {
         // }));
 
         // setGraphs(updatedGraphs);
-        console.log(dashboardStats);
+        // console.log(dashboardStats);
 
         setStats(dashboardStats);
     }, []);
@@ -133,29 +140,64 @@ const AdminDashboard = () => {
             </div>
             <div className="mt-5">
                 <B1 className='text-slate-700 '>Recent Activities Feed</B1>
-                <div className="grid lg:grid-cols-3 gap-4 md:grid-cols-2 xs:grid-cols-1 mt-5">
-                    {isLoading ? (
-                        <Skeleton className="w-[160px] h-[160px]" />
-                    ) : (
-                        <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-lg border border-gray-200 mb-10">
-                            <div>
-                                <B1 className="md:text-[14px] xs:text-[14px] text-slate-700 px-4 py-2 mb-4">
-                                    Recently Added User
-                                </B1>
-                            </div>
+                <div className="grid lg:grid-cols-2 gap-4 md:grid-cols-2 xs:grid-cols-1 mt-5">
+                    <div>
 
-                            {data?.map((user: any, index: number) => (
-                                <div key={user.id} 
-                                className={`border-b-slate-200 border-b-[1px] ${
-                                    index === data.length - 1 ? "border-none pb-[30px]" : ""
-                                  }`}
-                                >
-                                    {/* {data.length} */}
-                                    <RecentlyAddedUsers user={user} />
+                        {isLoading ? (
+                            <Skeleton className="w-[160px] h-[160px]" />
+                        ) : (
+                            <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-2xl border border-gray-200 mb-10">
+                                <div className="flex justify-between items-center px-4">
+                                    <B2 className="!md:text-[14px] !xs:text-[12px] text-primary  py-2 pt-5 mb-4">
+                                        Recently Added User
+                                    </B2>
+
+                                    <div className="text-lg">
+                                        <BsThreeDots/>
+                                    </div>
+
                                 </div>
-                            ))}
-                        </div>
-                    )}
+
+                                {data?.map((user: any, index: number) => (
+                                    <div key={user.id} 
+                                    className={`border-b-slate-200 border-b-[1px] ${
+                                        index === data.length - 1 ? "border-none pb-[30px]" : ""
+                                    }`}
+                                    >
+                                        <RecentlyAddedUsers user={user} />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div>
+
+                    <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-2xl border border-gray-200 mb-10">
+
+                                <div className="flex justify-between items-center px-4">
+                                    <B2 className="!md:text-[14px] !xs:text-[12px] text-secondary  py-2 pt-5 mb-4">
+                                    Recent Transactions
+                                    </B2>
+
+                                    <div className="text-lg">
+                                        <BsThreeDots/>
+                                    </div>
+
+                                </div>
+
+                                {transaction?.map((transactions: any, index: number) => (
+                                    <div key={transactions.id} 
+                                    className={`border-b-slate-200 border-b-[1px] ${
+                                        index === transaction.length - 1 ? "border-none pb-[30px]" : ""
+                                    }`}
+                                    >
+                                        {/* {transaction.length - 1} {index} */}
+                                        <RecentlyTranscationCard transaction={transactions} />
+                                    </div>
+                                ))}
+                            </div>
+                    </div>
 
                 </div>
 
