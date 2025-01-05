@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import { CustomButton } from "@/components/custom-components";
-import { B1, H2, B2 } from "@/components/custom-typography";
+import { B1, H2, B2, H1 } from "@/components/custom-typography";
 import React, { useState, useEffect, ComponentType } from "react";
 import Image from "next/image";
 import { BsThreeDots } from "react-icons/bs";
@@ -17,9 +17,11 @@ import RecentlyAddedUsers from "./recent-added-user";
 import RecentlyTranscationCard from "./recent-transaction";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Skeleton } from "@/components/ui/skeleton";
+// import { Skeleton } from "@/components/ui/skeleton";
 import { fetchAllRecentUsers, fetchAllRecentTransaction } from "@/config/api";
 
+import { SkeletonLoader } from "@/components/ui/skeletonCard";
+import ShipmentRequests from "./shipment-request";
 
 import { AllAdminStatCard } from "./admin-stats";
 
@@ -51,14 +53,18 @@ import { AllAdminStatCard } from "./admin-stats";
 // };
 
 const AdminDashboard = () => {
-    const { data, isLoading, isError, error } = useQuery({
+    const { data: usersData, isLoading: isLoadingUsers, isError: isErrorUsers, error: usersError } = useQuery({
         queryKey: ["recentUsers"],
         queryFn: fetchAllRecentUsers,
+        staleTime: Infinity, // Data is always stale
+        retry: false,
     });
 
-    const { data: transaction } = useQuery({
+    const { data: transactionData, isLoading: isLoadingTransactions } = useQuery({
         queryKey: ["recentTransactions"],
         queryFn: fetchAllRecentTransaction,
+        staleTime: Infinity, // Data is always stale
+        retry: false,  // Disable retries on failure
     });
 
     const [selectedStats, setSelectedStats] = useState<string[]>([
@@ -101,10 +107,10 @@ const AdminDashboard = () => {
 
     return (
         <div className="!w-full flex flex-col gap-16">
-            <div>
+            <div className="">
                 <B1 className='text-slate-700 '>Operational Overview</B1>
-                <div>
-                    <div className="grid lg:grid-cols-4 gap-[15px] md:grid-cols-2 grid-cols-1 mt-5">
+                <div className="mt-5">
+                    <div className="grid lg:grid-cols-4 gap-[15px] md:grid-cols-2 grid-cols-1 ">
                         {selectedStats.length
                             ? stats.map(({ title, value, icon, color, textColor, status }, index) => (
                                 <AllAdminStatCard
@@ -143,26 +149,27 @@ const AdminDashboard = () => {
                 <div className="grid lg:grid-cols-2 gap-4 md:grid-cols-2 xs:grid-cols-1 mt-5">
                     <div>
 
-                        {isLoading ? (
-                            <Skeleton className="w-[160px] h-[160px]" />
+                        {isLoadingUsers ? (
+                            // <Skeleton className="w-[160px] h-[160px]" />
+                            <SkeletonLoader number={4} />
+                            // <div>hello</div>
                         ) : (
                             <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-2xl border border-gray-200 mb-10">
                                 <div className="flex justify-between items-center px-4">
-                                    <B2 className="!md:text-[14px] !xs:text-[12px] text-primary  py-2 pt-5 mb-4">
+                                    <H1 className="!md:text-[14px] !xs:text-[12px] text-secondary  py-2 pt-5 mb-4">
                                         Recently Added User
-                                    </B2>
+                                    </H1>
 
-                                    <div className="text-lg">
-                                        <BsThreeDots/>
+                                    <div className="text-lg text-secondary">
+                                        <BsThreeDots />
                                     </div>
 
                                 </div>
 
-                                {data?.map((user: any, index: number) => (
-                                    <div key={user.id} 
-                                    className={`border-b-slate-200 border-b-[1px] ${
-                                        index === data.length - 1 ? "border-none pb-[30px]" : ""
-                                    }`}
+                                {usersData?.map((user: any, index: number) => (
+                                    <div key={user.id}
+                                        className={`border-b-slate-200 border-b-[1px] ${index === usersData.length - 1 ? "border-none pb-[30px]" : ""
+                                            }`}
                                     >
                                         <RecentlyAddedUsers user={user} />
                                     </div>
@@ -170,35 +177,47 @@ const AdminDashboard = () => {
                             </div>
                         )}
                     </div>
-
                     <div>
-
-                    <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-2xl border border-gray-200 mb-10">
-
+                        {isLoadingTransactions ? (
+                            // <Skeleton className="w-[160px] h-[160px]" />
+                            <SkeletonLoader number={4} />
+                            // <div>hello</div>
+                        ) : (
+                            <div className="bg-white relative lg:min-w-[268px] xs:w-full shadow-md rounded-2xl border border-gray-200 mb-10">
                                 <div className="flex justify-between items-center px-4">
-                                    <B2 className="!md:text-[14px] !xs:text-[12px] text-secondary  py-2 pt-5 mb-4">
-                                    Recent Transactions
-                                    </B2>
+                                    <H1 className="!md:text-[14px] !xs:text-[12px] text-secondary  py-2 pt-5 mb-4">
+                                        Recent Transactions
+                                    </H1>
 
-                                    <div className="text-lg">
-                                        <BsThreeDots/>
+                                    <div className="text-lg text-secondary">
+                                        <BsThreeDots />
                                     </div>
 
                                 </div>
 
-                                {transaction?.map((transactions: any, index: number) => (
-                                    <div key={transactions.id} 
-                                    className={`border-b-slate-200 border-b-[1px] ${
-                                        index === transaction.length - 1 ? "border-none pb-[30px]" : ""
-                                    }`}
+                                {transactionData?.map((transactions: any, index: number) => (
+                                    <div key={transactions.id}
+                                        className={`border-b-slate-200 border-b-[1px] ${index === transactionData.length - 1 ? "border-none pb-[30px]" : ""
+                                            }`}
                                     >
-                                        {/* {transaction.length - 1} {index} */}
                                         <RecentlyTranscationCard transaction={transactions} />
                                     </div>
                                 ))}
                             </div>
-                    </div>
+                        )}
 
+                    </div>
+                </div>
+
+            </div>
+
+            <div className="mt-0">
+                <B1 className='text-slate-700 '>Shipment Overview</B1>
+                <div className=" mt-5">
+
+                    {/* <Skeleton className="w-[160px] h-[160px] bg-[#e9e1e1] border-[1px] border-gray-200" /> */}
+
+                    <ShipmentRequests />
                 </div>
 
             </div>

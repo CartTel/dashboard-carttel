@@ -154,7 +154,7 @@ export const fetchAllRecentTransaction = async () => {
         // Serialize params to ensure arrays are properly formatted as associations[]
         return qs.stringify(params, { arrayFormat: 'brackets' });
       },
-      
+
     });
     console.log("all transaction..", response.data);
     const firstTenItems = response.data.data.slice(0, 10);
@@ -166,6 +166,33 @@ export const fetchAllRecentTransaction = async () => {
   }
 };
 
+
+export const fetchAllShipmentRequest = async () => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/shipment/get-all-shipments`, {
+      params: {
+        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs'], // Specify the relationships to include
+        sortOrder: 'DESC', // Optional: sorting order
+        sortBy: 'updated_at', // Optional: sorting field
+        page: 1, // Optional: pagination
+        perPage: 100, // Optional: pagination limit
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    console.log("all shipment..", response.data);
+    const firstTenItems = response.data.data.slice(0, 10);
+    console.log("result ..", firstTenItems);
+    return firstTenItems;
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 
