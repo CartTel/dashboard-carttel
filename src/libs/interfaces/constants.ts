@@ -71,6 +71,8 @@ export interface AdminstatCard {
     color: string;
     duration?: string;
     textColor?: string;
+    percentage?: string;
+    count?: string;
     status?: boolean;
     wrapperClassName?: string;
     titleClassName?: string;

@@ -13,6 +13,8 @@ export function AllAdminStatCard({
   title,
   textColor,
   status,
+  percentage,
+  count,
   wrapperClassName,
   titleClassName,
   iconClassName,
@@ -60,7 +62,8 @@ export function AllAdminStatCard({
       <div className="flex justify-between items-center">
         <H1 className={`md:text-[32px] xs:text-[20px] pt-3 ${valueClassName}`} style={{
                 color: textColor,
-            }}>{value}
+            }}>{value} 
+            {/* {count} {percentage} */}
         </H1>
         <div className="pt-3">
 
@@ -69,7 +72,7 @@ export function AllAdminStatCard({
                 <div className="bg-green-200 rounded-lg p-1 text-green-600 text-sm flex items-center">
                   <HiArrowSmUp />
                   <div>
-                    +2.80%
+                  {percentage}
                   </div>
                 </div>
 
@@ -77,7 +80,7 @@ export function AllAdminStatCard({
                 <div className="bg-red-200 rounded-lg p-1 text-rose-600 text-sm flex items-center">
                   <HiArrowSmDown />
                   <div>
-                    -1.06%
+                    {percentage}
                   </div>
                 </div>
 

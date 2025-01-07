@@ -55,35 +55,49 @@ export const secondaryColor = {
     theme: "#1d428a",
 };
 
+export const statistics = [
+  {
+    title: "Total Shipment Made",
+    ref: "total-shipment-made",
+    value: "23,400",
+    icon: "/images/Home/package.svg",
+    color: "#ffe3cf",
+    textColor: "#f9812d",
+    status: true
+  },
+]
+
 
 export const adminDashboardStatisitcs = [
-    {
-      title: "Total Shipment Made",
-      ref: "total-shipment-made",
-      value: "23,400",
-      icon: "/images/Home/package.svg",
-      color: "#ffe3cf",
-      textColor: "#f9812d",
-      status: true
-    },
-    {
-      title: "Total Number of Importers",
-      ref: "total-importers",
-      value: "180",
-      icon: "/images/Home/users.svg",
-      color: "#EDE3FA",
-      textColor: "#a967fe",
-      status: false
-    },
-    {
-      title: "Avg Shipment Completion Time",
-      ref: "avg-shipment-completion-time",
-      value: "14 days",
-      icon: "/images/Home/calendar-tick.svg",
-      color: "#F8E3E4",
-      textColor: "#ea3a3f",
-      status: true
-    },
+    // {
+    //   title: "Total Shipment Made",
+    //   ref: "total-shipment-made",
+    //   value: "23,400",
+    //   icon: "/images/Home/package.svg",
+    //   color: "#ffe3cf",
+    //   textColor: "#f9812d",
+    //   status: true
+    // },
+    // {
+    //   title: "Total Number of Importers",
+    //   ref: "total-importers",
+    //   value: "180",
+    //   icon: "/images/Home/users.svg",
+    //   color: "#EDE3FA",
+    //   textColor: "#a967fe",
+    //   status: false,
+    //   percentage: "-5.47"
+    // },
+    // {
+    //   title: "Shipment Conversion Rate",
+    //   ref: "shipment-conversion-rate",
+    //   value: "14 days",
+    //   icon: "/images/Home/percentage.svg",
+    //   color: "#E2FAF0",
+    //   textColor: "#ea3a3f",
+    //   status: false,
+    //   percentage: "-1.07"
+    // },
     {
       title: "Customer Satification Rating",
       ref: "customer-satification-rating",
@@ -91,7 +105,8 @@ export const adminDashboardStatisitcs = [
       icon: "/images/Home/like.svg",
       color: "#bfccf8",
       textColor: "#0235dd",
-      status: false
+      status: false,
+      percentage: "-4.07"
     },
   ];
 
