@@ -61,31 +61,30 @@ export function AllAdminStatCard({
       </div>
       <div className="flex justify-between items-center">
         <H1 className={`md:text-[32px] xs:text-[20px] pt-3 ${valueClassName}`} style={{
-                color: textColor,
-            }}>{value} 
-            {/* {count} {percentage} */}
+          color: textColor,
+        }}>{value}
+          {/* {count} {percentage} */}
         </H1>
         <div className="pt-3">
 
-        {
+          {
             status === true ? (
-                <div className="bg-green-200 rounded-lg p-1 text-green-600 text-sm flex items-center">
-                  <HiArrowSmUp />
-                  <div>
+              <div className="bg-green-200 rounded-lg p-1 text-green-600 text-sm flex items-center">
+                <HiArrowSmUp />
+                <div>
                   {percentage}
-                  </div>
                 </div>
+              </div>
 
             ) : (
-                <div className="bg-red-200 rounded-lg p-1 text-rose-600 text-sm flex items-center">
-                  <HiArrowSmDown />
-                  <div>
-                    {percentage}
-                  </div>
+              <div className="bg-red-200 rounded-lg p-1 text-rose-600 text-sm flex items-center">
+                <HiArrowSmDown />
+                <div>
+                  {percentage}
                 </div>
-
+              </div>
             )
-        }
+          }
         </div>
 
       </div>

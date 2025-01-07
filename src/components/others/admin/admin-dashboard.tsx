@@ -26,31 +26,31 @@ import apiClient from "@/config/api-clients";
 import qs from 'qs';
 
 
-// type ChartComponents = {
-//   [key in ChartComponentKey]: ComponentType<any>;
-// };
+type ChartComponents = {
+    [key in ChartComponentKey]: ComponentType<any>;
+};
 
-// type ChartComponentKey =
-//   | "spend-analysis"
-//   | "request-trend"
-//   | "transaction-history"
-//   | "invoice-management";
+type ChartComponentKey =
+    | "shipment-create-paid"
+    | "created-paid"
+// | "transaction-history"
+// | "invoice-management";
 
-// const chartComponents: ChartComponents = {
-//   "spend-analysis": dynamic(
-//     () => import("@/components/others/fmass/spend-analysis-chart"),
-//     { ssr: false }
-//   ),
-//   "request-trend": dynamic(
-//     () => import("@/components/others/fmass/request-trend-chart")
-//   ),
-//   "transaction-history": dynamic(
-//     () => import("@/components/others/fmass/transaction-history")
-//   ),
-//   "invoice-management": dynamic(
-//     () => import("@/components/others/fmass/invoice-management-chart")
-//   ),
-// };
+const chartComponents: ChartComponents = {
+    "shipment-create-paid": dynamic(
+        () => import("@/components/others/reports/shipment-paid-chart"),
+        { ssr: false }
+    ),
+    "created-paid": dynamic(
+        () => import("@/components/others/reports/created-paid-chart")
+    ),
+    //   "transaction-history": dynamic(
+    //     () => import("@/components/others/fmass/transaction-history")
+    //   ),
+    //   "invoice-management": dynamic(
+    //     () => import("@/components/others/fmass/invoice-management-chart")
+    //   ),
+};
 
 const fetchAllShipment = async () => {
     try {
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
             count: "0",
             status: true
         }
-        ]
+    ]
     );
 
     const [status, setStatus] = useState<boolean>(false);
@@ -163,32 +163,32 @@ const AdminDashboard = () => {
         "customer-satification-rating",
     ]);
     const [selectedCharts, setSelectedCharts] = useState<string[]>([
-        "spend-analysis",
-        "request-trend",
-        "transaction-history",
-        "invoice-management",
+        "shipment-created-paid",
+        "created-paid",
+        // "transaction-history",
+        // "invoice-management",
     ]);
 
     const [stats, setStats] = useState<AdminstatCard[]>([]);
 
     const [newArray, setNewArray] = useState<AdminstatCard[]>([]);
     const [graphs, setGraphs] = useState<
-        { ref: string; Graph: any; position: string; type: string }[]
+        { ref: string; Graph: any; position?: string; type?: string }[]
     >([]);
 
     const [showCreateModal, setShowCreateModal] = useState(false);
 
     useEffect(() => {
         const dashboardStats = adminDashboardStatisitcs.map((stats) => stats);
-        // const updatedGraphs = AdminDashboardCharts.map((chart) => ({
-        //   ref: chart.ref,
-        //   Graph: chartComponents[chart.ref as ChartComponentKey],
-        //   position: chart.position || "left",
-        //   type: chart.type,
-        // }));
+        const updatedGraphs = AdminDashboardCharts.map((chart) => ({
+            ref: chart.ref,
+            Graph: chartComponents[chart.ref as ChartComponentKey],
+            //   position: chart.position || "left",
+            //   type: chart.type,
+        }));
         const boardStats = statistics.map((stats) => stats);
         setNewArray(boardStats)
-        // setGraphs(updatedGraphs);
+        setGraphs(updatedGraphs);
         setStats(dashboardStats);
     }, []);
 
@@ -308,7 +308,7 @@ const AdminDashboard = () => {
                 ]);
 
                 if (currentMonthCount > previousMonthCount) {
-                    
+
                     const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
                     const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
                     setUserStatus((prev: any) => [
@@ -348,8 +348,8 @@ const AdminDashboard = () => {
                 let shipmentPaid = 0
 
                 shipments.forEach((shipment: any) => {
-                    if(shipment?.isPaid === true){
-                        shipmentPaid ++ 
+                    if (shipment?.isPaid === true) {
+                        shipmentPaid++
                     }
                 });
 
@@ -369,7 +369,7 @@ const AdminDashboard = () => {
                         {
                             ...prev[0],
                             status: false,
-                            percentage: `+${change.toFixed(1)}%` 
+                            percentage: `+${change.toFixed(1)}%`
                         }
                     ]);
                 } else {
@@ -447,45 +447,37 @@ const AdminDashboard = () => {
                                                 count={count}
                                             />
                                         ))
-        
+
                                     }
                                 </div>
                             )}
-                            
                         </div>
 
                         <div>
-                        {statusConversion ? (
-                            <SkeletonLoader number={1} />
-                        ) : (
-                            <div>
-                                {
-                                    Array.isArray(shipmentSuccess) && shipmentSuccess?.map(({ title, value, icon, color, textColor, status, count, percentage }, index) => (
-                                        <AllAdminStatCard
-                                            key={index}
-                                            title={title}
-                                            value={value}
-                                            icon={icon}
-                                            color={color}
-                                            textColor={textColor}
-                                            status={status}
-                                            percentage={percentage}
-                                            count={count}
-                                        />
-                                    ))
-    
-                                }
-                            </div>
-                        )}
-                            
+                            {statusConversion ? (
+                                <SkeletonLoader number={1} />
+                            ) : (
+                                <div>
+                                    {
+                                        Array.isArray(shipmentSuccess) && shipmentSuccess?.map(({ title, value, icon, color, textColor, status, count, percentage }, index) => (
+                                            <AllAdminStatCard
+                                                key={index}
+                                                title={title}
+                                                value={value}
+                                                icon={icon}
+                                                color={color}
+                                                textColor={textColor}
+                                                status={status}
+                                                percentage={percentage}
+                                                count={count}
+                                            />
+                                        ))
+
+                                    }
+                                </div>
+                            )}
+
                         </div>
-
-
-
-
-
-
-
                         {selectedStats.length
                             ? stats.map(({ title, value, icon, color, textColor, status, count, percentage }, index) => (
                                 <AllAdminStatCard
@@ -502,22 +494,6 @@ const AdminDashboard = () => {
                             ))
                             : null}
                     </div>
-                    {/* <div className="mt-[24px] flex gap-[25px] lg:flex-row flex-col items-stretch">
-                        <div className="flex-[8] max-[1537px]:flex-[6] w-full">
-                            {graphs
-                                .filter((g) => g.position === "left")
-                                ?.map(({ Graph }, index) => (
-                                    <Graph key={index} />
-                                ))}
-                        </div>
-                        <div className="flex-[4]">
-                            {graphs
-                                .filter((g) => g.position === "right")
-                                ?.map(({ Graph }, index) => (
-                                    <Graph key={index} />
-                                ))}
-                        </div>
-                    </div> */}
                 </div>
 
             </div>
@@ -591,12 +567,40 @@ const AdminDashboard = () => {
             <div className="mt-0">
                 <B1 className='text-slate-700 '>Shipment Overview</B1>
                 <div className=" mt-5">
-
-                    {/* <Skeleton className="w-[160px] h-[160px] bg-[#e9e1e1] border-[1px] border-gray-200" /> */}
-
                     <ShipmentRequests />
                 </div>
+            </div>
 
+
+            <div className="mt-0">
+                <B1 className='text-slate-700 '>Analytics Overview</B1>
+                <div className=" mt-5">
+                    <div className="mt-[24px] hidden gap-[25px] lg:flex-row flex-col items-stretch">
+                        <div className="flex-[8] max-[1537px]:flex-[6] w-full">
+                            {graphs
+                                // .filter((g) => g.position === "left")
+                                ?.map(({ Graph }, index) => (
+                                    <Graph key={index} />
+                                ))}
+                        </div>
+                        <div className="flex-[4]">
+                            {graphs
+                                // .filter((g) => g.position === "right")
+                                ?.map(({ Graph }, index) => (
+                                    <Graph key={index} />
+                                ))}
+                        </div>
+                    </div>
+                </div>
+                <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-4 h-full">
+                    {Object.entries(chartComponents).map(([key, ChartComponent]) => (
+                        <div key={key} className="flex h-full">
+                            <div className="w-full flex-1">
+                                <ChartComponent />
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
 
