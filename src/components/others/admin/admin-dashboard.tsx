@@ -306,8 +306,7 @@ const AdminDashboard = () => {
                         count: currentMonthCount
                     }
                 ]);
-                // console.log("user..", currentMonthCount, previousMonthCount);
-                // Calculate percentage change
+
                 if (currentMonthCount > previousMonthCount) {
                     
                     const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
@@ -345,13 +344,6 @@ const AdminDashboard = () => {
                 const shipments = await fetchAllShipment();
 
                 const shipmentLength = shipments.length
-                // Update the value of total shipments
-                // setShipmentSuccess((prev) => [
-                //     {
-                //         ...prev[0], // Spread the existing object
-                //         value: shipments.length // Update the value
-                //     }
-                // ]);
 
                 let shipmentPaid = 0
 
@@ -360,7 +352,7 @@ const AdminDashboard = () => {
                         shipmentPaid ++ 
                     }
                 });
-                // Update the count and percentage
+
                 setShipmentSuccess((prev: any) => [
                     {
                         ...prev[0],
@@ -390,7 +382,6 @@ const AdminDashboard = () => {
                     ]);
 
                 }
-
 
                 setStatusConversion(false)
             } catch (error) {
