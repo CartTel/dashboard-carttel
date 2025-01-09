@@ -154,9 +154,11 @@ export interface IBarChartData {
 }
 
 export interface IAreaChartData {
-    label: string;
-
-    value: number;
+    // label?: string;
+    data?: {
+        data: number[];
+    }[];
+    // value?: number;
 }
 
 type Item = {

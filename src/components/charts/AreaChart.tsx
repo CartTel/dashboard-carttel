@@ -1,13 +1,20 @@
+
+"use client";
+
 import { IAreaChartData } from "@/libs/interfaces";
-import React from "react";
-import Chart from "react-apexcharts";
+
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export const AreaChart = ({
   chartData,
+  xAxis,
   chartDetails,
   criticalValue,
 }: {
-  chartData: IAreaChartData[];
+  chartData: any;
+  xAxis: string[]
   chartDetails: {
     title: string;
     period: string;
@@ -23,14 +30,14 @@ export const AreaChart = ({
   };
   criticalValue?: number; // Add criticalValue as an optional prop
 }) => {
-  const options = {
+  const [options, setOptions] = useState<any>({
     chart: {
       id: "area-chart",
     },
     xaxis: {
-      categories: chartData.map((data) => data.label),
+      categories: xAxis,
       title: {
-        text: chartDetails.showXaxisLabel ? "Time Period" : "",
+        text: chartDetails.showXaxisLabel ? "Shipment" : "",
       },
     },
     yaxis: chartDetails.yAxisDetails
@@ -40,7 +47,7 @@ export const AreaChart = ({
           tickAmount: chartDetails.yAxisDetails.ticks,
         }
       : {},
-
+  
     dataLabels: {
       enabled: false, // Disable data labels on the chart
     },
@@ -52,7 +59,7 @@ export const AreaChart = ({
             if (value >= criticalValue) {
               return `<div style="color: red; font-size: 10px;">⬤</div>`;
             }
-            return `<div style="color: green; font-size: 10px;">⬤</div>`;
+            return `<div style="color: purple; font-size: 10px;">⬤</div>`;
           }
         : undefined,
     },
@@ -74,14 +81,27 @@ export const AreaChart = ({
           ],
         }
       : {},
-  };
 
-  const series = [
-    {
-      name: chartDetails.title,
-      data: chartData.map((data) => data.value),
-    },
-  ];
+  })
+
+  // const series = [
+  //   {
+  //     name: chartDetails.title,
+  //     data: chartData.map((data) => data.value),
+  //   },
+  // ];
+  const [series, setSeries] = useState(chartData);
+
+  useEffect(() => {
+    // Update the series and options whenever the data or xAxis prop changes
+    setSeries(chartData);
+    setOptions((prevOptions: any) => ({
+        ...prevOptions,
+        xaxis: {
+            categories: xAxis,
+        },
+    }));
+}, [chartData, xAxis]);
 
   return (
     <div>
