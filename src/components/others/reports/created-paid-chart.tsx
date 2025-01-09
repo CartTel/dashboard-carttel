@@ -111,41 +111,48 @@ function CreatedPaidChart() {
         ];
     };
 
-    const processShipmentDataForWeek = (shipments: any) => {
+    const processShipmentDataForWeek = (shipments: any[]) => {
         const weeklyCounts = Array(7).fill(0);
         const weeklyPaidCounts = Array(7).fill(0);
+    
         const today = new Date();
-        const startOfWeek = today.getDate() - today.getDay(); // Sunday is the first day of the week
-
-        // console.log("setting..", startOfWeek);
-
+        const currentYear = today.getFullYear();
+    
+        // Get the start and end of the current week (Sunday to Saturday)
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay()); // Sunday
+        startOfWeek.setHours(0, 0, 0, 0);
+    
+        const endOfWeek = new Date(today);
+        endOfWeek.setDate(today.getDate() - today.getDay() + 6); // Saturday
+        endOfWeek.setHours(23, 59, 59, 999);
+    
         shipments.forEach((shipment: any) => {
             const createdAt = new Date(shipment.created_at);
-            const dayOfWeek = createdAt.getDay(); // 0-6 (Sunday-Saturday)
-
-            // console.log("wait ..", dayOfWeek);
-
-            // Check if the shipment was created in the current week
-            if (createdAt >= new Date(today.setDate(startOfWeek)) && createdAt <= new Date()) {
-                // console.log("time after time ..", today.setDate(startOfWeek), createdAt)
+            const year = createdAt.getFullYear();
+    
+            // Check if the shipment was created this week and matches the current year
+            if (year === currentYear && createdAt >= startOfWeek && createdAt <= endOfWeek) {
+                const dayOfWeek = createdAt.getDay(); // 0-6 (Sunday-Saturday)
                 weeklyCounts[dayOfWeek] += 1; // Count all shipments
                 if (shipment.isPaid === true) {
                     weeklyPaidCounts[dayOfWeek] += 1; // Count paid shipments
                 }
             }
         });
-
+    
         return [
             {
-                name: 'Shipment Created',
+                name: "Shipment Created",
                 data: weeklyCounts,
             },
             {
-                name: 'Shipment Paid',
+                name: "Shipment Paid",
                 data: weeklyPaidCounts,
             },
         ];
     };
+    
 
     const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
 
