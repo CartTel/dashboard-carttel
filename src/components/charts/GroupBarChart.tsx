@@ -1,21 +1,19 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { IGroupBarChart } from '@/libs/interfaces';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-
 export function GroupBarChart({
     height = 400,
-    // colors,
-    colors = ['#103f69', '#fbc41d'], xAxis = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    colors = ['#103f69', '#fbc41d'], 
+    xAxis,
     data,
     graphSuffix = ''
 }: IGroupBarChart) {
     const [series, setSeries] = useState(data);
-
     const [options, setOptions] = useState<ApexCharts.ApexOptions | undefined>({
         chart: {
             type: 'bar',
@@ -24,12 +22,10 @@ export function GroupBarChart({
         colors,
         plotOptions: {
             bar: {
-
                 borderRadius: 0,
                 borderRadiusApplication: "end",
                 horizontal: false,
                 dataLabels: {
-
                     total: {
                         enabled: false,
                         offsetX: 0,
@@ -53,12 +49,10 @@ export function GroupBarChart({
         },
         xaxis: {
             categories: xAxis,
-
         },
         yaxis: {
             title: {
                 text: undefined,
-
             },
             tickAmount: 5,
             labels: {
@@ -82,14 +76,22 @@ export function GroupBarChart({
         },
     });
 
+    useEffect(() => {
+        // Update the series and options whenever the data or xAxis prop changes
+        setSeries(data);
+        setOptions(prevOptions => ({
+            ...prevOptions,
+            xaxis: {
+                categories: xAxis,
+            },
+        }));
+    }, [data, xAxis]);
+
     return (
         <div>
             <div id="chart">
-                <Chart options={options} series={series} type="bar" height={height}
-                    width={'100%'}
-                />
+                <Chart options={options} series={series} type="bar" height={height} width={'100%'} />
             </div>
-
         </div>
     );
-};
+}

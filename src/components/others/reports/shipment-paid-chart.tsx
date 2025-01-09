@@ -16,7 +16,7 @@ function ShipmentCreationChartAnalysis({
 }: IIncidentReportChart) {
   const [chartData] = useState<IAreaChartData[]>(spendAnalysisData);
   const [selectedFilter, setSelectedFilter] = useState("monthly");
-  console.log(chartData);
+//   console.log(chartData);
 
   return (
     <div className="shadow bg-white md:p-[30px] xs:p-[15px] rounded-[16px] mb-[30px] ">
