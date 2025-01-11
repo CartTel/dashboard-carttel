@@ -223,8 +223,8 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
                 </div>
               </div>
 
-              <Link
-                href={"/dashboard/import"}
+              <div
+                // href={"/dashboard/import"}
                 // ref={trigger}
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center gap-4 "
@@ -275,7 +275,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
                     fill=""
                   />
                 </svg>
-              </Link>
+              </div>
 
               <div
                 ref={dropdown}
@@ -624,8 +624,8 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
                                     </span>
                                 </div> */}
 
-                <Link
-                  href={"/dashboard/import"}
+                <div
+                  // href={"/dashboard/import"}
                   // ref={trigger}
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-4 "
@@ -676,7 +676,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
                       fill=""
                     />
                   </svg>
-                </Link>
+                </div>
 
                 <div
                   ref={dropdown}

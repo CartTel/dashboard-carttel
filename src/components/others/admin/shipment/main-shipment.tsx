@@ -5,7 +5,7 @@ import {
     CustomButton,
     CustomSelect,
 } from "@/components/custom-components";
-import { H2, H1 } from "@/components/custom-typography";
+import { H2, H1, BMiddleRegular, BodySmallestMedium } from "@/components/custom-typography";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { ShipmentCard } from "./shipment-card";
@@ -15,6 +15,9 @@ import PaginationV2 from "@/components/wrappers/pagination";
 import apiClient from "@/config/api-clients";
 import qs from 'qs';
 import { useQuery } from "@tanstack/react-query";
+import { TbFileInvoice } from "react-icons/tb";
+
+
 
 const breadCrumb = [
     {
@@ -140,6 +143,12 @@ const activities = [
     },
 ];
 
+interface StatusCount {
+    name: string;
+    count: number;
+}
+
+
 const fetchAllShipment = async () => {
     try {
         const response = await apiClient.get(`/api/v1/shipment/get-all-shipments`, {
@@ -165,16 +174,8 @@ const fetchAllShipment = async () => {
 export function MainShipment() {
     const [currentTab, setCurrentTab] = useState("");
     const router = useRouter();
-    const [shipmentReq, setShipmentReq] = useState(null)
     const queryParams = useSearchParams();
-    const [showCreateModal, setShowCreateModal] = useState(false);
-    const [pagination, setPagination] = useState({
-        perPage: 10,
-        totalPages: 10,
-        page: 1,
-        lastPage: 10,
-        links: [],
-    });
+
     const { data: shipmentData, isLoading: isLoadingShipment, isError: isErrorUsers, error: shipmentsError } = useQuery({
         queryKey: ["allShipments"],
         queryFn: fetchAllShipment,
@@ -182,6 +183,28 @@ export function MainShipment() {
         retry: false,
     });
 
+    const [statusCounts, setStatusCounts] = useState<StatusCount[]>([]);
+
+    useEffect(() => {
+        // console.log("rate..", shipmentData);
+        if (shipmentData?.data.length > 0) {
+            const counts: Record<string, number> = shipmentData?.data.reduce((acc: any, shipment: any) => {
+                const statusName = shipment.status?.name;
+                if (statusName) {
+                    acc[statusName] = (acc[statusName] || 0) + 1;
+                }
+                return acc;
+            }, {} as Record<string, number>);
+
+            // Convert counts into an array of objects
+            const formattedCounts = Object.entries(counts).map(([name, count]) => ({
+                name,
+                count,
+            }));
+
+            setStatusCounts(formattedCounts);
+        }
+    }, [shipmentData]);
 
 
     useEffect(() => {
@@ -193,58 +216,37 @@ export function MainShipment() {
         }
     }, [queryParams]);
 
-    // useEffect(() => {
-    //     const getShipments = async () => {
-    //         try {
-
-    //             const shipments = await fetchAllShipment();
-    //             // Update the value of total shipments
-
-
-    //         } catch (error) {
-    //             console.error('Error in fetching or processing shipments:', error);
-    //         }
-    //     };
-    //     getShipments();
-    // }, []);
-
-
-
     const updateTab = (tab: string) => {
         router.push(`/dashboard/admin/shipment?tab=${tab}`);
-    };
-
-    const toggleCreateModal = () => {
-        setShowCreateModal((prev) => !prev);
-    };
-
-    const onPageChange = (page: number) => {
-        const pgn = pagination;
-        pgn.page = page;
-        setPagination((prev) => pgn);
     };
 
     return (
         <div className="h-[100%] w-full">
             {/* BREADCRUMB */}
             <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 w-fit px-5 py-1 rounded-full" />
-            <div className="mt-[14px] flex lg:items-center justify-between lg:flex-row flex-col mb-[36px]">
+            <div className="my-[14px] flex lg:items-center justify-between lg:flex-row flex-col mb-[0px]">
                 <H1 className="">Shipments</H1>
-                <div className="flex items-center gap-[24px] mt-4 lg:mt-0">
-
-
-                    {/* <CustomButton
-            onClick={toggleCreateModal}
-            
-            className={`!text-[0.875rem] !py-[0px] lg:!w-[139px] w-full h-[48px]`}
-          >
-            Create request
-          </CustomButton> */}
-                </div>
             </div>
-            {/* my-0 flex border-b-[2px] border-gray-300 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 */}
 
-            <ul className="flex items-center gap-[29px] border-b-[0.5px] border-b-gray mb-[33px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-hide lg:overflow-x-visible">
+            <div className="flex flex-col gap-4 my-[14px]">
+                <ul className="grid lg:grid-cols-7 xs:grid-cols-1 gap-4 py-5 w-full justify-between">
+                    {statusCounts.map((status, index) => (
+                        <li key={index} className="flex justify-between items-center gap-2 rounded-md border-[1px] shadow-md border-gray-200 pb-2 px-3">
+                            
+                            {/* <div className="text-xl text-gray-500"><TbFileInvoice /></div> */}
+                            <BMiddleRegular className="my-[10px] text-xs text-gray-600 truncate">
+                                {status.name}
+                            </BMiddleRegular>
+                            <BMiddleRegular className="my-[10px] text-xs text-primary truncate bg-plain rounded-full px-3 py-1 flex justify-center items-center">
+                                {status.count}
+                            </BMiddleRegular>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+
+            <ul className="my-[14px] flex items-center gap-[29px] border-b-[0.5px] border-b-gray mb-[33px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-hide lg:overflow-x-visible">
                 {activityTabs.map((tab, index) => (
                     <li
                         key={index}
@@ -261,25 +263,25 @@ export function MainShipment() {
 
             {currentTab === "All Request" && (
                 <PaginationV2
-                list={shipmentData?.data}
-                pagination={{
-                  perPage: 5,
-                  totalPages: Math.ceil(shipmentData?.pagination.total / 5),
-                  total: shipmentData?.pagination.total,
-                  page: shipmentData?.pagination.page,
-                }}
-                onPageChange={(page) => console.log("Page changed to:", page)}
-              >
-                {(paginatedList) => (
-                  <div className="grid lg:grid-cols-3 gap-4">
-                    {paginatedList?.map((activity: any, index: number) => (
-                      <ShipmentCard {...activity} key={index} />
-                    ))}
-                  </div>
-                )}
-              </PaginationV2>
+                    list={shipmentData?.data}
+                    pagination={{
+                        perPage: 5,
+                        totalPages: Math.ceil(shipmentData?.pagination.total / 5),
+                        total: shipmentData?.pagination.total,
+                        page: shipmentData?.pagination.page,
+                    }}
+                    onPageChange={(page) => console.log("Page changed to:", page)}
+                >
+                    {(paginatedList) => (
+                        <div className="grid lg:grid-cols-3 gap-4">
+                            {paginatedList?.map((activity: any, index: number) => (
+                                <ShipmentCard {...activity} key={index} />
+                            ))}
+                        </div>
+                    )}
+                </PaginationV2>
             )}
-            
+
 
             {/* {currentTab !== "Pending Request" && (
                 <PaginationV2

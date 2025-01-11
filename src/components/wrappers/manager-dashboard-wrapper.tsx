@@ -225,8 +225,8 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                 </div>
                             </div>
 
-                            <Link
-                                href={"/dashboard/manager"}
+                            <div
+                                // href={"/dashboard/manager"}
                                 // ref={trigger}
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
                                 className="flex items-center gap-4 "
@@ -281,7 +281,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                         fill=""
                                     />
                                 </svg>
-                            </Link>
+                            </div>
 
                             <div
                                 ref={dropdown}
@@ -620,8 +620,8 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                     </span>
                                 </div> */}
 
-                                <Link
-                                    href={"/dashboard/manager"}
+                                <div
+                                    // href={"/dashboard/manager"}
                                     // ref={trigger}
                                     onClick={() => setDropdownOpen(!dropdownOpen)}
                                     className="flex items-center gap-4 "
@@ -676,7 +676,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                             fill=""
                                         />
                                     </svg>
-                                </Link>
+                                </div>
 
                                 <div
                                     ref={dropdown}

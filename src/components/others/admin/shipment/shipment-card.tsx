@@ -51,7 +51,7 @@ export function ShipmentCard(
                         </Link>
                     </BMiddle>
 
-                    <BodySmallestMedium className='my-[10px] !text-gray-500 text-xs'>Requested By:{requested_by}</BodySmallestMedium>
+                    <BodySmallestMedium className='my-[10px] !text-gray-500 text-xs'>Requested By: {requested_by}</BodySmallestMedium>
 
                     <BodySmallest className='my-[10px] !text-purple-700 uppercase'>{code}</BodySmallest>
                     <BMiddleRegular className="my-[10px] text-xs text-gray-600 truncate">
