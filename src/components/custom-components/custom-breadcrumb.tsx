@@ -6,11 +6,12 @@ interface ICustomBreadCrumb {
     items: {
         label: string;
         link?: string;
-    }[]
+    }[], 
+    className?: string;
 }
-export function CustomBreadCrumb({ items }: ICustomBreadCrumb) {
+export function CustomBreadCrumb({ items, className }: ICustomBreadCrumb) {
     return (
-        <ul className='flex items-center gap-[4px]'>
+        <ul className={`flex items-center gap-[4px] ${className}`}>
             {
                 items.map(({ label, link }, index) => (
                     <li key={index} className={`flex items-center gap-[1.5px] text-[0.875rem] ${index < items.length - 1 ? 'text-gray' : ''}`}>

@@ -207,7 +207,7 @@ function CreatedPaidChart() {
                         <BMiddle className="!text-slate-400 md:text-[15px] xs:text-xs">Shipment Conversion Analysis</BMiddle>
                     </div>
 
-                    <div className='flex md:flex-row xs:flex-col justify-center items-center gap-3'>
+                    <div className='flex lg:flex-row md:flex-col xs:flex-col justify-center items-center gap-3'>
                         <div className=" md:px-4 xs:px-0 text-black flex-col font-normal flex flex-wrap justify-center items-center text-center">
 
                             <div className=" w-fit ">

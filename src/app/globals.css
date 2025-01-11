@@ -427,12 +427,16 @@ input[type="file"]::file-selector-button:active {
 }
 
 @keyframes underline-link {
-  from {
+  0% {
     width: 0%;
 
   }
+  50% {
+    width: 50%;
+    transform: translateX(-50%);
+  }
 
-  to {
+  100% {
     width: 100%;
     transform: translateX(-50%);
   }

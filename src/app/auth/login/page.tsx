@@ -57,7 +57,7 @@ function Login() {
         }
     };
 
-    const { mutate: login } = useLoginMutation(
+    const { mutate: login, isPending } = useLoginMutation(
         (data) => {
 
             const hasImport = data.user.roles.some((item: any) => item.name === "Import");
@@ -314,13 +314,13 @@ function Login() {
 
 
                                             <CustomButton
-                                                disabled={isLoading}
+                                                disabled={isPending}
                                                 type="submit" // Explicitly set as "submit"
                                                 className="text-sm z-50 relative mt-5 tracking-wide font-semibold bg-primary text-gray-100 w-full rounded-lg hover:bg-secondary transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                             >
-                                                {/* {isLoading ? 'Logging in...' : 'Login'} */}
+                                                {/* {isPending ? 'Logging in...' : 'Login'} */}
                                                 <div>
-                                                    {isLoading ? ( // Display spinner if userLoading is true
+                                                    {isPending ? ( // Display spinner if userLoading is true
                                                         <div className="flex items-center px-6">
                                                             <div>
 
@@ -378,10 +378,7 @@ function Login() {
                                             </a>
                                             .
                                         </B2>
-
                                     </div>
-
-
                                 </div>
                             )}
                         </div>

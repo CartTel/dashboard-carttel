@@ -5,12 +5,6 @@ import { B1, H2, B2, H1 } from "@/components/custom-typography";
 import React, { useState, useEffect, ComponentType } from "react";
 import Image from "next/image";
 import { BsThreeDots } from "react-icons/bs";
-// import {
-//   fmaasDashboardStatisitcs,
-//   FmaasDashboardCharts,
-//   company2,
-// } from "@/libs/data";
-
 import { adminDashboardStatisitcs, AdminDashboardCharts, statistics } from "@/libs/data";
 import { AdminstatCard } from "@/libs/interfaces";
 import RecentlyAddedUsers from "./recent-added-user";
@@ -33,8 +27,6 @@ type ChartComponents = {
 type ChartComponentKey =
     | "shipment-create-paid"
     | "created-paid"
-// | "transaction-history"
-// | "invoice-management";
 
 const chartComponents: ChartComponents = {
     "shipment-create-paid": dynamic(
@@ -44,12 +36,6 @@ const chartComponents: ChartComponents = {
     "created-paid": dynamic(
         () => import("@/components/others/reports/created-paid-chart")
     ),
-    //   "transaction-history": dynamic(
-    //     () => import("@/components/others/fmass/transaction-history")
-    //   ),
-    //   "invoice-management": dynamic(
-    //     () => import("@/components/others/fmass/invoice-management-chart")
-    //   ),
 };
 
 const fetchAllShipment = async () => {
@@ -165,8 +151,6 @@ const AdminDashboard = () => {
     const [selectedCharts, setSelectedCharts] = useState<string[]>([
         "shipment-created-paid",
         "created-paid",
-        // "transaction-history",
-        // "invoice-management",
     ]);
 
     const [stats, setStats] = useState<AdminstatCard[]>([]);
@@ -183,8 +167,6 @@ const AdminDashboard = () => {
         const updatedGraphs = AdminDashboardCharts.map((chart) => ({
             ref: chart.ref,
             Graph: chartComponents[chart.ref as ChartComponentKey],
-            //   position: chart.position || "left",
-            //   type: chart.type,
         }));
         const boardStats = statistics.map((stats) => stats);
         setNewArray(boardStats)
@@ -401,7 +383,7 @@ const AdminDashboard = () => {
             <div className="">
                 <B1 className='text-slate-700 '>Operational Overview</B1>
                 <div className="mt-5">
-                    <div className="grid lg:grid-cols-4 gap-[15px] md:grid-cols-2 grid-cols-1 ">
+                    <div className="grid xl:grid-cols-4 lg:grid-cols-2 gap-[15px] md:grid-cols-3 grid-cols-1 ">
                         <div>
                             {status ? (
                                 <SkeletonLoader number={1} />

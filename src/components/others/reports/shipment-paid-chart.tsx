@@ -36,10 +36,6 @@ const fetchAllShipment = async () => {
 };
 
 
-
-
-
-
 function ShipmentCreationChartAnalysis({
   value = "₦65,854,431.00",
   growth = "34.3%",
@@ -56,7 +52,7 @@ function ShipmentCreationChartAnalysis({
   const [selectedDuration, setSelectedDuration] = useState(currentYear);
 
   // const [chartData] = useState<IAreaChartData[]>(spendAnalysisData);
-  const [selectedFilter, setSelectedFilter] = useState("monthly");
+  // const [selectedFilter, setSelectedFilter] = useState("monthly");
   //   console.log(chartData);
 
   const [selectedTimeFrame, setSelectedTimeFrame] = useState('week'); // Default to year
@@ -98,8 +94,6 @@ function ShipmentCreationChartAnalysis({
     // console.log("all the item..", monthlyData, xAxis)
     setChartData(monthlyData);
   };
-
-
 
   const processShipmentData = (shipments: any, year: number) => {
     const monthlyCounts = Array(12).fill(0);
@@ -191,21 +185,19 @@ function ShipmentCreationChartAnalysis({
       <div className='flex items-center justify-between mb-[10px]'>
         {/* <SecondaryText className='!text-[#16161D]'></SecondaryText> */}
         <div className=''>
-
           <BMiddle className="!text-slate-400 md:text-[15px] xs:text-xs">Shipment Chart</BMiddle>
         </div>
 
-        <div className='flex md:flex-row xs:flex-col justify-center items-center gap-3'>
+        <div className='flex lg:flex-row md:flex-col xs:flex-col justify-center items-center gap-3'>
           <div className=" md:px-4 xs:px-0 text-black flex-col font-normal flex flex-wrap justify-center items-center text-center">
 
             <div className=" w-fit ">
               <div className="rounded-full border-[1px] p-1 gap-3 border-[#029b5b] flex justify-center items-center w-fit">
+                
                 <button
                   onClick={handleSetYear}
-
                   className={`${selectedTimeFrame === 'year' ? "bg-[#029b5b] text-white rounded-full xs:px-[21px] md:px-[21px] py-[1px] text-center" : "text-primary"
                     } flex justify-between items-center xs:px-[21px] md:px-[21px] group text-primary`}
-
                 >
                   <div className="flex justify-center">
                     <div className="xs:text-lg md:hidden flex  justify-center ">Y</div>
@@ -218,7 +210,6 @@ function ShipmentCreationChartAnalysis({
                 <button
                   className={`${selectedTimeFrame === 'week' ? "bg-[#029b5b] text-white rounded-full xs:px-[21px] md:px-[21px] py-[1px] text-center" : "text-primary"
                     } flex justify-between items-center xs:px-[21px] md:px-[21px] group text-primary`}
-
                   onClick={handleSetWeek}
                 >
                   <div className="flex justify-center">
@@ -227,7 +218,6 @@ function ShipmentCreationChartAnalysis({
                   <div className="md:flex xs:hidden justify-center items-center text-center">
                     Week
                   </div>
-
                 </button>
 
               </div>
@@ -241,7 +231,10 @@ function ShipmentCreationChartAnalysis({
                 labelClass='!text-[0.875rem] !text-gray'
                 optionsClass='!text-[0.875rem] !h-[40px]'
                 optionWrapperClass='!pt-[10px]  !h-[140px] !top-[45px] border border-gray-500'
-                wrapperClass='!h-[44px] !border-[1px] !border-[#C5C5D3] bg-[#fff] rounded-[12px]' setSelected={handleDurationChange} selected={selectedDuration} options={years}
+                wrapperClass='!h-[44px] !border-[1px] !border-[#C5C5D3] bg-[#fff] rounded-[12px]' 
+                setSelected={handleDurationChange} 
+                selected={selectedDuration} 
+                options={years}
               />
 
             </div>
