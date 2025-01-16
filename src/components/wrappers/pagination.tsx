@@ -13,6 +13,8 @@ import {
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
 
+import { RxDoubleArrowRight } from "react-icons/rx";
+
 
 
 
@@ -238,7 +240,8 @@ export function PaginationV2({
               type="button"
               className="w-fit px-3 h-[37px] flex justify-center items-center rounded-full border-[1px] border-gray-400 text-[0.875rem] font-[500] text-[#050505]"
             >
-              <MdOutlineKeyboardDoubleArrowRight />
+              <RxDoubleArrowRight />
+              {/* <MdOutlineKeyboardDoubleArrowRight /> */}
               {/* Last */}
             </button>
           </div>

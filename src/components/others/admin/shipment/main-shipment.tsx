@@ -40,108 +40,7 @@ const activityTabs = [
     "Completed"
 ];
 
-const activities = [
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        status: "Pending",
-    },
-    {
-        name: "Shower head replacement",
-        unit: "FUDIA APARTMENTS",
-        status: "Clarifying Request",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        status: "Pending",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        status: "Pending",
-    },
-    {
-        name: "Shower head replacement",
-        unit: "FUDIA APARTMENTS",
-        status: "Clarifying Request",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        status: "Pending",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        status: "Pending",
-    },
-    {
-        name: "Shower head replacement",
-        unit: "FUDIA APARTMENTS",
-        status: "Clarifying Request",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        status: "Pending",
-    },
-    // OTHERS
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-    {
-        name: "Servicing of Kitchen smoke extractor at B2",
-        unit: "FUDIA APARTMENTS",
-        time_taken: "1hr:5d:42m",
-        sla: "Water Supply",
-    },
-];
+
 
 interface StatusCount {
     name: string;
@@ -229,7 +128,7 @@ export function MainShipment() {
             </div>
 
             <div className="flex flex-col gap-4 my-[14px]">
-                <ul className="grid lg:grid-cols-7 xs:grid-cols-1 gap-4 py-5 w-full justify-between">
+                <ul className="grid lg:grid-cols-5 xs:grid-cols-1 gap-4 py-5 w-full justify-between">
                     {statusCounts.map((status, index) => (
                         <li key={index} className="flex justify-between items-center gap-2 rounded-md border-[1px] shadow-md border-gray-200 pb-2 px-3">
                             
