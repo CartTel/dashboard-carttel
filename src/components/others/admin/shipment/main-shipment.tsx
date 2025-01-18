@@ -32,6 +32,7 @@ const breadCrumb = [
 const activityTabs = [
     "All Request",
     "Pending",
+    "Invoice",
     "Approved",
     "Started",
     "Arrival",
@@ -39,7 +40,6 @@ const activityTabs = [
     "Arrived",
     "Completed"
 ];
-
 
 
 interface StatusCount {
@@ -72,8 +72,12 @@ const fetchAllShipment = async () => {
 
 export function MainShipment() {
     const [currentTab, setCurrentTab] = useState("");
+
     const router = useRouter();
     const queryParams = useSearchParams();
+
+    const [currentActivityTab, setCurrentActivityTab] = useState("Pending"); // Default tab
+    const [shipment, setShipment] = useState<any>([]);
 
     const { data: shipmentData, isLoading: isLoadingShipment, isError: isErrorUsers, error: shipmentsError } = useQuery({
         queryKey: ["allShipments"],
@@ -115,7 +119,56 @@ export function MainShipment() {
         }
     }, [queryParams]);
 
+
+    useEffect(() => {
+        const fetchAllShipmentData = async () => {
+            // console.log("current tab..", currentActivityTab);
+
+            // Map tab names to corresponding status codes
+            const tabToStatusCodes: Record<string, string[]> = {
+                Pending: ["01"],
+                Approved: ["30"],
+                Intransit: ["135"],
+                Started: ["40"],
+                Completed: ["160"],
+                Invoice: ["05"],
+                Arrival: ["60"],
+                Arrived: ["150"]                
+            };
+
+            const byStatusCodes = tabToStatusCodes[currentActivityTab] || [];
+            // console.log("status code..", byStatusCodes, tabToStatusCodes.Pending);
+
+            try {
+                const response = await apiClient.get(`/api/v1/shipment/get-all-shipments`, {
+                    params: {
+                        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs'], // Specify the relationships to include
+                        sortOrder: 'DESC',
+                        sortBy: 'created_at',
+                        // byStatusCodes: ["05"],
+                        byStatusCodes,
+                        page: 1,
+                        perPage: 1000,
+                    },
+                    paramsSerializer: (params) => {
+                        return qs.stringify(params, { arrayFormat: 'brackets' });
+                    },
+                });
+
+                setShipment(response.data)
+                // console.log("all Request..", response.data);
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching shipment:', error);
+                throw error; // Rethrow the error for handling in the component
+            }
+        };
+        fetchAllShipmentData(); // Fetch data when the component mounts
+    }, [currentActivityTab]);
+
     const updateTab = (tab: string) => {
+        // console.log("current string..", tab);
+        setCurrentActivityTab(tab)
         router.push(`/dashboard/admin/shipment?tab=${tab}`);
     };
 
@@ -182,25 +235,26 @@ export function MainShipment() {
             )}
 
 
-            {/* {currentTab !== "Pending Request" && (
+            {currentTab !== "All Request" && (
                 <PaginationV2
-                    onPageChange={onPageChange}
-                    list={activities.filter((a) => !a.sla)}
-                    pagination={pagination}
-                >
-                    <div className="grid lg:grid-cols-3 gap-[23px] grid-cols-1">
-                        {activities
-                            .filter((a) => a.sla)
-                            .map((activity, index) => (
-                                <ShipmentCard
-                                    {...activity}
-                                    key={index}
-                                    containerClass="!h-[157px]"
-                                />
-                            ))}
+                list={shipment?.data}
+                pagination={{
+                    perPage: 5,
+                    totalPages: Math.ceil(shipment?.pagination?.total / 5),
+                    total: shipment?.pagination?.total,
+                    page: shipment?.pagination?.page,
+                }}
+                onPageChange={(page) => console.log("Page changed to:", page)}
+            >
+                {(paginatedList) => (
+                    <div className="grid lg:grid-cols-3 gap-4">
+                        {paginatedList?.map((activity: any, index: number) => (
+                            <ShipmentCard {...activity} key={index} />
+                        ))}
                     </div>
-                </PaginationV2>
-            )} */}
+                )}
+            </PaginationV2>
+            )}
 
 
         </div>

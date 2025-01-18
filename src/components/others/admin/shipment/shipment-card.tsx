@@ -60,33 +60,33 @@ export function ShipmentCard(
                     <div className='flex items-center '>
                         <div
                             className={`rounded-full h-2 w-2 mr-2 flex text-center animate-pulse 
-                                                    ${status.name ===
+                                ${status.name ===
                                     "Shipment Created"
                                     ? "bg-orange-600 text-orange-600"
                                     : status.name ===
-                                        "Invoice Generated"
-                                        ? "bg-sky-600 text-sky-600"
-                                        : status.name ===
-                                            "Shipment Approved"
-                                            ? "bg-indigo-600 text-indigo-600"
-                                            : status.name ===
-                                                "Shipment Started"
-                                                ? "bg-purple-600 text-purple-600"
-                                                : status.name ===
-                                                    "Arrival At The Warehouse"
-                                                    ? "bg-gray-600 text-gray-600"
-                                                    : status.name ===
-                                                        "Shipment InTransit"
-                                                        ? "bg-amber-600 text-amber-600"
-                                                        : status.name ===
-                                                            "Shipment Arrived"
-                                                            ? "bg-pink-600 text-pink-600" :
-                                                            status.name ===
-                                                                "Shipment Completed"
-                                                                ? "bg-green-600 text-green-600"
-                                                                : status.name ===
-                                                                    "Terminated"
-                                                                    ? "bg-red-600 text-red-600" : ""
+                                    "Invoice Generated"
+                                    ? "bg-sky-600 text-sky-600"
+                                    : status.name ===
+                                    "Shipment Approved"
+                                    ? "bg-primary text-primary"
+                                    : status.name ===
+                                    "Shipment Started"
+                                    ? "bg-purple-600 text-purple-600"
+                                    : status.name ===
+                                    "Arrival At The Warehouse"
+                                    ? "bg-gray-600 text-gray-600"
+                                    : status.name ===
+                                    "Shipment InTransit"
+                                    ? "bg-amber-600 text-amber-600"
+                                    : status.name ===
+                                    "Shipment Arrived"
+                                    ? "bg-pink-600 text-pink-600" :
+                                    status.name ===
+                                    "Shipment Completed"
+                                    ? "bg-green-600 text-green-600"
+                                    : status.name ===
+                                    "Terminated"
+                                    ? "bg-red-600 text-red-600" : ""
                                 }`}
                         >
                             {/* {status.name} */}

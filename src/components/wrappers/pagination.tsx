@@ -11,12 +11,7 @@ import {
 } from "next/navigation";
 
 import { MdOutlineArrowBackIos, MdOutlineArrowForwardIos, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
-
-
 import { RxDoubleArrowRight } from "react-icons/rx";
-
-
-
 
 interface IPaginationV2 {
   list: any[];
