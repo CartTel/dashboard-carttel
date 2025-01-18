@@ -20,6 +20,7 @@ interface tracking {
 }
 
 interface IShipmentCard {
+    id: number;
     name: string;
     requested_by: string;
     status: shipmentStatus;
@@ -34,7 +35,7 @@ interface IShipmentCard {
 }
 
 export function ShipmentCard(
-    { loading, name, requested_by, code, status, totalShipmentCost, tracking, created_at, sla, indicatorClass, containerClass }: IShipmentCard,
+    { id, loading, name, requested_by, code, status, totalShipmentCost, tracking, created_at, sla, indicatorClass, containerClass }: IShipmentCard,
 
 ) {
     return (
@@ -46,7 +47,7 @@ export function ShipmentCard(
             ) : (
                 <div className={`shadow bg-white px-[20px] py-[30px] rounded-[10px] w-[100%] h-full ${containerClass}`}>
                     <BMiddle >
-                        <Link href={'/dashboard/activity/44e344534552462'}>
+                        <Link href={`/dashboard/admin/shipment/${id}`}>
                             {name}
                         </Link>
                     </BMiddle>

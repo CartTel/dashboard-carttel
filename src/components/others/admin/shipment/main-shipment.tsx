@@ -17,8 +17,6 @@ import qs from 'qs';
 import { useQuery } from "@tanstack/react-query";
 import { TbFileInvoice } from "react-icons/tb";
 
-
-
 const breadCrumb = [
     {
         label: "Home",
@@ -41,12 +39,10 @@ const activityTabs = [
     "Completed"
 ];
 
-
 interface StatusCount {
     name: string;
     count: number;
 }
-
 
 const fetchAllShipment = async () => {
     try {
@@ -133,7 +129,7 @@ export function MainShipment() {
                 Completed: ["160"],
                 Invoice: ["05"],
                 Arrival: ["60"],
-                Arrived: ["150"]                
+                Arrived: ["150"]
             };
 
             const byStatusCodes = tabToStatusCodes[currentActivityTab] || [];
@@ -184,7 +180,7 @@ export function MainShipment() {
                 <ul className="grid lg:grid-cols-5 xs:grid-cols-1 gap-4 py-5 w-full justify-between">
                     {statusCounts.map((status, index) => (
                         <li key={index} className="flex justify-between items-center gap-2 rounded-md border-[1px] shadow-md border-gray-200 pb-2 px-3">
-                            
+
                             {/* <div className="text-xl text-gray-500"><TbFileInvoice /></div> */}
                             <BMiddleRegular className="my-[10px] text-xs text-gray-600 truncate">
                                 {status.name}
@@ -234,29 +230,26 @@ export function MainShipment() {
                 </PaginationV2>
             )}
 
-
             {currentTab !== "All Request" && (
                 <PaginationV2
-                list={shipment?.data}
-                pagination={{
-                    perPage: 5,
-                    totalPages: Math.ceil(shipment?.pagination?.total / 5),
-                    total: shipment?.pagination?.total,
-                    page: shipment?.pagination?.page,
-                }}
-                onPageChange={(page) => console.log("Page changed to:", page)}
-            >
-                {(paginatedList) => (
-                    <div className="grid lg:grid-cols-3 gap-4">
-                        {paginatedList?.map((activity: any, index: number) => (
-                            <ShipmentCard {...activity} key={index} />
-                        ))}
-                    </div>
-                )}
-            </PaginationV2>
+                    list={shipment?.data}
+                    pagination={{
+                        perPage: 5,
+                        totalPages: Math.ceil(shipment?.pagination?.total / 5),
+                        total: shipment?.pagination?.total,
+                        page: shipment?.pagination?.page,
+                    }}
+                    onPageChange={(page) => console.log("Page changed to:", page)}
+                >
+                    {(paginatedList) => (
+                        <div className="grid lg:grid-cols-3 gap-4">
+                            {paginatedList?.map((activity: any, index: number) => (
+                                <ShipmentCard {...activity} key={index} />
+                            ))}
+                        </div>
+                    )}
+                </PaginationV2>
             )}
-
-
         </div>
     );
 }
