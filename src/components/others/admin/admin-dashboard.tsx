@@ -195,8 +195,7 @@ const AdminDashboard = () => {
                 // Get current date and previous month date
                 const currentDate = new Date();
                 const currentMonth = currentDate.getMonth() + 1;
-
-                const previousMonth = currentMonth === 13 ? 12 : 13 - currentMonth;
+                const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
 
                 // Count shipments for current and previous month
                 let currentMonthCount = 0;
@@ -204,11 +203,11 @@ const AdminDashboard = () => {
 
                 shipments.forEach((shipment: any) => {
                     const createdAt = new Date(shipment.created_at);
-                    const monthIndex = createdAt.getMonth(); // January is 0, February is 1, etc.
-                    const month = monthIndex + 1; // Add 1 to convert to 1-12 format
-                    if (month === currentMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
+                    const userMonth = createdAt.getMonth() + 1; // Convert to 1-12 format
+    
+                    if (userMonth === currentMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
                         currentMonthCount++;
-                    } else if (month === previousMonth && createdAt.getFullYear()) {
+                    } else if (userMonth === previousMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
                         previousMonthCount++;
                     }
                 });
@@ -219,28 +218,27 @@ const AdminDashboard = () => {
                         count: currentMonthCount
                     }
                 ]);
-                // Calculate percentage change
-                if (currentMonthCount > previousMonthCount) {
-                    const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
-                    const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
-                    setShipmentStatus((prev: any) => [
-                        {
-                            ...prev[0],
-                            percentage: percentageChange,
-                            status: true
-                        }
-                    ]);
+
+                let percentageChange = 0;
+                let status = false;
+    
+                if (previousMonthCount === 0) {
+                    // If there's no data for the previous month, assume 100% increase if currentMonthCount > 0
+                    percentageChange = currentMonthCount > 0 ? 100 : 0;
+                    status = currentMonthCount > 0;
                 } else {
-                    const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
-                    const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
-                    setShipmentStatus((prev: any) => [
-                        {
-                            ...prev[0],
-                            percentage: percentageChange,
-                            status: false
-                        }
-                    ]);
+                    // Normal percentage calculation
+                    percentageChange = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
+                    status = currentMonthCount > previousMonthCount;
                 }
+
+                setShipmentStatus((prev: any) => [
+                    {
+                        ...prev[0],
+                        percentage: percentageChange.toFixed(2), // Keep two decimal places
+                        status
+                    }
+                ]);              
                 setStatus(false)
             } catch (error) {
                 console.error('Error in fetching or processing shipments:', error);
@@ -249,76 +247,157 @@ const AdminDashboard = () => {
         getShipments();
     }, []);
 
+    // useEffect(() => {
+    //     const getUsers = async () => {
+    //         try {
+    //             setStatusImporter(true)
+    //             const users = await fetchAllUsers();
+    //             setUserStatus((prev) => [
+    //                 {
+    //                     ...prev[0], // Spread the existing object
+    //                     value: users.length // Update the value
+    //                 }
+    //             ]);
+
+    //             // Get current date and previous month date
+    //             const currentDate = new Date();
+    //             const currentMonth = currentDate.getMonth() + 1;
+
+    //             const previousMonth = currentMonth === 13 ? 12 : 13 - currentMonth;
+
+    //             // Count shipments for current and previous month
+    //             let currentMonthCount = 0;
+    //             let previousMonthCount = 0;
+
+    //             users.forEach((user: any) => {
+    //                 const createdAt = new Date(user.created_at);
+    //                 const monthIndex = createdAt.getMonth(); // January is 0, February is 1, etc.
+    //                 const month = monthIndex + 1; // Add 1 to convert to 1-12 format
+    //                 console.log("time..", month);
+    //                 if (month === currentMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
+    //                     console.log("first month ..", month, currentMonth)
+    //                     currentMonthCount++;
+    //                 } else if (month === previousMonth && createdAt.getFullYear()) {
+    //                     console.log("second users  ..", month, currentMonth, currentMonthCount, monthIndex, createdAt )
+    //                     previousMonthCount++;
+    //                 }
+    //             });
+    //             // Update the count and percentage
+    //             setUserStatus((prev: any) => [
+    //                 {
+    //                     ...prev[0],
+    //                     count: currentMonthCount
+    //                 }
+    //             ]);
+
+    //             if (currentMonthCount > previousMonthCount) {
+    //                 console.log(" first percentage ..", currentMonthCount , previousMonthCount)
+
+    //                 const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
+    //                 const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
+
+    //                 console.log("percentage ..", change, percentageChange);
+    //                 setUserStatus((prev: any) => [
+    //                     {
+    //                         ...prev[0],
+    //                         percentage: percentageChange,
+    //                         status: true
+    //                     }
+    //                 ]);
+    //             } else {
+    //                 const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
+    //                 const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
+
+    //                 console.log(" offering percentage ..", currentMonthCount , previousMonthCount)
+
+    //                 console.log("percentage adding ..", change, percentageChange);
+    //                 setUserStatus((prev: any) => [
+    //                     {
+    //                         ...prev[0],
+    //                         percentage: percentageChange,
+    //                         status: false
+    //                     }
+    //                 ]);
+    //             }
+    //             setStatusImporter(false)
+    //         } catch (error) {
+    //             console.error('Error in fetching or processing importer:', error);
+    //         }
+    //     };
+    //     getUsers();
+    // }, []);
+
     useEffect(() => {
         const getUsers = async () => {
             try {
-                setStatusImporter(true)
+                setStatusImporter(true);
                 const users = await fetchAllUsers();
                 setUserStatus((prev) => [
                     {
-                        ...prev[0], // Spread the existing object
-                        value: users.length // Update the value
+                        ...prev[0],
+                        value: users.length
                     }
                 ]);
-
+    
                 // Get current date and previous month date
                 const currentDate = new Date();
                 const currentMonth = currentDate.getMonth() + 1;
-
-                const previousMonth = currentMonth === 13 ? 12 : 13 - currentMonth;
-
-                // Count shipments for current and previous month
+                const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    
                 let currentMonthCount = 0;
                 let previousMonthCount = 0;
-
+    
                 users.forEach((user: any) => {
                     const createdAt = new Date(user.created_at);
-                    const monthIndex = createdAt.getMonth(); // January is 0, February is 1, etc.
-                    const month = monthIndex + 1; // Add 1 to convert to 1-12 format
-                    if (month === currentMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
+                    const userMonth = createdAt.getMonth() + 1; // Convert to 1-12 format
+    
+                    if (userMonth === currentMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
                         currentMonthCount++;
-                    } else if (month === previousMonth && createdAt.getFullYear()) {
+                    } else if (userMonth === previousMonth && createdAt.getFullYear() === currentDate.getFullYear()) {
                         previousMonthCount++;
                     }
                 });
-                // Update the count and percentage
+    
+                // Update count in state
                 setUserStatus((prev: any) => [
                     {
                         ...prev[0],
                         count: currentMonthCount
                     }
                 ]);
-
-                if (currentMonthCount > previousMonthCount) {
-
-                    const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
-                    const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
-                    setUserStatus((prev: any) => [
-                        {
-                            ...prev[0],
-                            percentage: percentageChange,
-                            status: true
-                        }
-                    ]);
+    
+                let percentageChange = 0;
+                let status = false;
+    
+                if (previousMonthCount === 0) {
+                    // If there's no data for the previous month, assume 100% increase if currentMonthCount > 0
+                    percentageChange = currentMonthCount > 0 ? 100 : 0;
+                    status = currentMonthCount > 0;
                 } else {
-                    const change = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
-                    const percentageChange = formatPercentage(previousMonthCount, currentMonthCount)
-                    setUserStatus((prev: any) => [
-                        {
-                            ...prev[0],
-                            percentage: percentageChange,
-                            status: false
-                        }
-                    ]);
+                    // Normal percentage calculation
+                    percentageChange = ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
+                    status = currentMonthCount > previousMonthCount;
                 }
-                setStatusImporter(false)
+    
+                console.log("Percentage Change:", percentageChange);
+    
+                setUserStatus((prev: any) => [
+                    {
+                        ...prev[0],
+                        percentage: percentageChange.toFixed(2), // Keep two decimal places
+                        status
+                    }
+                ]);
+    
+                setStatusImporter(false);
             } catch (error) {
-                console.error('Error in fetching or processing shipments:', error);
+                console.error("Error fetching or processing importer:", error);
             }
         };
+    
         getUsers();
     }, []);
-
+    
     useEffect(() => {
         const getShipmentConversion = async () => {
             try {
@@ -383,7 +462,7 @@ const AdminDashboard = () => {
             <div className="">
                 <B1 className='text-slate-700 '>Operational Overview</B1>
                 <div className="mt-5">
-                    <div className="grid xl:grid-cols-4 lg:grid-cols-2 gap-[15px] md:grid-cols-3 grid-cols-1 ">
+                    <div className="grid xl:grid-cols-4 lg:grid-cols-3 gap-[15px] md:grid-cols-3 grid-cols-1 ">
                         <div>
                             {status ? (
                                 <SkeletonLoader number={1} />

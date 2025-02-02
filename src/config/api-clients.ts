@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:6565";
+// const BASE_URL = process.env.BASE_URL;
 
 const options = {
     baseURL: BASE_URL,
