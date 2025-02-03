@@ -6,10 +6,10 @@ import { ShipmentRequestDetails } from '@/components/others/admin/shipment';
 
 
 export const metadata: Metadata = {
-    title: "Carttel . Shipment",
+    title: "Carttel . Shipment-details",
     icons: '/images/carttel-favicon.ico',
     openGraph: {
-        images: ['https://web.vampfi.com/images/filmo-favicon.ico']
+        images: ['https://web.vampfi.com/images/carttel-favicon.ico']
     }
 }
 

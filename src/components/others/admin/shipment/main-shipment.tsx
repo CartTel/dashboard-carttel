@@ -171,7 +171,7 @@ export function MainShipment() {
     return (
         <div className="h-[100%] w-full">
             {/* BREADCRUMB */}
-            <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-full" />
+            <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
             <div className="my-[14px] flex lg:items-center justify-between lg:flex-row flex-col mb-[0px]">
                 <H1 className="">Shipments</H1>
             </div>

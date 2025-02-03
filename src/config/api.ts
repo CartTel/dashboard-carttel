@@ -201,7 +201,7 @@ export const fetchSingleShipmentRequest = async (id: number) => {
 
     const response = await apiClient.get(`/api/v1/shipment/single-shipment/${id}`, {
       params: {
-        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs'], // Specify the relationships to include
+        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs', 'senderInfo', 'receiverInfo'], // Specify the relationships to include
       },
       paramsSerializer: (params) => {
         // Serialize params to ensure arrays are properly formatted as associations[]
@@ -210,7 +210,7 @@ export const fetchSingleShipmentRequest = async (id: number) => {
 
     });
     console.log("all shipment..", response.data);
-    return response.data;
+    return response.data.shipment;
   } catch (error) {
     console.error('Error fetching shipment:', error);
     throw error; // Rethrow the error for handling in the component
