@@ -2,6 +2,9 @@
 import { CustomBreadCrumb, CustomButton } from "@/components/custom-components";
 import { B1, BMiddle, H2 } from "@/components/custom-typography";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSingleShipmentRequest } from "@/config/api";
+
 
 const breadCrumb = [
     {
@@ -23,6 +26,15 @@ interface ShipmentRequestDetailsProps {
 
 
 export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
+
+    const { data: shipmentData, isLoading: isLoadingShipment, isError: isErrorUsers, error: shipmentsError } = useQuery({
+        queryKey: ["singleShipments"],
+        queryFn: () => fetchSingleShipmentRequest(parseInt(id)), 
+        staleTime: Infinity, // Data is always stale
+        retry: false,
+    });
+
+    console.log("all shipment..", shipmentData)
 
 
     return (

@@ -6,8 +6,8 @@ import { ShipmentRequestDetails } from '@/components/others/admin/shipment';
 
 
 export const metadata: Metadata = {
-    title: "Filmo Real Estate . Activity",
-    icons: '/images/filmo-favicon.ico',
+    title: "Carttel . Shipment",
+    icons: '/images/carttel-favicon.ico',
     openGraph: {
         images: ['https://web.vampfi.com/images/filmo-favicon.ico']
     }
