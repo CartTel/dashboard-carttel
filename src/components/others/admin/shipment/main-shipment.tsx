@@ -242,14 +242,23 @@ export function MainShipment() {
                     onPageChange={(page) => console.log("Page changed to:", page)}
                 >
                     {(paginatedList) => (
-                        <div className="grid lg:grid-cols-3 gap-4">
-                            {paginatedList?.map((activity: any, index: number) => (
-                                <ShipmentCard {...activity} key={index} />
-                            ))}
+                        <div>
+                            {
+                               paginatedList?.length > 0 ? 
+                                <div className="grid lg:grid-cols-3 gap-4">
+                                    {paginatedList?.map((activity: any, index: number) => (
+                                        <ShipmentCard {...activity} key={index} />
+                                    ))}
+                                </div>
+                               : 
+                               <div className="flex w-full justify-center items-center h-full">No Data Found!</div>
+                            }
+
                         </div>
                     )}
                 </PaginationV2>
             )}
+
         </div>
     );
 }

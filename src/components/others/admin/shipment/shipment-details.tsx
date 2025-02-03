@@ -114,8 +114,8 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                                     <BMiddleRegular className="mb-[18px] text-gray-800 font-medium">Invoice:</BMiddleRegular>
 
                                                     <Link
-                                                        className="!text-[14px]  text-white !bg-[#555454] w-fit !rounded-lg px-4 py-3"
-                                                        href={`/dashboard/activity/attachment/${shipmentData?.id}`}
+                                                        className="!text-[14px] text-white !bg-[#555454] w-fit !rounded-lg px-4 py-3"
+                                                        href={`/dashboard/admin/shipment/create-invoice/${shipmentData?.id}`}
                                                     >
                                                         Generate Invoice
                                                     </Link>
@@ -182,10 +182,10 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                 </div>
                                 <div >
                                     <div className='text-white bg-primary py-2 px-2 text-[16px] mt-14 md:item-center flex md:justify-start text-start mb-0'>Shipment Item</div>
-                                    <div className="border border-gray-300 p-3 gap-10 w-full">
+                                    <div className=" p-0 gap-10 w-full">
 
                                         {shipmentData?.items?.map((item: any, index: number) => (
-                                            <div key={item.id} className="p-2 mb-4">
+                                            <div key={item.id} className="px-1 mb-4">
                                                 <div className="bg-plain py-2 w-full px-2 my-3 font-semibold text-primary">Items {(index) + 1}</div>
                                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
                                                     <div>
@@ -232,9 +232,6 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                             </div>
                                         ))}
                                     </div>
-
-
-
                                 </div>
 
 
@@ -272,18 +269,18 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                             </div>
 
                                             <div className='my-4'>
-                                                <div className='font-semibold text-gray-800'> From address:</div>
+                                                <div className='font-semibold text-gray-800'>From address:</div>
+                                                <div className="text-gray-600 font-[400]">
+                                                    {shipmentData?.receiverInfo?.address_line_1}, {shipmentData?.receiverInfo?.city}, {shipmentData?.receiverInfo?.country}
+                                                </div>
+                                            </div>
+                                            <div className='my-4'>
+                                                <div className='font-semibold text-gray-800'>To address:</div>
                                                 <div className="text-gray-600 font-[400]">
                                                     {shipmentData?.senderInfo?.address_line_1}, {shipmentData?.senderInfo?.city}, {shipmentData?.senderInfo?.country}
                                                 </div>
                                             </div>
 
-                                            <div className='my-4'>
-                                                <div className='font-semibold text-gray-800'> To address:</div>
-                                                <div className="text-gray-600 font-[400]">
-                                                    {shipmentData?.receiverInfo?.address_line_1}, {shipmentData?.receiverInfo?.city}, {shipmentData?.receiverInfo?.country}
-                                                </div>
-                                            </div>
 
                                             <div className='my-4'>
                                                 <div className='font-semibold text-gray-800'> Tracking ID:</div>

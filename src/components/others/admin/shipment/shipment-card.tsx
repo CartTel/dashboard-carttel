@@ -41,9 +41,7 @@ export function ShipmentCard(
     return (
         <div>
             {loading ? (
-
                 <SkeletonLoader number={4} />
-
             ) : (
                 <div className={`shadow bg-white px-[20px] py-[30px] rounded-[10px] w-[100%] h-full ${containerClass}`}>
                     <BMiddle >

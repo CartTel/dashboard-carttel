@@ -5,7 +5,6 @@ import { toast } from "@/hooks/use-toast";
 
 import qs from 'qs';
 
-
 export type LoginType = {
   email: string;
   password: string;
@@ -36,7 +35,6 @@ const userassociations = [
   'userPlans',
   'session'
 ];
-
 
 export const loginUser = async (credentials: LoginType) => {
   try {
@@ -166,7 +164,6 @@ export const fetchAllRecentTransaction = async () => {
   }
 };
 
-
 export const fetchAllShipmentRequest = async () => {
   try {
 
@@ -194,8 +191,6 @@ export const fetchAllShipmentRequest = async () => {
   }
 };
 
-
-
 export const fetchSingleShipmentRequest = async (id: number) => {
   try {
 
@@ -211,6 +206,18 @@ export const fetchSingleShipmentRequest = async (id: number) => {
     });
     console.log("all shipment..", response.data);
     return response.data.shipment;
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const createInvoiceShipment = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/create-invoice`, credentials);
+    console.log("create shipment..", response.data);
+    return response.data;
+    
   } catch (error) {
     console.error('Error fetching shipment:', error);
     throw error; // Rethrow the error for handling in the component
