@@ -275,7 +275,7 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
 
               {/* <div>{shipmentData?.status?.code}</div> */}
               {
-                shipmentData?.status?.code === '01' ?
+                shipmentData?.status?.code === '01' &&
                   <CustomButton
                     onClick={saveInvoices}
                     disabled={loading}
@@ -306,15 +306,30 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
                       )}
                     </div>
                   </CustomButton>
-                  :
+                  
+              }
+              {
+                shipmentData?.status?.code === '05' &&
                   <CustomButton
-                    className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-rose-600 text-white"
+                    className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-white text-[#1d4289] border-[1px] border-primary"
                   // onClick={saveInvoices}
                   // disabled={loading}
                   >
-                    Print
+                    Message To Client
                   </CustomButton>
               }
+              {
+                (shipmentData?.status?.code !== '01' && shipmentData?.status?.code !== '05') &&
+                <CustomButton
+                  className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-rose-600 text-white"
+                // onClick={saveInvoices}
+                // disabled={loading}
+                >
+                  Print
+                </CustomButton>
+              }
+
+              
 
             </div>
 

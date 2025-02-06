@@ -462,7 +462,7 @@ const AdminDashboard = () => {
             <div className="">
                 <B1 className='text-slate-700 '>Operational Overview</B1>
                 <div className="mt-5">
-                    <div className="grid xl:grid-cols-4 lg:grid-cols-3 gap-[15px] md:grid-cols-3 grid-cols-1 ">
+                    <div className="grid xl:grid-cols-4 lg:grid-cols-4 gap-[15px] md:grid-cols-3 grid-cols-1 ">
                         <div>
                             {status ? (
                                 <SkeletonLoader number={1} />

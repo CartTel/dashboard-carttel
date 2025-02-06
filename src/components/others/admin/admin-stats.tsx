@@ -25,7 +25,7 @@ export function AllAdminStatCard({
 }: AdminstatCard) {
   return (
     <div
-      className={`relative lg:min-w-[268px] shadow-md min-h-[152px] p-[24px] bg-white border-[1px] border-gray-200 rounded-[15px] ${wrapperClassName}`}
+      className={`relative lg:min-w-[200px] shadow-md min-h-[120px] p-[14px] bg-white border-[1px] border-gray-200 rounded-[15px] ${wrapperClassName}`}
     >
       <div
         onClick={() => {
@@ -33,15 +33,16 @@ export function AllAdminStatCard({
             onClick();
           }
         }}
-        className={`flex justify-between items-center w-[100%] border-b border-[#E8E8E8] pb-10`}
+        className={`flex justify-between flex-col-reverse items-center w-[100%] border-b border-[#E8E8E8] pb-1`}
       >
         {actionComponent ? actionComponent : null}
 
-        <div>
-          <BMiddle className={`font-normal block mb-2 text-slate-500 md:text-sm xs:text-[15px] ${titleClassName}`}>
+        <div className="flex justify-start w-full">
+          <BMiddle className={`font-normal text-start mt-5 block mb-2 text-slate-500 md:text-sm whitespace-nowrap xs:text-[15px] ${titleClassName}`}>
             {title}
           </BMiddle>
         </div>
+        <div className="flex w-full justify-start">
 
         <div
           className={`w-[36px] h-[36px] rounded-full flex items-center justify-center ${iconWrapperClassName}`}
@@ -58,6 +59,8 @@ export function AllAdminStatCard({
             className={`min-w-[20px] min-h-[20px] text-[#bfccf8] ${iconClassName}`}
           />
         </div>
+        </div>
+
       </div>
       <div className="flex justify-between items-center">
         <H1 className={`md:text-[32px] xs:text-[20px] pt-3 ${valueClassName}`} style={{
