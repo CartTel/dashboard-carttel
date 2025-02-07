@@ -177,7 +177,7 @@ function Login() {
 
 
                             <div className="flex flex-col h-full w-full">
-                                <div className="items-center px-5 flex flex-col w-full max-w-md pb-16 z-10 justify-center">
+                                <div className="items-center px-5 flex flex-col w-full max-w-md pb-[0px] z-10 justify-center">
                                     <h2 className="text-[3.95rem] text-[#6ba3f7] text-start leading-[4.5rem] font-medium mb-12 mt-10">
                                         Purchase<br />
                                         anywhere <br />
