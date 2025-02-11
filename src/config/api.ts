@@ -224,6 +224,38 @@ export const createInvoiceShipment = async (credentials: any) => {
   }
 };
 
+export const getAllStates = async () => {
+  try {
+    const response = await apiClient.get('/api/v1/get-all-states');
+    console.log("object", response);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching states:', error);
+    throw error;
+  }
+};
+
+export const getAllCountries = async () => {
+  try {
+    const response = await apiClient.get('/api/v1/get-all-countries');
+    console.log("decision ..", response);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching countries:', error);
+    throw error;
+  }
+};
+
+export const getAllCities  = async () => {
+  try {
+    const response = await apiClient.get('/api/v1/get-all-cities');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching cities:', error);
+    throw error;
+  }
+};
+
 
 
 

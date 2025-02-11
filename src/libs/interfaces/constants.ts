@@ -7,6 +7,7 @@ export interface IFont {
 export interface IModal {
     children: React.ReactNode;
     onClose: () => void;
+    backdrop?: Boolean;
 }
 
 export interface IButton extends IFont {

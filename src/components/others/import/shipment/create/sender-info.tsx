@@ -1,0 +1,552 @@
+"use client"
+
+
+import { PhoneInput, defaultCountry } from '@/components/custom-components/phone-input';
+import Image from 'next/image'
+import { CustomButton, CustomSelect } from '@/components/custom-components';
+import { CustomInput } from '@/components/custom-components';
+import { B1, B2, H2, H1, BMiddle, B2Regular } from '@/components/custom-typography';
+import Link from 'next/link';
+import CountrySelector from '@/components/custom-components/country-selector';
+import { useQuery } from "@tanstack/react-query";
+import React from 'react'
+import { useState, useEffect, useMemo } from 'react';
+// import "react-phone-input-2/lib/style.css";
+// import PhoneInput from "react-phone-input-2";
+import Spinner from '@/components/ui/Spinner/Spinner';
+import axios from "axios";
+import { SkeletonLoader } from '@/components/ui/skeletonCard';
+
+
+import { getAllCountries, getAllCities, getAllStates } from '@/config/api';
+
+interface SenderInfoDetails {
+    name: string,
+    email: string,
+    phone: string,
+    address_line_1: string,
+    address_line_2: string,
+    postal_code: string,
+    country: string,
+    state: string,
+    city: string
+
+}
+
+interface SenderInfoForm {
+    userId: number | any;
+    email: string;
+    name: string;
+    description: string;
+    senderInfo: SenderInfoDetails;
+}
+
+
+const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, selectedCountry, selectedCity, setSelectedStates, setSelectedCities, setSelectedCountry }: any) => {
+
+    const [countryInfo, setCountryInfo] = useState([]);
+    const [statesInfo, setStatesInfo] = useState([]);
+    const [citiesInfo, setCitiesInfo] = useState([]);
+
+    const [statesCountry, setStatesCountry] = useState([]);
+    const [citiesState, setCitiesState] = useState([]);
+
+
+
+
+    const { data: statesData, isLoading: isLoadingStates, isError: isErrorStates, error: statesError } = useQuery({
+        queryKey: ["states"],
+        queryFn: getAllStates,
+        staleTime: Infinity,
+    });
+
+    const { data: countriesData, isLoading: isLoadingCountries, isError: isErrorCountries, error: countriesError } = useQuery({
+        queryKey: ["countries"],
+        queryFn: getAllCountries,
+        staleTime: Infinity,
+    });
+
+    const { data: citiesData, isLoading: isLoadingCities, isError: isErrorCities, error: citiesError } = useQuery({
+        queryKey: ["cities"],
+        queryFn: getAllCities,
+        staleTime: Infinity,
+    });
+
+    console.log("data resolved ..", countriesData);
+
+
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const transformedData: any = countriesData?.data?.map((state: any) => ({
+                    label: state.name,
+                    // code: state.id,
+                    value: state.id,
+                })).sort((a: any, b: any) => a.label.localeCompare(b.label));;
+
+                setCountryInfo(transformedData)
+                console.log("data transformed ..", transformedData);
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+            }
+        };
+        fetchCountries(); // Fetch data on component mount
+    }, [countriesData]);
+
+
+    useEffect(() => {
+        const fetchStates = async () => {
+            try {
+                const transformedData: any = statesData?.data?.map((user: any) => ({
+                    label: user.name,
+                    value: user.id,
+                }));
+                setStatesInfo(transformedData)
+            } catch (error) {
+                console.error("Error fetching states:", error);
+            }
+        };
+        fetchStates(); // Fetch data on component mount
+    }, [statesData]);
+
+    useEffect(() => {
+        const fetchCities = async () => {
+            try {
+                const transformedData: any = citiesData?.data?.map((user: any) => ({
+                    label: user.name,
+                    value: user.id,
+                }));
+                setCitiesInfo(transformedData)
+            } catch (error) {
+                console.error("Error fetching states:", error);
+            }
+        };
+        fetchCities(); // Fetch data on component mount
+    }, [citiesData]);
+
+
+    const [formData, setFormData] = useState<SenderInfoForm>({
+        userId: null,
+        email: "",
+        name: "",
+        description: "",
+        senderInfo: {
+            name: "",
+            email: "",
+            phone: "",
+            address_line_1: "",
+            address_line_2: "",
+            postal_code: "",
+            country: "",
+            state: "",
+            city: ""
+        }
+    });
+
+    const { userId, email, name, description, senderInfo } = formData;
+    const { phone, address_line_1, address_line_2, postal_code, country, state, city } = senderInfo;
+
+    // Local state for states data.
+    const [states, setStates] = useState<any[]>([]);
+    const [filterStates, setFilterStates] = useState<any[]>([]);
+    const [filterCities, setFilterCities] = useState<any[]>([]);
+
+    const filteredStates = useMemo(() => {
+        console.log("states data ..", statesData, formData.senderInfo.country)
+        if (!statesData || !formData.senderInfo.country) return [];
+        return statesData?.data?.filter((state: any) => state.country_id === formData.senderInfo.country);
+    }, [statesData, formData.senderInfo.country]);
+
+
+    // function getStatesByCountryName(
+    //     countries: any[],
+    //     searchValue: string
+    // ): any[] {
+
+    //     const matchedCountry = countries.find(
+    //         (country) => country.name.toLowerCase() === searchValue.toLowerCase()
+    //     );
+    //     return matchedCountry ? matchedCountry.states : [];
+    // }
+    // function getCitiesByStateName(states: any[], searchValue: string): any[] {
+    //     const matchedState = states.find(
+    //         (state) => state.name.toLowerCase() === searchValue.toLowerCase()
+    //     );
+    //     return matchedState ? matchedState.cities : [];
+    // }
+    // Define getStates as an async function.
+    // const getStates = async (): Promise<void> => {
+    //     try {
+
+    //         const statesRes = await fetch('/data/countries-states-cities.json');
+    //         if (!statesRes.ok) {
+    //             throw new Error('Failed to fetch states');
+    //         }
+    //         const statesData: any[] = await statesRes.json();
+    //         const filteredStates = getStatesByCountryName(statesData, formData.senderInfo.country);
+    //         const transformedData: any = filteredStates?.map((state: any) => ({
+    //             label: state.name,
+    //             value: state.name,
+    //         }));
+
+    //         console.log("response ..", filterStates, statesData)
+    //         setFilterStates(transformedData)
+    //         setStates(filteredStates);
+    //     } catch (error) {
+    //         console.error('Error fetching states:', error);
+    //     }
+    // };
+    // const getCities = async (): Promise<void> => {
+    //     try {
+    //         console.log("all the way ..", states, formData.senderInfo.state)
+    //         const filteredCities = getCitiesByStateName(states, formData.senderInfo.state);
+    //         const transformedData: any = filteredCities?.map((city: any) => ({
+    //             label: city.name,
+    //             value: city.name,
+    //         }));
+
+    //         console.log("going..", filterCities, states);
+    //         setFilterCities(transformedData)
+    //         setStates(filteredCities);
+    //     } catch (error) {
+    //         console.error('Error fetching states:', error);
+    //     }
+    // };
+
+    // Call getStates when formData.senderInfo.country has a value.
+    // useEffect(() => {
+    //     if (formData.senderInfo.country) {
+    //         console.log("many states")
+    //         getStates();
+    //     }
+    // }, [formData.senderInfo.country]);
+
+    // useEffect(() => {
+    //     if (formData.senderInfo.state) {
+    //         console.log("many cities")
+    //         getCities();
+    //     }
+    // }, [formData.senderInfo.state]);
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { name, value } = e.target;
+        if (!name) {
+            console.error("Input element is missing the 'name' attribute.");
+            return;
+        }
+
+        // Check if the field is nested under senderInfo (e.g. "senderInfo.phone")
+        if (name.startsWith("senderInfo.")) {
+            // Extract the property key from the input name
+            const key = name.split(".")[1];
+            setFormData((prev) => ({
+                ...prev,
+                senderInfo: {
+                    ...prev.senderInfo,
+                    [key]: value,
+                },
+            }));
+        } else {
+            // For top-level properties
+            setFormData((prev) => ({
+                ...prev,
+                [name]: value,
+            }));
+        }
+    };
+
+    const handleCountryChange = (value: string) => {
+        console.log("value country ", value);
+        // const levels = statesData?.data?.filter((data: any) => data?.country_id == value)
+        const levels = statesData?.data?.filter((data: any) => data?.country_id == value).sort((a: any, b: any) => a.name.localeCompare(b.name));
+        // console.log("rate..", levels)
+        const transformedData: any = levels?.map((state: any) => ({
+            label: state.name,
+            value: state.id,
+        }));
+        setStatesCountry(transformedData)
+        setFormData((prev) => ({
+            ...prev,
+            senderInfo: {
+                ...prev.senderInfo,
+                country: value,
+            },
+        }));
+    };
+
+    const handleStateChange = (value: string) => {
+        console.log("value country ", value);
+        const levels = citiesData?.data?.filter((data: any) => data?.state_id == value).sort((a: any, b: any) => a.name.localeCompare(b.name));
+        // console.log("rate state..", levels)
+
+        const transformedData: any = levels?.map((city: any) => ({
+            label: city.name,
+            value: city.id,
+        }));
+        setCitiesState(transformedData)
+        setFormData((prev) => ({
+            ...prev,
+            senderInfo: {
+                ...prev.senderInfo,
+                state: value,
+            },
+        }));
+    };
+
+    const handleCitiesChange = (value: string) => {
+        setFormData((prev) => ({
+            ...prev,
+            senderInfo: {
+                ...prev.senderInfo,
+                city: value,
+            },
+        }));
+    };
+
+    const handleProviderOne = () => {
+        console.log("form data..", formData);
+        setActive(2)
+    };
+
+    const handleInputCitiesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            senderInfo: {
+                ...prev.senderInfo,
+                city: value,
+            },
+        }));
+    };
+
+    if (isLoadingStates || isLoadingCountries || isLoadingCities) {
+        // return <div className='w-full flex justify-center items-center'>
+        //                     <div className="loader"></div>
+        //                 </div>
+        return <SkeletonLoader number={5} />
+    }
+
+    return (
+        <div>
+            <div>
+                <div className=' text-[16px] md:item-center flex md:justify-start text-start font-medium bg-primary text-white py-2 px-2 my-10'>Sender Info</div>
+
+                <div className=' text-[16px] md:item-center flex md:justify-start text-start font-medium py-2  my-3 text-slate-600'>Add a new sender</div>
+
+                <div className="px-0">
+                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+
+                            <CustomInput
+                                id="name"
+                                name="name"
+                                type="text"
+                                label="Shipment Name"
+                                required
+                                value={formData.name}
+                                onChange={handleChange}
+                                // errorMessage={errors.firstname}
+                                showRequirement={true}
+                                className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                            />
+                        </div>
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            <CustomInput
+                                id="email"
+                                name="email"
+                                type="email"
+                                label="Email Address"
+                                required
+                                value={formData.email}
+                                onChange={handleChange}
+                                // errorMessage={errors.email}
+                                showRequirement={true}
+                                className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            <CustomInput
+                                id="address_line_1"
+                                name="senderInfo.address_line_1" // Updated name to match nested property
+                                type="text"
+                                label="Address Line 1"
+                                required
+                                value={formData.senderInfo.address_line_1}
+                                onChange={handleChange}
+                                showRequirement={true}
+                                className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                            />
+
+                        </div>
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            <CustomInput
+                                id="address_line_2"
+                                name="senderInfo.address_line_2" // Updated name to match nested property
+                                type="text"
+                                label="Address Line 2"
+                                required
+                                value={formData.senderInfo.address_line_2}
+                                onChange={handleChange}
+                                //   showRequirement={true}
+                                className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                        <div className={` w-[100%] text-[1rem] my-0`}>
+                            {/* <PhoneInput/> */}
+
+                            <PhoneInput
+                                value={formData.senderInfo.phone}
+                                // onChange={() => { setPhoneNumber(phoneNumber) }}
+                                onChange={(value: string | undefined) => {
+                                    // setPhoneNumber(value); // Update the state with the new phone number
+                                    setFormData((prev) => ({ ...prev, phone: value || "" })); // Update formData, default to empty string if value is undefined
+                                }}
+                                defaultCountry={defaultCountry} // Set the default country to Nigeria
+                                international
+                            />
+
+                        </div>
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            <CustomInput
+                                id="postal_code"
+                                name="senderInfo.postal_code" // Updated name to match nested property
+                                type="number"
+                                label="Postal Code"
+                                required
+                                value={formData.senderInfo.postal_code}
+                                onChange={handleChange}
+                                //   showRequirement={true}
+                                className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                        <div className={` w-[100%] text-[1rem] my-0`}>
+                            {/* <CountrySelector
+                                onChange={handleCountryChange} // Pass the handleChange function
+                                value={formData.senderInfo.country} // Control the value if needed
+                            /> */}
+                            <CustomSelect
+                                wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
+                                labelClass='!text-[0.875rem] text-gray-500 w-full'
+                                optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
+                                optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
+                                label='Select Country?'
+                                setSelected={handleCountryChange}
+                                selected={formData.senderInfo.country}
+                                options={countryInfo}
+                            />
+                        </div>
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            {
+                                formData.senderInfo.country && (
+                                    <CustomSelect
+                                        wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
+                                        labelClass='!text-[0.875rem] text-gray-500 w-full'
+                                        optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
+                                        optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
+                                        label='Select State?'
+                                        setSelected={handleStateChange}
+                                        selected={formData.senderInfo.state}
+                                        options={statesCountry}
+                                    />
+                                )
+                            }
+                        </div>
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            {
+                                formData.senderInfo.state && (
+
+                                    citiesState.length > 0 ? 
+                                        <CustomSelect
+                                            wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
+                                            labelClass='!text-[0.875rem] text-gray-500 w-full'
+                                            optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
+                                            optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
+                                            label='Select City?'
+                                            setSelected={handleCitiesChange}
+                                            selected={formData.senderInfo.city}
+                                            options={citiesState}
+                                        />
+                                        :
+                                        <CustomInput
+                                            id="city"
+                                            name="city"
+                                            type="text"
+                                            label="Type City?"
+                                            required
+                                            value={formData.senderInfo.city}
+                                            onChange={handleInputCitiesChange}
+                                            className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                                        />
+                                )
+
+                            }
+
+                            {/* {
+                                formData.senderInfo.state && (
+
+
+
+
+                                )
+                            } */}
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div className='mt-5 flex justify-end w-full'>
+                        <label className="inline-flex items-center me-5 cursor-pointer">
+                            <input type="checkbox" value="" className="sr-only peer" />
+                            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-[#acbbf2] dark:peer-focus:ring-primary peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+                            <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Save Address</span>
+                        </label>
+
+                    </div>
+
+                    <div className="my-10 xs:text-[10px] md:text-[13px] text-primary bg-sky-200 rounded-lg px-2 py-2 bg-opacity-50 font-[500] md:leading-7 xs:leading-5">
+                        Please note that when toggle the button to save address and you click on the continue button. it will automatically add this saved address to your address Book. But when you have exceeded your limit due to your current plan, You would have to change plans to save the address.
+                    </div>
+
+                    <div className="flex pb-10">
+                        <div className="flex z-10 relative mt-4 w-full text-center justify-center">
+
+                            <button
+                                onClick={handleProviderOne}
+                                className={`${isLoadingButton ? "bg-primary opacity-90" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative bg-primary text-white md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full `}
+                                disabled={isLoadingButton} // Disable the button when userLoading is true
+                            >
+                                {isLoadingButton ? ( // Display spinner if userLoading is true
+                                    <div className="flex items-center px-6 md:py-1">
+                                        {/* <div>
+                                            <img alt="" src={Spinner} className="text-[1px] text-white" />
+                                        </div> */}
+
+                                    </div>
+                                ) : (
+                                    <span className="md:py-1">Continue</span> // Show the "Submit" text when isLoading is false
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default SenderInfoImport

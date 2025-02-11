@@ -10,6 +10,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 
+import Image from 'next/image'
 
 import CustomModal from "@/components/custom-components/custom-modal";
 import PaginationV2 from "@/components/wrappers/pagination";
@@ -23,10 +24,9 @@ import { LuPackagePlus } from "react-icons/lu";
 import { RxDownload } from "react-icons/rx";
 import { formatDate } from '@/helper/format';
 
-
-
-
-
+import { CiEdit } from "react-icons/ci";
+import { PiEye } from "react-icons/pi";
+import { GrClose } from "react-icons/gr";
 
 const breadCrumb = [
     {
@@ -49,9 +49,6 @@ const activityTabs = [
     "Arrived",
     "Completed"
 ];
-
-
-
 
 interface StatusCount {
     name: string;
@@ -111,6 +108,11 @@ export function ImportShipment() {
     const [currentActivityTab, setCurrentActivityTab] = useState("Pending"); // Default tab
     const [shipment, setShipment] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true)
+    const [showShipmentModal, setShowShipmentModal] = useState(false);
+
+    const toggleShipmentModal = () => {
+        setShowShipmentModal((prev) => !prev);
+    };
 
     const { data: shipmentData, isLoading: isLoadingShipment, isError: isErrorUsers, error: shipmentsError } = useQuery({
         queryKey: ["allShipments"],
@@ -118,8 +120,6 @@ export function ImportShipment() {
         staleTime: Infinity, // Data is always stale
         retry: false,
     });
-
-
 
     useEffect(() => {
         const tab = queryParams.get("tab");
@@ -129,7 +129,6 @@ export function ImportShipment() {
             setCurrentTab(activityTabs[0]);
         }
     }, [queryParams]);
-
 
     useEffect(() => {
         const fetchAllShipmentData = async () => {
@@ -221,7 +220,6 @@ export function ImportShipment() {
                         <div className="block font-semibold">
                             <div
                                 className="link flex font-semibold"
-
                             >
                                 <div
                                     className="flex justify-center items-center cursor rounded-md bg-white border-primary border-[1px] font-medium px-4 md:py-3 xs:py-1 text-primary sm:text-xs xs:text-[12px] lg:text-[0.65rem] xl:text-[0.75rem] lg:w-fit xl:w-fit"
@@ -237,7 +235,8 @@ export function ImportShipment() {
                         <div className="block  font-semibold">
                             <button
                                 className="link flex font-semibold"
-                            // onClick={() => openModal()}
+
+                            onClick={toggleShipmentModal}
                             >
                                 <div
                                     className="w-full flex justify-center items-center cursor rounded-md bg-primary font-medium px-4 md:py-3 xs:py-2 text-white sm:text-xs xs:text-[12px] lg:text-[0.65rem] xl:text-[0.75rem]"
@@ -325,24 +324,24 @@ export function ImportShipment() {
                                                         <div className="flex items-center">
                                                             <div
                                                                 className={`rounded-full h-2 w-2 mr-2 flex animate-pulse ${shipment.status.name === "Shipment Created"
-                                                                        ? "bg-orange-600"
-                                                                        : shipment.status.name === "Invoice Generated"
-                                                                            ? "bg-sky-600"
-                                                                            : shipment.status.name === "Shipment Approved"
-                                                                                ? "bg-primary"
-                                                                                : shipment.status.name === "Shipment Started"
-                                                                                    ? "bg-purple-600"
-                                                                                    : shipment.status.name === "Arrival At The Warehouse"
-                                                                                        ? "bg-gray-600"
-                                                                                        : shipment.status.name === "Shipment InTransit"
-                                                                                            ? "bg-amber-600"
-                                                                                            : shipment.status.name === "Shipment Arrived"
-                                                                                                ? "bg-pink-600"
-                                                                                                : shipment.status.name === "Shipment Completed"
-                                                                                                    ? "bg-green-600"
-                                                                                                    : shipment.status.name === "Terminated"
-                                                                                                        ? "bg-red-600"
-                                                                                                        : ""
+                                                                    ? "bg-orange-600"
+                                                                    : shipment.status.name === "Invoice Generated"
+                                                                        ? "bg-sky-600"
+                                                                        : shipment.status.name === "Shipment Approved"
+                                                                            ? "bg-primary"
+                                                                            : shipment.status.name === "Shipment Started"
+                                                                                ? "bg-purple-600"
+                                                                                : shipment.status.name === "Arrival At The Warehouse"
+                                                                                    ? "bg-gray-600"
+                                                                                    : shipment.status.name === "Shipment InTransit"
+                                                                                        ? "bg-amber-600"
+                                                                                        : shipment.status.name === "Shipment Arrived"
+                                                                                            ? "bg-pink-600"
+                                                                                            : shipment.status.name === "Shipment Completed"
+                                                                                                ? "bg-green-600"
+                                                                                                : shipment.status.name === "Terminated"
+                                                                                                    ? "bg-red-600"
+                                                                                                    : ""
                                                                     }`}
                                                             ></div>
                                                             <span className="text-xs text-gray-600 truncate">
@@ -364,24 +363,118 @@ export function ImportShipment() {
                                                             Tracking ID: {shipment?.tracking?.tracking_id}
                                                         </BMiddleRegular>
                                                     </td>
-                                                    <td className="px-5 py-2 text-gray-900 font-[500] whitespace-nowrap bg-gray-50">
+                                                    <td className="px-5 py-2 text-gray-900 font-[500] min-w-[200px] bg-gray-50">
+                                                        {shipment?.receiverInfo?.country === "USA" ?
+
+                                                            <Image
+                                                                src={'/images/Countries/us.png'}
+                                                                alt="logo"
+                                                                width={40}
+                                                                height={40}
+                                                                priority
+                                                                className="rounded-[5px]"
+                                                            />
+                                                            : shipment?.receiverInfo?.country === "CAN" ?
+                                                                <Image
+                                                                    src={'/images/Countries/ca.png'}
+                                                                    alt="logo"
+                                                                    width={40}
+                                                                    height={40}
+                                                                    priority
+                                                                    className="rounded-[5px]"
+                                                                />
+                                                                : shipment?.receiverInfo?.country === "UK" ?
+                                                                    <Image
+                                                                        src={'/images/Countries/gb.png'}
+                                                                        alt="logo"
+                                                                        width={40}
+                                                                        height={40}
+                                                                        priority
+                                                                        className="rounded-[5px]"
+                                                                    />
+                                                                    : shipment?.receiverInfo?.country === "Nigeria" ?
+                                                                        <Image
+                                                                            src={'/images/Countries/ng.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                                        :
+                                                                        <Image
+                                                                            src={'/images/Countries/br.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                        }
                                                         <div>
-                                                            <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
+                                                            <BMiddleRegular className="my-[1px] text-xs !text-gray-500 min-w-[200px]">
                                                                 {shipment?.receiverInfo?.address_line_1}, {shipment?.receiverInfo?.city}, {shipment?.receiverInfo?.country}
                                                             </BMiddleRegular>
                                                         </div>
-                                                        <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
-                                                            {shipment?.senderInfo?.name}
+                                                        <BMiddleRegular className="my-[1px] text-xs !text-gray-500 min-w-[200px]">
+                                                            {shipment?.receiverInfo?.name}
                                                         </BMiddleRegular>
                                                     </td>
-                                                    <td className="px-5 py-2 text-gray-900 font-[500] whitespace-nowrap bg-gray-50">
+                                                    <td className="px-5 py-2 min-w-[200px] text-gray-900 font-[500]  bg-gray-50">
+                                                        {shipment?.senderInfo?.country === "USA" ?
+
+                                                            <Image
+                                                                src={'/images/Countries/us.png'}
+                                                                alt="logo"
+                                                                width={40}
+                                                                height={40}
+                                                                priority
+                                                                className="rounded-[5px]"
+                                                            />
+                                                            : shipment?.senderInfo?.country === "CAN" ?
+                                                                <Image
+                                                                    src={'/images/Countries/ca.png'}
+                                                                    alt="logo"
+                                                                    width={40}
+                                                                    height={40}
+                                                                    priority
+                                                                    className="rounded-[5px]"
+                                                                />
+                                                                : shipment?.senderInfo?.country === "UK" ?
+                                                                    <Image
+                                                                        src={'/images/Countries/gb.png'}
+                                                                        alt="logo"
+                                                                        width={40}
+                                                                        height={40}
+                                                                        priority
+                                                                        className="rounded-[5px]"
+                                                                    />
+                                                                    : shipment?.senderInfo?.country === "Nigeria" ?
+                                                                        <Image
+                                                                            src={'/images/Countries/ng.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                                        :
+                                                                        <Image
+                                                                            src={'/images/Countries/br.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                        }
                                                         <div>
-                                                            <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
+                                                            <BMiddleRegular className="my-[1px] text-xs min-w-[200px] !text-gray-500 ">
                                                                 {shipment?.senderInfo?.address_line_1}, {shipment?.senderInfo?.city}, {shipment?.senderInfo?.country}
                                                             </BMiddleRegular>
                                                         </div>
-                                                        <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
-                                                            {shipment?.receiverInfo?.name}
+                                                        <BMiddleRegular className="my-[1px] text-xs min-w-[200px] !text-gray-500 ">
+                                                            {shipment?.senderInfo?.name}
                                                         </BMiddleRegular>
                                                     </td>
                                                     <td className="px-2 py-0">
@@ -398,6 +491,28 @@ export function ImportShipment() {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {/* Render your action buttons or links here */}
+                                                        {
+                                                            shipment.status?.code === "01" ?
+                                                                <div className="block font-semibold">
+
+                                                                    <Link href={`/dashboard/import/shipment/edit-shipment/${shipment.id}`}>
+                                                                        <BodySmallestMedium className="my-[10px] text-xl !text-gray-500 capitalize">
+                                                                            <CiEdit />
+                                                                        </BodySmallestMedium>
+                                                                    </Link>
+                                                                </div>
+                                                                :
+                                                                <div className="font-semibold grid md:gap-10 xs:gap-5 md:grid-cols-1 xs:grid-cols-1 justify-center items-center w-full">
+
+                                                                    <Link href={`/dashboard/import/shipment/view-shipment/${shipment.id}`}>
+                                                                        <BodySmallestMedium className="my-[10px] text-xl !text-gray-500 capitalize">
+                                                                            <PiEye />
+                                                                        </BodySmallestMedium>
+                                                                    </Link>
+                                                                    {/* <div><RxDownload /></div> */}
+                                                                </div>
+                                                        }
+
                                                     </td>
                                                 </tr>
                                             ))
@@ -469,24 +584,24 @@ export function ImportShipment() {
                                                         <div className="flex items-center">
                                                             <div
                                                                 className={`rounded-full h-2 w-2 mr-2 flex animate-pulse ${shipment.status.name === "Shipment Created"
-                                                                        ? "bg-orange-600"
-                                                                        : shipment.status.name === "Invoice Generated"
-                                                                            ? "bg-sky-600"
-                                                                            : shipment.status.name === "Shipment Approved"
-                                                                                ? "bg-primary"
-                                                                                : shipment.status.name === "Shipment Started"
-                                                                                    ? "bg-purple-600"
-                                                                                    : shipment.status.name === "Arrival At The Warehouse"
-                                                                                        ? "bg-gray-600"
-                                                                                        : shipment.status.name === "Shipment InTransit"
-                                                                                            ? "bg-amber-600"
-                                                                                            : shipment.status.name === "Shipment Arrived"
-                                                                                                ? "bg-pink-600"
-                                                                                                : shipment.status.name === "Shipment Completed"
-                                                                                                    ? "bg-green-600"
-                                                                                                    : shipment.status.name === "Terminated"
-                                                                                                        ? "bg-red-600"
-                                                                                                        : ""
+                                                                    ? "bg-orange-600"
+                                                                    : shipment.status.name === "Invoice Generated"
+                                                                        ? "bg-sky-600"
+                                                                        : shipment.status.name === "Shipment Approved"
+                                                                            ? "bg-primary"
+                                                                            : shipment.status.name === "Shipment Started"
+                                                                                ? "bg-purple-600"
+                                                                                : shipment.status.name === "Arrival At The Warehouse"
+                                                                                    ? "bg-gray-600"
+                                                                                    : shipment.status.name === "Shipment InTransit"
+                                                                                        ? "bg-amber-600"
+                                                                                        : shipment.status.name === "Shipment Arrived"
+                                                                                            ? "bg-pink-600"
+                                                                                            : shipment.status.name === "Shipment Completed"
+                                                                                                ? "bg-green-600"
+                                                                                                : shipment.status.name === "Terminated"
+                                                                                                    ? "bg-red-600"
+                                                                                                    : ""
                                                                     }`}
                                                             ></div>
                                                             <span className="text-xs text-gray-600 truncate">
@@ -508,24 +623,118 @@ export function ImportShipment() {
                                                             Tracking ID: {shipment?.tracking?.tracking_id}
                                                         </BMiddleRegular>
                                                     </td>
-                                                    <td className="px-5 py-2 text-gray-900 font-[500] whitespace-nowrap bg-gray-50">
+                                                    <td className="px-5 py-2 text-gray-900 font-[500] min-w-[200px] bg-gray-50">
+                                                        {shipment?.receiverInfo?.country === "USA" ?
+
+                                                            <Image
+                                                                src={'/images/Countries/us.png'}
+                                                                alt="logo"
+                                                                width={40}
+                                                                height={40}
+                                                                priority
+                                                                className="rounded-[5px]"
+                                                            />
+                                                            : shipment?.receiverInfo?.country === "CAN" ?
+                                                                <Image
+                                                                    src={'/images/Countries/ca.png'}
+                                                                    alt="logo"
+                                                                    width={40}
+                                                                    height={40}
+                                                                    priority
+                                                                    className="rounded-[5px]"
+                                                                />
+                                                                : shipment?.receiverInfo?.country === "UK" ?
+                                                                    <Image
+                                                                        src={'/images/Countries/gb.png'}
+                                                                        alt="logo"
+                                                                        width={40}
+                                                                        height={40}
+                                                                        priority
+                                                                        className="rounded-[5px]"
+                                                                    />
+                                                                    : shipment?.receiverInfo?.country === "Nigeria" ?
+                                                                        <Image
+                                                                            src={'/images/Countries/ng.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                                        :
+                                                                        <Image
+                                                                            src={'/images/Countries/br.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                        }
                                                         <div>
-                                                            <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
+                                                            <BMiddleRegular className="my-[1px] text-xs !text-gray-500 min-w-[200px]">
                                                                 {shipment?.receiverInfo?.address_line_1}, {shipment?.receiverInfo?.city}, {shipment?.receiverInfo?.country}
                                                             </BMiddleRegular>
                                                         </div>
-                                                        <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
-                                                            {shipment?.senderInfo?.name}
+                                                        <BMiddleRegular className="my-[1px] text-xs !text-gray-500 min-w-[200px]">
+                                                            {shipment?.receiverInfo?.name}
                                                         </BMiddleRegular>
                                                     </td>
-                                                    <td className="px-5 py-2 text-gray-900 font-[500] whitespace-nowrap bg-gray-50">
+                                                    <td className="px-5 py-2 min-w-[200px] text-gray-900 font-[500]  bg-gray-50">
+                                                        {shipment?.senderInfo?.country === "USA" ?
+
+                                                            <Image
+                                                                src={'/images/Countries/us.png'}
+                                                                alt="logo"
+                                                                width={40}
+                                                                height={40}
+                                                                priority
+                                                                className="rounded-[5px]"
+                                                            />
+                                                            : shipment?.senderInfo?.country === "CAN" ?
+                                                                <Image
+                                                                    src={'/images/Countries/ca.png'}
+                                                                    alt="logo"
+                                                                    width={40}
+                                                                    height={40}
+                                                                    priority
+                                                                    className="rounded-[5px]"
+                                                                />
+                                                                : shipment?.senderInfo?.country === "UK" ?
+                                                                    <Image
+                                                                        src={'/images/Countries/gb.png'}
+                                                                        alt="logo"
+                                                                        width={40}
+                                                                        height={40}
+                                                                        priority
+                                                                        className="rounded-[5px]"
+                                                                    />
+                                                                    : shipment?.senderInfo?.country === "Nigeria" ?
+                                                                        <Image
+                                                                            src={'/images/Countries/ng.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                                        :
+                                                                        <Image
+                                                                            src={'/images/Countries/br.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                        }
                                                         <div>
-                                                            <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
+                                                            <BMiddleRegular className="my-[1px] text-xs min-w-[200px] !text-gray-500 ">
                                                                 {shipment?.senderInfo?.address_line_1}, {shipment?.senderInfo?.city}, {shipment?.senderInfo?.country}
                                                             </BMiddleRegular>
                                                         </div>
-                                                        <BMiddleRegular className="my-[1px] text-xs !text-gray-500 whitespace-nowrap">
-                                                            {shipment?.receiverInfo?.name}
+                                                        <BMiddleRegular className="my-[1px] text-xs min-w-[200px] !text-gray-500 ">
+                                                            {shipment?.senderInfo?.name}
                                                         </BMiddleRegular>
                                                     </td>
                                                     <td className="px-2 py-0">
@@ -542,6 +751,28 @@ export function ImportShipment() {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {/* Render your action buttons or links here */}
+                                                        {
+                                                            shipment.status?.code === "01" ?
+                                                                <div className="block font-semibold">
+
+                                                                    <Link href={`/dashboard/import/shipment/edit-shipment/${shipment.id}`}>
+                                                                        <BodySmallestMedium className="my-[10px] text-xl !text-gray-500 capitalize">
+                                                                            <CiEdit />
+                                                                        </BodySmallestMedium>
+                                                                    </Link>
+                                                                </div>
+                                                                :
+                                                                <div className="font-semibold grid md:gap-10 xs:gap-5 md:grid-cols-1 xs:grid-cols-1 justify-center items-center w-full">
+
+                                                                    <Link href={`/dashboard/import/shipment/view-shipment/${shipment.id}`}>
+                                                                        <BodySmallestMedium className="my-[10px] text-xl !text-gray-500 capitalize">
+                                                                            <PiEye />
+                                                                        </BodySmallestMedium>
+                                                                    </Link>
+                                                                    {/* <div><RxDownload /></div> */}
+                                                                </div>
+                                                        }
+
                                                     </td>
                                                 </tr>
                                             ))
@@ -559,6 +790,58 @@ export function ImportShipment() {
                     )}
                 </PaginationV2>
             )}
+
+{showShipmentModal && (
+        <CustomModal onClose={toggleShipmentModal} backdrop={true}>
+          {/* <ApproveFloatItems onClose={toggleApproveModal} id={parseInt(id)} /> */}
+          <div className="relative z-30"> {/* Ensure the modal has a higher z-index */}
+            {showShipmentModal && (
+                    <div className="relative w-auto my-6 max-w-3xl mx-2">
+
+                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <div className="px-6 bg-white flex items-center justify-between py-2 border-b border-solid border-slate-200 rounded-t">
+                                <div
+                                    className="md:text-lg xs:text-[12px] text-primary font-[500] "
+                                    style={{ width: "fit-content" }}
+                                >
+                                    Create Shipment
+                                </div>
+                                <button
+                                    className=" ml-auto border-0 float-right leading-none font-semibold outline-none focus:outline-none rounded-full p-2 hover:bg-gray-200"
+                                    onClick={toggleShipmentModal}
+                                >
+                                    <span className="text-2xl text-primary block outline-none focus:outline-none hover:text-slate-800">
+                                        <GrClose />
+                                    </span>
+                                </button>
+                            </div>
+                            <div className="relative p-6 flex-auto">
+                                <div className="xs:text-[10px] md:text-[15px] text-primary bg-sky-200 rounded-lg px-2 py-2 bg-opacity-50 font-[500] md:leading-7 xs:leading-5">
+                                    Please note that shipments booked after 2 p.m. WAT will be processed on the next business day. Pick-up times vary depending on rider availability and pick-up location. Please be patient with us as we attend to your orders.
+                                </div>
+
+
+                                <Link href="/dashboard/import/shipment/create" className="mt-5">
+                                    <div className="flex flex-col bg-white md:p-4 xs:p-3 my-3 border border-gray-300 shadow-md rounded-lg cursor-pointer transition-all duration-400 ease-in-out">
+                                        <div className="md:text-[17px] xs:text-[12px] text-gray-600 font-medium uppercase">Book An Import</div>
+                                        <div className="md:text-[15px] xs:text-[10px] text-gray-800 font-light capitalize md:leading-7 xs:leading-5">Shop & ship to our US, UK or China addresses</div>
+                                    </div>
+                                </Link>
+
+                                <Link href="/dashboard/import/shipment/create-scheduled" className="mt-5">
+                                    <div className="flex flex-col bg-white md:p-4 xs:p-3 my-3 border border-gray-300 shadow-md rounded-lg cursor-pointer transition-all duration-400 ease-in-out">
+                                        <div className="md:text-[17px] xs:text-[12px] text-gray-600 font-medium uppercase">Create A Scheduled shipment</div>
+                                        <div className="md:text-[15px] xs:text-[10px] text-gray-800 font-light capitalize md:leading-7 xs:leading-5">Send your package to anywhere in the world</div>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                
+            )}
+        </div>
+        </CustomModal>
+      )}
 
         </div>
     );

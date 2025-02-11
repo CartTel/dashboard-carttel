@@ -311,7 +311,7 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
               {
                 shipmentData?.status?.code === '05' &&
                   <CustomButton
-                    className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-white text-[#1d4289] border-[1px] border-primary"
+                    className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-white !text-primary border-[1px] border-primary"
                   // onClick={saveInvoices}
                   // disabled={loading}
                   >
