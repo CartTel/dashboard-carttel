@@ -236,7 +236,7 @@ export function ImportShipment() {
                             <button
                                 className="link flex font-semibold"
 
-                            onClick={toggleShipmentModal}
+                                onClick={toggleShipmentModal}
                             >
                                 <div
                                     className="w-full flex justify-center items-center cursor rounded-md bg-primary font-medium px-4 md:py-3 xs:py-2 text-white sm:text-xs xs:text-[12px] lg:text-[0.65rem] xl:text-[0.75rem]"
@@ -562,7 +562,7 @@ export function ImportShipment() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {paginatedList?.length > 0 ? (
+                                        {paginatedList?.length > 0 ? (
                                             paginatedList.map((shipment, index) => (
                                                 <tr
                                                     key={shipment.id || index}
@@ -791,57 +791,57 @@ export function ImportShipment() {
                 </PaginationV2>
             )}
 
-{showShipmentModal && (
-        <CustomModal onClose={toggleShipmentModal} backdrop={true}>
-          {/* <ApproveFloatItems onClose={toggleApproveModal} id={parseInt(id)} /> */}
-          <div className="relative z-30"> {/* Ensure the modal has a higher z-index */}
             {showShipmentModal && (
-                    <div className="relative w-auto my-6 max-w-3xl mx-2">
+                <CustomModal onClose={toggleShipmentModal} backdrop={true}>
+                    {/* <ApproveFloatItems onClose={toggleApproveModal} id={parseInt(id)} /> */}
+                    <div className="relative z-30"> {/* Ensure the modal has a higher z-index */}
+                        {showShipmentModal && (
+                            <div className="relative w-auto my-6 max-w-3xl mx-2">
 
-                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                            <div className="px-6 bg-white flex items-center justify-between py-2 border-b border-solid border-slate-200 rounded-t">
-                                <div
-                                    className="md:text-lg xs:text-[12px] text-primary font-[500] "
-                                    style={{ width: "fit-content" }}
-                                >
-                                    Create Shipment
-                                </div>
-                                <button
-                                    className=" ml-auto border-0 float-right leading-none font-semibold outline-none focus:outline-none rounded-full p-2 hover:bg-gray-200"
-                                    onClick={toggleShipmentModal}
-                                >
-                                    <span className="text-2xl text-primary block outline-none focus:outline-none hover:text-slate-800">
-                                        <GrClose />
-                                    </span>
-                                </button>
-                            </div>
-                            <div className="relative p-6 flex-auto">
-                                <div className="xs:text-[10px] md:text-[15px] text-primary bg-sky-200 rounded-lg px-2 py-2 bg-opacity-50 font-[500] md:leading-7 xs:leading-5">
-                                    Please note that shipments booked after 2 p.m. WAT will be processed on the next business day. Pick-up times vary depending on rider availability and pick-up location. Please be patient with us as we attend to your orders.
-                                </div>
-
-
-                                <Link href="/dashboard/import/shipment/create" className="mt-5">
-                                    <div className="flex flex-col bg-white md:p-4 xs:p-3 my-3 border border-gray-300 shadow-md rounded-lg cursor-pointer transition-all duration-400 ease-in-out">
-                                        <div className="md:text-[17px] xs:text-[12px] text-gray-600 font-medium uppercase">Book An Import</div>
-                                        <div className="md:text-[15px] xs:text-[10px] text-gray-800 font-light capitalize md:leading-7 xs:leading-5">Shop & ship to our US, UK or China addresses</div>
+                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                    <div className="px-6 bg-white flex items-center justify-between py-2 border-b border-solid border-slate-200 rounded-t">
+                                        <div
+                                            className="md:text-lg xs:text-[12px] text-primary font-[500] "
+                                            style={{ width: "fit-content" }}
+                                        >
+                                            Create Shipment
+                                        </div>
+                                        <button
+                                            className=" ml-auto border-0 float-right leading-none font-semibold outline-none focus:outline-none rounded-full p-2 hover:bg-gray-200"
+                                            onClick={toggleShipmentModal}
+                                        >
+                                            <span className="text-2xl text-primary block outline-none focus:outline-none hover:text-slate-800">
+                                                <GrClose />
+                                            </span>
+                                        </button>
                                     </div>
-                                </Link>
+                                    <div className="relative p-6 flex-auto">
+                                        <div className="xs:text-[10px] md:text-[15px] text-primary bg-sky-200 rounded-lg px-2 py-2 bg-opacity-50 font-[500] md:leading-7 xs:leading-5">
+                                            Please note that shipments booked after 2 p.m. WAT will be processed on the next business day. Pick-up times vary depending on rider availability and pick-up location. Please be patient with us as we attend to your orders.
+                                        </div>
 
-                                <Link href="/dashboard/import/shipment/create-scheduled" className="mt-5">
-                                    <div className="flex flex-col bg-white md:p-4 xs:p-3 my-3 border border-gray-300 shadow-md rounded-lg cursor-pointer transition-all duration-400 ease-in-out">
-                                        <div className="md:text-[17px] xs:text-[12px] text-gray-600 font-medium uppercase">Create A Scheduled shipment</div>
-                                        <div className="md:text-[15px] xs:text-[10px] text-gray-800 font-light capitalize md:leading-7 xs:leading-5">Send your package to anywhere in the world</div>
+
+                                        <Link href="/dashboard/import/shipment/create" className="mt-5">
+                                            <div className="flex flex-col bg-white md:p-4 xs:p-3 my-3 border border-gray-300 shadow-md rounded-lg cursor-pointer transition-all duration-400 ease-in-out">
+                                                <div className="md:text-[17px] xs:text-[12px] text-gray-600 font-medium uppercase">Book An Import</div>
+                                                <div className="md:text-[15px] xs:text-[10px] text-gray-800 font-light capitalize md:leading-7 xs:leading-5">Shop & ship to our US, UK or China addresses</div>
+                                            </div>
+                                        </Link>
+
+                                        <Link href="/dashboard/import/shipment/create-scheduled" className="mt-5">
+                                            <div className="flex flex-col bg-white md:p-4 xs:p-3 my-3 border border-gray-300 shadow-md rounded-lg cursor-pointer transition-all duration-400 ease-in-out">
+                                                <div className="md:text-[17px] xs:text-[12px] text-gray-600 font-medium uppercase">Create A Scheduled shipment</div>
+                                                <div className="md:text-[15px] xs:text-[10px] text-gray-800 font-light capitalize md:leading-7 xs:leading-5">Send your package to anywhere in the world</div>
+                                            </div>
+                                        </Link>
                                     </div>
-                                </Link>
+                                </div>
                             </div>
-                        </div>
+
+                        )}
                     </div>
-                
+                </CustomModal>
             )}
-        </div>
-        </CustomModal>
-      )}
 
         </div>
     );

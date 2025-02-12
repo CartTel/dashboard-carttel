@@ -5,7 +5,7 @@ import CreateShipment from '@/components/others/import/shipment/create-shipment'
 
 
 export const metadata: Metadata = {
-    title: "CartTel Import . Shipment",
+    title: "CartTel Import . Create Shipment",
     icons: '/images/carttel-favicon.ico',
     openGraph: {
         images: ['https://app.carttel.africa/images/carttel-favicon.ico']

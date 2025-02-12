@@ -785,7 +785,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
               </div>
             </div>
 
-            <div className="lg:mt-[96px] lg:p-[36px] p-4 flex justify-center">
+            <div className="lg:mt-[96px] lg:p-[36px] p-2 flex justify-center">
               <div className="max-w-[1300px] w-[100%]">{children}</div>
             </div>
           </section>

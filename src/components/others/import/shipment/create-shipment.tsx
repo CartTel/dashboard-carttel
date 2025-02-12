@@ -37,158 +37,140 @@ const breadCrumb = [
     },
 ];
 
+interface SenderInfoDetails {
+    name: string,
+    email: string,
+    phone: string,
+    address_line_1: string,
+    address_line_2: string,
+    postal_code: string,
+    country: string,
+    state: string,
+    city: string
+}
+
+interface ReceiverInfoDetails {
+    name: string,
+    email: string,
+    phone: string,
+    address_line_1: string,
+    address_line_2: string,
+    postal_code: string,
+    country: string,
+    state: string,
+    city: string
+}
+
+interface TrackingDetails {
+    tracking_id: string,
+    tracking_url: string,
+    tracking_number: string,
+    third_party_tracking_id: string,
+    third_party_tracking_name: string
+}
+
+interface InsuranceDetails {
+    insurance_type: "",
+    policy_number: "",
+    start_date: Date | null,
+    end_date: Date | null
+}
+
+interface ItemDetails {
+    name: string;
+    quantity: number;
+    value: number;
+    description: string;
+    weight: number;
+    category: string;
+    dimension: {
+        length: number;
+        width: number;
+        height: number;
+    };
+}
+
+interface SenderInfoForm {
+    userId: number | null;
+    name: string;
+    description: string;
+    senderInfo: SenderInfoDetails;
+    receiverInfo: ReceiverInfoDetails;
+    tracking: TrackingDetails
+    insurance: InsuranceDetails
+    items: ItemDetails[];
+}
+
 const CreateShipment = () => {
-    const [active, setActive] = useState(1)
-    
-
-    const [errMsg, setErrMsg] = useState("");
-
-    const [selectedCity, setSelectedCity] = useState("");
-    const [selectedStates, setSelectedStates] = useState("");
-    const [selectedCountry, setSelectedCountry] = useState('');
-    const [selectedCities, setSelectedCities] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
-    
-
-    const [isLoadingButton, setLoadingButton] = useState(false);
-
-    // SENDER INFO 
-    var [user, setUser] = useState({
+    const [formData, setFormData] = useState<SenderInfoForm>({
+        userId: null,
         name: "",
-        phone: "",
-        email: "",
-        state: "",
-        country: "",
-        postalCode: "",
-        addressLine1: "",
-        addressLine2: "",
-        city: ""
+        description: "",
+        senderInfo: {
+            name: "",
+            email: "",
+            phone: "",
+            address_line_1: "",
+            address_line_2: "",
+            postal_code: "",
+            country: "",
+            state: "",
+            city: ""
+        },
+        receiverInfo: {
+            name: "",
+            email: "",
+            phone: "",
+            address_line_1: "",
+            address_line_2: "",
+            postal_code: "",
+            country: "",
+            state: "",
+            city: ""
+        },
+        tracking: {  
+            tracking_id: "",
+            tracking_url: "",
+            tracking_number: "",
+            third_party_tracking_id: "",
+            third_party_tracking_name: ""
+        },
+        insurance: {
+            insurance_type: "",
+            policy_number: "",
+            start_date: null,
+            end_date: null
+        },
+        items: []
     });
 
-    // RECEIVER INFO
-    const [isBasic, setIsBasic] = useState(1);
+
+
+
+
+
+
+
+
+
+
+
+    const [active, setActive] = useState<number>(1)
+
+    const [isLoadingButton, setLoadingButton] = useState(false);
 
     // ITEM INFO 
     const [items, setItems] = useState([
         { id: 1, category: '', value: 0, quantity: 0, weight: 0, description: '', length: 0, width: 0, height: 0 }
     ]);
 
-    // SHIPMENT INFO 
-    var [shipmentDetails, setShipmentDetails] = useState({
-        itemCollectionMode: "",
-        trackingID: "",
-        trackingNumber: "",
-        // requestType: "",
-        trackingURL: "",
-        // shipmentStatus: "",
-        shipmentRoute: "Import",
-    });
-
-    // PAYMENT INFO 
-    var [isChecked, setIsChecked] = useState(false);
-    var [isTick, setIsTick] = useState(true);
-
-    // var {
-    //     itemCollectionMode,
-    //     trackingID,
-    //     trackingNumber,
-    //     requestType,
-    //     trackingURL,
-    //     shipmentStatus,
-    // } = shipmentDetails;
-
-    var {
-        name,
-        phone,
-        email,
-        state,
-        country,
-        postalCode,
-        addressLine1,
-        addressLine2,
-        city
-    } = user;
-
-    useEffect(() => {
-        setErrMsg("")
-    },
-        [
-            name,
-            phone,
-            email,
-            state,
-            country,
-            postalCode,
-            addressLine1,
-            addressLine2,
-            city
-        ]
-    );
-
     const renderPreviousForm = () => {
         // console.log("all the prevoius data...", detailsData);
         setActive(active - 1);
     };
 
-    // FUNCTION TO GET THE COUNTRY AND THE STATE
-    function fetchData() {
-        const options = {
-            method: "GET",
-            // url: 'http://states-and-cities.com/api/v1/states',
-            url: "https://countriesnow.space/api/v0.1/countries/states",
-        };
-        return axios.request(options);
-    }
-
-    function fetchStateData() {
-        const options = {
-            method: "GET",
-            url: 'https://countriesnow.space/api/v0.1/countries',
-            // url: "https://countriesnow.space/api/v0.1/countries",
-        };
-        return axios.request(options);
-    }
-
-    useEffect(() => {
-        async function fetchAndLogData() {
-            setIsLoading(true);
-            try {
-                const response = await fetchData();
-                // console.log("all the country...", response);
-                setSelectedCity(response.data?.data);
-                setIsLoading(false);
-                // console.log(response.data?.data);
-                // console.log(selectedStates);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        fetchAndLogData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        async function fetchStateLogData() {
-            setIsLoading(true);
-            try {
-                const response = await fetchStateData();
-                setSelectedStates(response?.data?.data);
-                setIsLoading(false);
-                // console.log("state is Loading..", response.data?.data);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        fetchStateLogData();
-    }, []);
-
-
-
     return (
         <div className="text-lg  w-full z-0 relative">
-
-            
-
             <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
             <div className="my-[20px] flex lg:items-center justify-between lg:flex-row flex-col mb-[0px]">
                 <H1 className="">Create Shipment</H1>
@@ -389,14 +371,9 @@ const CreateShipment = () => {
                                 <SenderInfoImport
                                     active={active}
                                     setActive={setActive}
-                                    user={user}
-                                    setUser={setUser}
                                     isLoadingButton={isLoadingButton}
-                                    selectedCity={selectedCity}
-                                    selectedCountry={selectedCountry}
-                                    setSelectedCities={setSelectedCities}
-                                    setSelectedStates={setSelectedStates}
-                                    setSelectedCountry={setSelectedCountry}
+                                    formData={formData}
+                                    setFormData={setFormData}
                                 />
                             )}
 

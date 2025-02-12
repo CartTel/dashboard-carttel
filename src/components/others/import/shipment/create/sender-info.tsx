@@ -30,29 +30,89 @@ interface SenderInfoDetails {
     country: string,
     state: string,
     city: string
+}
 
+interface ReceiverInfoDetails {
+    name: string,
+    email: string,
+    phone: string,
+    address_line_1: string,
+    address_line_2: string,
+    postal_code: string,
+    country: string,
+    state: string,
+    city: string
+}
+
+interface TrackingDetails {
+    tracking_id: string,
+    tracking_url: string,
+    tracking_number: string,
+    third_party_tracking_id: string,
+    third_party_tracking_name: string
+}
+
+interface InsuranceDetails {
+    insurance_type: "",
+    policy_number: "",
+    start_date: Date | null,
+    end_date: Date | null
+}
+
+interface ItemDetails {
+    name: string;
+    quantity: number;
+    value: number;
+    description: string;
+    weight: number;
+    category: string;
+    dimension: {
+        length: number;
+        width: number;
+        height: number;
+    };
 }
 
 interface SenderInfoForm {
     userId: number | any;
-    email: string;
     name: string;
     description: string;
     senderInfo: SenderInfoDetails;
+    receiverInfo: ReceiverInfoDetails;
+    tracking: TrackingDetails
+    insurance: InsuranceDetails
+    items: ItemDetails[];
+}
+
+interface SenderInfoImportProps {
+    active: number;
+    setActive: (active: number) => void;
+    isLoadingButton: boolean;
+    formData: SenderInfoForm; // Use the SenderInfoForm interface
+    setFormData: React.Dispatch<React.SetStateAction<SenderInfoForm>>;
 }
 
 
-const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, selectedCountry, selectedCity, setSelectedStates, setSelectedCities, setSelectedCountry }: any) => {
+const SenderInfoImport = ({
+    active,
+    setActive,
+    isLoadingButton,
+    formData,
+    setFormData
+}: SenderInfoImportProps) => {
+
+   
+
+    // const { userId, name, description, senderInfo } = formData;
+    // const { phone, address_line_1, address_line_2, postal_code, country, state, city } = senderInfo;
 
     const [countryInfo, setCountryInfo] = useState([]);
     const [statesInfo, setStatesInfo] = useState([]);
     const [citiesInfo, setCitiesInfo] = useState([]);
+    const userString = localStorage.getItem("user");
 
     const [statesCountry, setStatesCountry] = useState([]);
     const [citiesState, setCitiesState] = useState([]);
-
-
-
 
     const { data: statesData, isLoading: isLoadingStates, isError: isErrorStates, error: statesError } = useQuery({
         queryKey: ["states"],
@@ -72,9 +132,32 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
         staleTime: Infinity,
     });
 
-    console.log("data resolved ..", countriesData);
-
-
+    useEffect(() => {
+        if (userString) {
+            if (!userString) {
+                throw new Error("User not found in local storage");
+            }
+            let user: any;
+            try {
+                user = JSON.parse(userString); // Attempt to parse user data
+            } catch (parseError) {
+                console.log("Invalid user data format in local storage");
+            }
+            
+            setFormData((prev: any) => {
+                const newData = {
+                  ...prev,
+                  userId: user.user.id,
+                  senderInfo: {
+                    ...prev.senderInfo,
+                    name: `${user.user.firstname} ${user.user.lastname}`,
+                  },
+                };               
+                return newData;
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userString]);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -86,14 +169,13 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                 })).sort((a: any, b: any) => a.label.localeCompare(b.label));;
 
                 setCountryInfo(transformedData)
-                console.log("data transformed ..", transformedData);
+                // console.log("data transformed ..", transformedData);
             } catch (error) {
                 console.error("Error fetching countries:", error);
             }
         };
         fetchCountries(); // Fetch data on component mount
     }, [countriesData]);
-
 
     useEffect(() => {
         const fetchStates = async () => {
@@ -125,109 +207,16 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
         fetchCities(); // Fetch data on component mount
     }, [citiesData]);
 
-
-    const [formData, setFormData] = useState<SenderInfoForm>({
-        userId: null,
-        email: "",
-        name: "",
-        description: "",
-        senderInfo: {
-            name: "",
-            email: "",
-            phone: "",
-            address_line_1: "",
-            address_line_2: "",
-            postal_code: "",
-            country: "",
-            state: "",
-            city: ""
-        }
-    });
-
-    const { userId, email, name, description, senderInfo } = formData;
-    const { phone, address_line_1, address_line_2, postal_code, country, state, city } = senderInfo;
-
     // Local state for states data.
     const [states, setStates] = useState<any[]>([]);
     const [filterStates, setFilterStates] = useState<any[]>([]);
     const [filterCities, setFilterCities] = useState<any[]>([]);
 
-    const filteredStates = useMemo(() => {
-        console.log("states data ..", statesData, formData.senderInfo.country)
-        if (!statesData || !formData.senderInfo.country) return [];
-        return statesData?.data?.filter((state: any) => state.country_id === formData.senderInfo.country);
-    }, [statesData, formData.senderInfo.country]);
-
-
-    // function getStatesByCountryName(
-    //     countries: any[],
-    //     searchValue: string
-    // ): any[] {
-
-    //     const matchedCountry = countries.find(
-    //         (country) => country.name.toLowerCase() === searchValue.toLowerCase()
-    //     );
-    //     return matchedCountry ? matchedCountry.states : [];
-    // }
-    // function getCitiesByStateName(states: any[], searchValue: string): any[] {
-    //     const matchedState = states.find(
-    //         (state) => state.name.toLowerCase() === searchValue.toLowerCase()
-    //     );
-    //     return matchedState ? matchedState.cities : [];
-    // }
-    // Define getStates as an async function.
-    // const getStates = async (): Promise<void> => {
-    //     try {
-
-    //         const statesRes = await fetch('/data/countries-states-cities.json');
-    //         if (!statesRes.ok) {
-    //             throw new Error('Failed to fetch states');
-    //         }
-    //         const statesData: any[] = await statesRes.json();
-    //         const filteredStates = getStatesByCountryName(statesData, formData.senderInfo.country);
-    //         const transformedData: any = filteredStates?.map((state: any) => ({
-    //             label: state.name,
-    //             value: state.name,
-    //         }));
-
-    //         console.log("response ..", filterStates, statesData)
-    //         setFilterStates(transformedData)
-    //         setStates(filteredStates);
-    //     } catch (error) {
-    //         console.error('Error fetching states:', error);
-    //     }
-    // };
-    // const getCities = async (): Promise<void> => {
-    //     try {
-    //         console.log("all the way ..", states, formData.senderInfo.state)
-    //         const filteredCities = getCitiesByStateName(states, formData.senderInfo.state);
-    //         const transformedData: any = filteredCities?.map((city: any) => ({
-    //             label: city.name,
-    //             value: city.name,
-    //         }));
-
-    //         console.log("going..", filterCities, states);
-    //         setFilterCities(transformedData)
-    //         setStates(filteredCities);
-    //     } catch (error) {
-    //         console.error('Error fetching states:', error);
-    //     }
-    // };
-
-    // Call getStates when formData.senderInfo.country has a value.
-    // useEffect(() => {
-    //     if (formData.senderInfo.country) {
-    //         console.log("many states")
-    //         getStates();
-    //     }
-    // }, [formData.senderInfo.country]);
-
-    // useEffect(() => {
-    //     if (formData.senderInfo.state) {
-    //         console.log("many cities")
-    //         getCities();
-    //     }
-    // }, [formData.senderInfo.state]);
+    // const filteredStates = useMemo(() => {
+    //     console.log("states data ..", statesData, formData.senderInfo.country)
+    //     if (!statesData || !formData.senderInfo.country) return [];
+    //     return statesData?.data?.filter((state: any) => state.country_id === formData.senderInfo.country);
+    // }, [statesData, formData?.senderInfo?.country]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -242,7 +231,7 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
         if (name.startsWith("senderInfo.")) {
             // Extract the property key from the input name
             const key = name.split(".")[1];
-            setFormData((prev) => ({
+            setFormData((prev: any) => ({
                 ...prev,
                 senderInfo: {
                     ...prev.senderInfo,
@@ -251,7 +240,7 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
             }));
         } else {
             // For top-level properties
-            setFormData((prev) => ({
+            setFormData((prev: any) => ({
                 ...prev,
                 [name]: value,
             }));
@@ -259,49 +248,56 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
     };
 
     const handleCountryChange = (value: string) => {
-        console.log("value country ", value);
-        // const levels = statesData?.data?.filter((data: any) => data?.country_id == value)
+        const selectedCountryObj = countriesData?.data?.find(
+            (country: any) => country.id === value
+        );
+        const selectedCountryName = selectedCountryObj ? selectedCountryObj.name : value;
         const levels = statesData?.data?.filter((data: any) => data?.country_id == value).sort((a: any, b: any) => a.name.localeCompare(b.name));
-        // console.log("rate..", levels)
         const transformedData: any = levels?.map((state: any) => ({
             label: state.name,
             value: state.id,
         }));
         setStatesCountry(transformedData)
-        setFormData((prev) => ({
+        setFormData((prev: any) => ({
             ...prev,
             senderInfo: {
                 ...prev.senderInfo,
-                country: value,
+                country: selectedCountryName
             },
         }));
     };
 
     const handleStateChange = (value: string) => {
-        console.log("value country ", value);
+        const selectedStateObj = statesData?.data?.find(
+            (state: any) => state.id === value
+        );
+        const selectedStateName = selectedStateObj ? selectedStateObj.name : value;
         const levels = citiesData?.data?.filter((data: any) => data?.state_id == value).sort((a: any, b: any) => a.name.localeCompare(b.name));
-        // console.log("rate state..", levels)
-
         const transformedData: any = levels?.map((city: any) => ({
             label: city.name,
             value: city.id,
         }));
         setCitiesState(transformedData)
-        setFormData((prev) => ({
+        setFormData((prev: any) => ({
             ...prev,
             senderInfo: {
                 ...prev.senderInfo,
-                state: value,
+                state: selectedStateName,
             },
         }));
     };
 
     const handleCitiesChange = (value: string) => {
-        setFormData((prev) => ({
+        const selectedCitiesObj = citiesData?.data?.find(
+            (state: any) => state.id === value
+          );
+          // Use the label if found; otherwise, fall back to the value.
+        const selectedCitiesName = selectedCitiesObj ? selectedCitiesObj.name : value;
+        setFormData((prev: any) => ({
             ...prev,
             senderInfo: {
                 ...prev.senderInfo,
-                city: value,
+                city: selectedCitiesName,
             },
         }));
     };
@@ -313,7 +309,7 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
 
     const handleInputCitiesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
+        setFormData((prev: any) => ({
             ...prev,
             senderInfo: {
                 ...prev.senderInfo,
@@ -346,9 +342,8 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                 type="text"
                                 label="Shipment Name"
                                 required
-                                value={formData.name}
+                                value={formData?.name}
                                 onChange={handleChange}
-                                // errorMessage={errors.firstname}
                                 showRequirement={true}
                                 className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                             />
@@ -356,13 +351,12 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                         <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                             <CustomInput
                                 id="email"
-                                name="email"
+                                name="senderInfo.email"
                                 type="email"
                                 label="Email Address"
                                 required
-                                value={formData.email}
+                                value={formData?.senderInfo?.email}
                                 onChange={handleChange}
-                                // errorMessage={errors.email}
                                 showRequirement={true}
                                 className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                             />
@@ -377,7 +371,7 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                 type="text"
                                 label="Address Line 1"
                                 required
-                                value={formData.senderInfo.address_line_1}
+                                value={formData?.senderInfo?.address_line_1}
                                 onChange={handleChange}
                                 showRequirement={true}
                                 className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
@@ -391,9 +385,8 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                 type="text"
                                 label="Address Line 2"
                                 required
-                                value={formData.senderInfo.address_line_2}
+                                value={formData?.senderInfo?.address_line_2}
                                 onChange={handleChange}
-                                //   showRequirement={true}
                                 className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                             />
                         </div>
@@ -404,12 +397,16 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                             {/* <PhoneInput/> */}
 
                             <PhoneInput
-                                value={formData.senderInfo.phone}
-                                // onChange={() => { setPhoneNumber(phoneNumber) }}
+                                value={formData?.senderInfo?.phone}
                                 onChange={(value: string | undefined) => {
-                                    // setPhoneNumber(value); // Update the state with the new phone number
-                                    setFormData((prev) => ({ ...prev, phone: value || "" })); // Update formData, default to empty string if value is undefined
-                                }}
+                                    setFormData((prev: any) => ({
+                                      ...prev,
+                                      senderInfo: {
+                                        ...prev.senderInfo,
+                                        phone: value || ""
+                                      }
+                                    }));
+                                  }}
                                 defaultCountry={defaultCountry} // Set the default country to Nigeria
                                 international
                             />
@@ -422,9 +419,8 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                 type="number"
                                 label="Postal Code"
                                 required
-                                value={formData.senderInfo.postal_code}
+                                value={formData?.senderInfo?.postal_code}
                                 onChange={handleChange}
-                                //   showRequirement={true}
                                 className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                             />
                         </div>
@@ -443,13 +439,13 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                 optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
                                 label='Select Country?'
                                 setSelected={handleCountryChange}
-                                selected={formData.senderInfo.country}
+                                selected={formData?.senderInfo?.country?.toString()}
                                 options={countryInfo}
                             />
                         </div>
                         <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                             {
-                                formData.senderInfo.country && (
+                                formData?.senderInfo?.country && (
                                     <CustomSelect
                                         wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
                                         labelClass='!text-[0.875rem] text-gray-500 w-full'
@@ -457,7 +453,7 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                         optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
                                         label='Select State?'
                                         setSelected={handleStateChange}
-                                        selected={formData.senderInfo.state}
+                                        selected={formData?.senderInfo?.state}
                                         options={statesCountry}
                                     />
                                 )
@@ -465,9 +461,9 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                         </div>
                         <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
                             {
-                                formData.senderInfo.state && (
+                                formData?.senderInfo?.state && (
 
-                                    citiesState.length > 0 ? 
+                                    citiesState.length > 0 ?
                                         <CustomSelect
                                             wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
                                             labelClass='!text-[0.875rem] text-gray-500 w-full'
@@ -475,7 +471,7 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                             optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
                                             label='Select City?'
                                             setSelected={handleCitiesChange}
-                                            selected={formData.senderInfo.city}
+                                            selected={formData?.senderInfo?.city}
                                             options={citiesState}
                                         />
                                         :
@@ -485,28 +481,27 @@ const SenderInfoImport = ({ active, setActive, user, setUser, isLoadingButton, s
                                             type="text"
                                             label="Type City?"
                                             required
-                                            value={formData.senderInfo.city}
+                                            value={formData?.senderInfo?.city}
                                             onChange={handleInputCitiesChange}
                                             className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
                                         />
                                 )
 
                             }
-
-                            {/* {
-                                formData.senderInfo.state && (
-
-
-
-
-                                )
-                            } */}
                         </div>
                     </div>
-
-
-
-
+                    <div className="flex md:flex-row xs:flex-col gap-10 my-10">
+                        <CustomInput
+                            id="description"
+                            inputType="textarea"
+                            label="Description"
+                            className="!h-[150px] mb-[38px]"
+                            setValue={(value) =>
+                                setFormData((prev: any) => ({ ...prev, description: value }))
+                            }
+                            value={formData?.description}
+                        />
+                    </div>
 
                     <div className='mt-5 flex justify-end w-full'>
                         <label className="inline-flex items-center me-5 cursor-pointer">

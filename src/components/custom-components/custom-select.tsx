@@ -81,7 +81,8 @@ export function CustomSelect({
         if (Array.isArray(selected)) {
             return options?.find(o => o.value === selected[inputIndex as number])?.label;
         }
-        return options?.find(o => o.value === selected)?.label;
+        // return options?.find(o => o.value === selected)?.label;
+        return options?.find((option) => option.label === selected)?.label || label;
     };
 
     return (
