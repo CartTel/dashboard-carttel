@@ -18,6 +18,7 @@ export function CustomInput({
   name, // Add name prop
   showToggle = false,
   isToggle,
+  min = 1,
   changeToggle,
   showLabel = true,
   inputType = "input",
@@ -76,6 +77,7 @@ export function CustomInput({
           required={required}
           onChange={handleChange}
           ref={inputRef}
+          min={min}
           className="input-element"
           {...props}
         />

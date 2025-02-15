@@ -256,6 +256,30 @@ export const getAllCities  = async () => {
   }
 };
 
+export const fetchAllCategories = async () => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/category/get-all-categories`, {
+      params: { // Specify the relationships to include
+        sortOrder: 'ASC', // Optional: sorting order
+        sortBy: 'updated_at', // Optional: sorting field
+        page: 1, // Optional: pagination
+        perPage: 100, // Optional: pagination limit
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    console.log("all categories..", response.data);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

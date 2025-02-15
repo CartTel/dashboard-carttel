@@ -15,6 +15,8 @@ import { BsCheckLg } from "react-icons/bs";
 
 import axios from "axios";
 import SenderInfoImport from "./create/sender-info";
+import ReceiverInfoImport from "./create/receiver-info";
+import ItemImport from "./create/items";
 
 // import SenderInfoImport from './Details/SenderInfoImport';
 // import ReceiverInfoImport from './Details/ReceiverInfoImport';
@@ -141,27 +143,44 @@ const CreateShipment = () => {
             start_date: null,
             end_date: null
         },
-        items: []
+        items: [{ 
+            // id: 1, 
+            name: '',
+            category: '', 
+            value: 0, 
+            quantity: 0, 
+            weight: 0, 
+            description: '', 
+            dimension: {
+                length: 0, 
+                width: 0, 
+                height: 0 
+            }
+        }]
     });
 
+    const [isBasic, setIsBasic] = useState(1);
 
-
-
-
-
-
-
-
-
-
-
-    const [active, setActive] = useState<number>(1)
+    const [active, setActive] = useState<number>(4)
 
     const [isLoadingButton, setLoadingButton] = useState(false);
 
     // ITEM INFO 
     const [items, setItems] = useState([
-        { id: 1, category: '', value: 0, quantity: 0, weight: 0, description: '', length: 0, width: 0, height: 0 }
+        { 
+            // id: 1, 
+            name: '',
+            category: '', 
+            value: 0, 
+            quantity: 0, 
+            weight: 0, 
+            description: '', 
+            dimension: {
+                length: 0, 
+                width: 0, 
+                height: 0 
+            }
+        }
     ]);
 
     const renderPreviousForm = () => {
@@ -357,7 +376,6 @@ const CreateShipment = () => {
                     <div className="w-full md:flex xs:flex lg:hidden flex-row justify-center">
                         <div className="bg-primary rounded-full px-10 py-10 text-white text-2xl font-bold">
                             {active }/5
-
                         </div>
                     </div>
                 </div>
@@ -377,25 +395,29 @@ const CreateShipment = () => {
                                 />
                             )}
 
-                            {/* {(active > 1 && active <= 2) && (
+                            {(active > 1 && active <= 2) && (
                                 <ReceiverInfoImport
                                     active={active}
                                     setActive={setActive}
                                     isLoadingButton={isLoadingButton}
                                     isBasic={isBasic}
                                     setIsBasic={setIsBasic}
+                                    formData={formData}
+                                    setFormData={setFormData}
                                 />
-                            )} */}
+                            )}
 
-                            {/* {(active > 2 && active <= 3) && (
+                            {(active > 2 && active <= 3) && (
                                 <ItemImport
-                                    active={active}
-                                    setActive={setActive}
                                     items={items}
                                     setItems={setItems}
+                                    active={active}
+                                    setActive={setActive}
                                     isLoadingButton={isLoadingButton}
+                                    formData={formData}
+                                    setFormData={setFormData}
                                 />
-                            )} */}
+                            )}
 
                             {/* {(active > 3 && active <= 4) && (
                                 <ShipmentImport

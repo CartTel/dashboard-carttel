@@ -94,17 +94,13 @@ interface SenderInfoImportProps {
 
 
 const SenderInfoImport = ({
-    active,
-    setActive,
-    isLoadingButton,
-    formData,
-    setFormData
-}: SenderInfoImportProps) => {
+        active,
+        setActive,
+        isLoadingButton,
+        formData,
+        setFormData
+    }: SenderInfoImportProps) => {
 
-   
-
-    // const { userId, name, description, senderInfo } = formData;
-    // const { phone, address_line_1, address_line_2, postal_code, country, state, city } = senderInfo;
 
     const [countryInfo, setCountryInfo] = useState([]);
     const [statesInfo, setStatesInfo] = useState([]);
@@ -143,16 +139,16 @@ const SenderInfoImport = ({
             } catch (parseError) {
                 console.log("Invalid user data format in local storage");
             }
-            
+
             setFormData((prev: any) => {
                 const newData = {
-                  ...prev,
-                  userId: user.user.id,
-                  senderInfo: {
-                    ...prev.senderInfo,
-                    name: `${user.user.firstname} ${user.user.lastname}`,
-                  },
-                };               
+                    ...prev,
+                    userId: user.user.id,
+                    senderInfo: {
+                        ...prev.senderInfo,
+                        name: `${user.user.firstname} ${user.user.lastname}`,
+                    },
+                };
                 return newData;
             });
         }
@@ -249,7 +245,7 @@ const SenderInfoImport = ({
 
     const handleCountryChange = (value: string) => {
         const selectedCountryObj = countriesData?.data?.find(
-            (country: any) => country.id === value
+            (country: any) => country.id === Number(value)
         );
         const selectedCountryName = selectedCountryObj ? selectedCountryObj.name : value;
         const levels = statesData?.data?.filter((data: any) => data?.country_id == value).sort((a: any, b: any) => a.name.localeCompare(b.name));
@@ -269,7 +265,7 @@ const SenderInfoImport = ({
 
     const handleStateChange = (value: string) => {
         const selectedStateObj = statesData?.data?.find(
-            (state: any) => state.id === value
+            (state: any) => state.id === Number(value)
         );
         const selectedStateName = selectedStateObj ? selectedStateObj.name : value;
         const levels = citiesData?.data?.filter((data: any) => data?.state_id == value).sort((a: any, b: any) => a.name.localeCompare(b.name));
@@ -290,8 +286,8 @@ const SenderInfoImport = ({
     const handleCitiesChange = (value: string) => {
         const selectedCitiesObj = citiesData?.data?.find(
             (state: any) => state.id === value
-          );
-          // Use the label if found; otherwise, fall back to the value.
+        );
+        // Use the label if found; otherwise, fall back to the value.
         const selectedCitiesName = selectedCitiesObj ? selectedCitiesObj.name : value;
         setFormData((prev: any) => ({
             ...prev,
@@ -400,13 +396,13 @@ const SenderInfoImport = ({
                                 value={formData?.senderInfo?.phone}
                                 onChange={(value: string | undefined) => {
                                     setFormData((prev: any) => ({
-                                      ...prev,
-                                      senderInfo: {
-                                        ...prev.senderInfo,
-                                        phone: value || ""
-                                      }
+                                        ...prev,
+                                        senderInfo: {
+                                            ...prev.senderInfo,
+                                            phone: value || ""
+                                        }
                                     }));
-                                  }}
+                                }}
                                 defaultCountry={defaultCountry} // Set the default country to Nigeria
                                 international
                             />
@@ -444,6 +440,8 @@ const SenderInfoImport = ({
                             />
                         </div>
                         <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            {/* {formData?.senderInfo?.country}
+                            {formData?.senderInfo?.state} */}
                             {
                                 formData?.senderInfo?.country && (
                                     <CustomSelect
