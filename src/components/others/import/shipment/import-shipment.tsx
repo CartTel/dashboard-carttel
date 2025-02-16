@@ -364,7 +364,7 @@ export function ImportShipment() {
                                                         </BMiddleRegular>
                                                     </td>
                                                     <td className="px-5 py-2 text-gray-900 font-[500] min-w-[200px] bg-gray-50">
-                                                        {shipment?.receiverInfo?.country === "USA" ?
+                                                        {shipment?.receiverInfo?.country === "United States" ?
 
                                                             <Image
                                                                 src={'/images/Countries/us.png'}
@@ -374,7 +374,7 @@ export function ImportShipment() {
                                                                 priority
                                                                 className="rounded-[5px]"
                                                             />
-                                                            : shipment?.receiverInfo?.country === "CAN" ?
+                                                            : shipment?.receiverInfo?.country === "Canada" ?
                                                                 <Image
                                                                     src={'/images/Countries/ca.png'}
                                                                     alt="logo"
@@ -383,7 +383,7 @@ export function ImportShipment() {
                                                                     priority
                                                                     className="rounded-[5px]"
                                                                 />
-                                                                : shipment?.receiverInfo?.country === "UK" ?
+                                                                : shipment?.receiverInfo?.country === "United Kingdom" ?
                                                                     <Image
                                                                         src={'/images/Countries/gb.png'}
                                                                         alt="logo"
@@ -395,6 +395,15 @@ export function ImportShipment() {
                                                                     : shipment?.receiverInfo?.country === "Nigeria" ?
                                                                         <Image
                                                                             src={'/images/Countries/ng.png'}
+                                                                            alt="logo"
+                                                                            width={40}
+                                                                            height={40}
+                                                                            priority
+                                                                            className="rounded-[5px]"
+                                                                        />
+                                                                        : shipment?.receiverInfo?.country === "China" ?
+                                                                        <Image
+                                                                            src={'/images/Countries/cn.png'}
                                                                             alt="logo"
                                                                             width={40}
                                                                             height={40}

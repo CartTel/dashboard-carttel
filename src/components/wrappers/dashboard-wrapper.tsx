@@ -147,7 +147,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
   };
 
   useEffect(() => {
-    // console.log("all the user..", user);
+    console.log("all the user..", user);
     setIsClient(true);
   }, [user]);
 
@@ -256,7 +256,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
                   <span className="block text-sm font-medium text-black dark:text-white">
                     {user?.firstname} {user?.lastname}
                   </span>
-                  <span className="block text-xs">Business</span>
+                  <span className="block text-xs">Importer</span>
                 </span>
 
                 <svg
@@ -657,7 +657,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
                     <span className="block text-sm font-medium text-black dark:text-white">
                       {user?.firstname} {user?.lastname}
                     </span>
-                    <span className="block text-xs">Business</span>
+                    <span className="block text-xs">Importer</span>
                   </span>
 
                   <svg

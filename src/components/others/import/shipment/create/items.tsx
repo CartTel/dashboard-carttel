@@ -223,7 +223,7 @@ const ItemImport = ({
     //   };
     const handleItemCategoryChange = (index: number, field: string, value: any) => {
 
-        const timeArray: any = categoryInfo?.find((category: any )=> category.value === value)?.label
+        const timeArray: any = categoryInfo?.find((category: any) => category.value === value)?.label
         // console.log("first item", timeArray, field)
         setFormData((prev: any) => {
             // Copy the existing items array.
@@ -239,6 +239,7 @@ const ItemImport = ({
             return { ...prev, items: newItems };
         });
     };
+
     const handleItemChange = (index: number, field: string, value: any) => {
         setFormData((prev: any) => {
             // Copy the existing items array.
@@ -285,6 +286,36 @@ const ItemImport = ({
         console.log("all the prevoius data...", formData);
         setActive(active + 1);
     };
+
+    // Helper to check if every item is complete
+    const areItemsComplete = useMemo(() => {
+        // Return false if no items are present
+        if (!formData.items || formData.items.length === 0) return false;
+        return formData.items.every((item) => {
+            // Check that text fields are non-empty
+            const textComplete =
+                item.name.trim() !== "" &&
+                item.category.trim() !== "" &&
+                item.description.trim() !== "";
+
+            // Check that numeric fields are not null.
+            // Adjust the condition if 0 should be considered incomplete.
+            const numbersComplete =
+                item.value !== null &&
+                item.quantity !== null &&
+                item.weight !== null;
+
+            // Check nested dimension fields
+            const dimension = item.dimension;
+            const dimensionComplete =
+                dimension &&
+                dimension.length !== null &&
+                dimension.width !== null &&
+                dimension.height !== null;
+
+            return textComplete && numbersComplete && dimensionComplete;
+        });
+    }, [formData.items]);
 
 
 
@@ -509,24 +540,18 @@ const ItemImport = ({
 
                 </div>
 
-                <div className="flex justify-between py-10 ">
-                    <div className="flex justify-end z-10 relative mt-4  mr-3">
-                        <button
-                            onClick={handleProviderFour}
-                            className={`${isLoadingButton ? "bg-primary opacity-90" : "bg-primary"} flex justify-end items-center z-10 relative text-white md:text-sm rounded-lg md:py-3 md:px-16 xs:px-10 xs:text-[15px] xs:py-3 `}
-                            disabled={isLoadingButton} // Disable the button when userLoading is true
-                        >
-                            {isLoadingButton ? ( // Display spinner if userLoading is true
-                                <div className="flex items-center px-6">
-                                    <div>
-                                        {/* <img alt="" src={Spinner} className="text-[1px] text-white" /> */}
-                                    </div>
+                <div className="flex justify-between pb-10">
 
-                                </div>
-                            ) : (
-                                <span className="font-semibold">Next</span> // Show the "Submit" text when isLoading is false
-                            )}
-                        </button>
+                    <div className="flex">
+                        <div className="flex justify-end z-10 relative mt-4 mr-3">
+                        <button
+            onClick={handleProviderFour}
+            disabled={!areItemsComplete}
+            className={`${!areItemsComplete ? "bg-primary opacity-40" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full !text-white`}
+          >
+            Next
+          </button>
+                        </div>
                     </div>
                     <div className="flex justify-end z-10 relative mt-4 ">
                         <button

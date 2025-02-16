@@ -280,6 +280,18 @@ export const fetchAllCategories = async () => {
   }
 };
 
+export const createShipment = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/create`, credentials);
+    console.log("create shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

@@ -17,6 +17,8 @@ import axios from "axios";
 import SenderInfoImport from "./create/sender-info";
 import ReceiverInfoImport from "./create/receiver-info";
 import ItemImport from "./create/items";
+import ShipmentDetails from "./create/shipment-details";
+import ReviewDetails from "./create/review";
 
 // import SenderInfoImport from './Details/SenderInfoImport';
 // import ReceiverInfoImport from './Details/ReceiverInfoImport';
@@ -159,7 +161,7 @@ const CreateShipment = () => {
         }]
     });
 
-    const [isBasic, setIsBasic] = useState(1);
+    const [isBasic, setIsBasic] = useState<number>(0)
 
     const [active, setActive] = useState<number>(4)
 
@@ -419,27 +421,25 @@ const CreateShipment = () => {
                                 />
                             )}
 
-                            {/* {(active > 3 && active <= 4) && (
-                                <ShipmentImport
+                            {(active > 3 && active <= 4) && (
+                                <ShipmentDetails
                                     active={active}
                                     setActive={setActive}
                                     isLoadingButton={isLoadingButton}
-                                    shipmentDetails={shipmentDetails} 
-                                    setShipmentDetails={setShipmentDetails}
+                                    formData={formData}
+                                    setFormData={setFormData}
                                 />
-                            )} */}
+                            )}
 
-                            {/* {(active > 4 && active <= 5) && (
-                                <PaymentInfo
-                                    active={active}
-                                    setActive={setActive}
-                                    isLoadingButton={isLoadingButton}
-                                    isChecked={isChecked}
-                                    isTick={isTick}
-                                    setIsTick={setIsTick}
-                                    setIsChecked={setIsChecked}
+                            {(active > 4 && active <= 5) && (
+                                <ReviewDetails
+                                active={active}
+                                setActive={setActive}
+                                isLoadingButton={isLoadingButton}
+                                formData={formData}
+                                setFormData={setFormData}
                                 />
-                            )} */}
+                            )}
                         </div>
                     </div>
                 </div>

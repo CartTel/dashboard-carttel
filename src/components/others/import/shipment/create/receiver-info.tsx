@@ -9,7 +9,7 @@ import { B1, B2, H2, H1, BMiddle, B2Regular } from '@/components/custom-typograp
 import Link from 'next/link';
 
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import Spinner from '@/components/ui/Spinner/Spinner';
 import axios from "axios";
@@ -91,7 +91,13 @@ interface ReceiverInfoImportProps {
 
 const ReceiverInfoImport = ({ active, setActive, isLoadingButton, isBasic, setIsBasic, formData, setFormData }: ReceiverInfoImportProps) => {
 
-
+    const isReceiverInfoComplete = useMemo(() => {
+        const receiver = formData.receiverInfo;
+        // Check that every value is a non-empty string.
+        return Object.values(receiver).every(
+            (field) => typeof field === 'string' && field.trim() !== ""
+        );
+    }, [formData.receiverInfo]);
 
     const renderPreviousForm = () => {
         setActive(active - 1);
@@ -143,8 +149,6 @@ const ReceiverInfoImport = ({ active, setActive, isLoadingButton, isBasic, setIs
     };
 
     const handleCHINAChange = () => {
-        
-        
         setFormData((prev: any) => ({
             ...prev,
             receiverInfo: {
@@ -659,26 +663,18 @@ const ReceiverInfoImport = ({ active, setActive, isLoadingButton, isBasic, setIs
             </div>
 
             <div className="flex justify-between pb-10">
-                <div className="flex justify-end z-10 relative mt-4  mr-3">
-
-
-                    <button
-                        onClick={handleProviderThree}
-                        className={`${isLoadingButton ? "bg-primary opacity-90" : "bg-primary"} flex justify-end items-center z-10 relative text-white md:text-sm rounded-lg md:py-3 md:px-16 xs:px-10 xs:text-[15px] xs:py-3 `}
-                        disabled={isLoadingButton} // Disable the button when userLoading is true
-                    >
-                        {isLoadingButton ? ( // Display spinner if userLoading is true
-                            <div className="flex items-center px-6">
-                                <div>
-                                    {/* <img alt="" src={Spinner} className="text-[1px] text-white" /> */}
-                                </div>
-
-                            </div>
-                        ) : (
-                            <span className="font-semibold">Next</span> // Show the "Submit" text when isLoading is false
-                        )}
-                    </button>
-                </div>
+                
+                <div className="flex">
+                        <div className="flex justify-end z-10 relative mt-4 mr-3">
+                            <button
+                                onClick={handleProviderThree}
+                                disabled={!isReceiverInfoComplete}
+                                className={`${!isReceiverInfoComplete ? "bg-primary opacity-40" : "bg-primary"} flex justify-end items-center z-10 relative md:text-sm rounded-lg md:py-3 md:px-16 xs:px-10 xs:text-[15px] xs:py-3 !text-white`}
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
                 <div className="flex justify-end z-10 relative mt-4 ">
                     <button
                         onClick={renderPreviousForm}

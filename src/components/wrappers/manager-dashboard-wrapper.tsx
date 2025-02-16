@@ -261,7 +261,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                     <span className="block text-sm font-medium text-black dark:text-white">
                                         {user?.firstname} {user?.lastname}
                                     </span>
-                                    <span className="block text-xs">Business</span>
+                                    <span className="block text-xs">Manager</span>
                                 </span>
 
 
@@ -616,7 +616,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                         <BMiddle className="block text-sm font-medium text-black dark:text-white">
                                             {user?.firstname} {user?.lastname}
                                         </BMiddle>
-                                        <BodySmallestMedium className="block text-xs">Business</BodySmallestMedium>
+                                        <BodySmallestMedium className="block text-xs">Manager</BodySmallestMedium>
                                     </span>
                                 </div> */}
 
@@ -656,7 +656,7 @@ export function ManagerDashboardWrapper({ children }: IManagerDashboardWrapper) 
                                         <span className="block text-sm font-medium text-black dark:text-white">
                                             {user?.firstname} {user?.lastname}
                                         </span>
-                                        <span className="block text-xs">Business</span>
+                                        <span className="block text-xs">Manager</span>
                                     </span>
 
 

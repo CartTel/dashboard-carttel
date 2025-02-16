@@ -15,6 +15,7 @@ import { useState, useEffect, useMemo } from 'react';
 // import PhoneInput from "react-phone-input-2";
 import Spinner from '@/components/ui/Spinner/Spinner';
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 import { SkeletonLoader } from '@/components/ui/skeletonCard';
 
 
@@ -94,12 +95,12 @@ interface SenderInfoImportProps {
 
 
 const SenderInfoImport = ({
-        active,
-        setActive,
-        isLoadingButton,
-        formData,
-        setFormData
-    }: SenderInfoImportProps) => {
+    active,
+    setActive,
+    isLoadingButton,
+    formData,
+    setFormData
+}: SenderInfoImportProps) => {
 
 
     const [countryInfo, setCountryInfo] = useState([]);
@@ -298,9 +299,34 @@ const SenderInfoImport = ({
         }));
     };
 
+    const validateForm = () => {
+        // Validate form fields and set validation errors
+        if (!formData.name) {
+            toast({
+                title: "Error",
+                description: 'Name is required!',
+                variant: "destructive",
+            });
+            return false;
+        }
+        if (!formData.description) {
+            toast({
+                title: "Error",
+                description: 'Description is required!',
+                variant: "destructive",
+            });
+            return false;
+        }
+        return true;
+
+    };
+
     const handleProviderOne = () => {
         console.log("form data..", formData);
-        setActive(2)
+        const valid = validateForm();
+        if (valid) {
+            setActive(2)
+        }
     };
 
     const handleInputCitiesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -313,6 +339,15 @@ const SenderInfoImport = ({
             },
         }));
     };
+
+    // This useMemo recalculates every time receiverInfo changes.
+    const isReceiverInfoComplete = useMemo(() => {
+        const receiver = formData.senderInfo;
+        // Check that every value is a non-empty string.
+        return Object.values(receiver).every(
+            (field) => typeof field === 'string' && field.trim() !== ""
+        );
+    }, [formData.senderInfo]);
 
     if (isLoadingStates || isLoadingCountries || isLoadingCities) {
         // return <div className='w-full flex justify-center items-center'>
@@ -514,24 +549,15 @@ const SenderInfoImport = ({
                         Please note that when toggle the button to save address and you click on the continue button. it will automatically add this saved address to your address Book. But when you have exceeded your limit due to your current plan, You would have to change plans to save the address.
                     </div>
 
+
                     <div className="flex pb-10">
                         <div className="flex z-10 relative mt-4 w-full text-center justify-center">
-
                             <button
                                 onClick={handleProviderOne}
-                                className={`${isLoadingButton ? "bg-primary opacity-90" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative bg-primary text-white md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full `}
-                                disabled={isLoadingButton} // Disable the button when userLoading is true
+                                disabled={!isReceiverInfoComplete}
+                                className={`${!isReceiverInfoComplete ? "bg-primary opacity-40" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full !text-white`}
                             >
-                                {isLoadingButton ? ( // Display spinner if userLoading is true
-                                    <div className="flex items-center px-6 md:py-1">
-                                        {/* <div>
-                                            <img alt="" src={Spinner} className="text-[1px] text-white" />
-                                        </div> */}
-
-                                    </div>
-                                ) : (
-                                    <span className="md:py-1">Continue</span> // Show the "Submit" text when isLoading is false
-                                )}
+                                Continue
                             </button>
                         </div>
                     </div>

@@ -47,7 +47,30 @@ export interface ICustomInput {
     showRequirement?: boolean;
     errorMessage?: string;
     min?: number;
+    
 }
+export interface ICustomInputDate {
+    value?: string | number | Date[] | undefined | any[];
+    setValue?: (e: any) => void;
+    inputIndex?: number;
+    inputClass?: string;
+    className?: string;
+    id?: string;
+    type?: React.HTMLInputTypeAttribute;
+    label?: string;
+    showLabel?: boolean;
+    disabled?: boolean;
+    required?: boolean;
+    isToggle?: boolean;
+    showToggle?: boolean;
+    changeToggle?: () => void;
+    inputType?: "input" | "textarea";
+    // onChange?: ICustomInputOnChange;
+    calendar?: boolean;
+    wrapperClass?: string;
+    onChange?: (value: string | any) => void;
+    inputName?: string;
+  }
 
 
 export interface IStatCard {

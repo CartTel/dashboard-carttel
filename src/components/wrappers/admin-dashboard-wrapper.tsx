@@ -265,7 +265,7 @@ export function AdminDashboardWrapper({ children }: IAdminDashboardWrapper) {
                   <span className="block text-sm font-medium text-black dark:text-white">
                     {user?.firstname} {user?.lastname}
                   </span>
-                  <span className="block text-xs">Business</span>
+                  <span className="block text-xs">System Admin</span>
                 </span>
 
 
