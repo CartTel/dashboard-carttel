@@ -155,14 +155,18 @@ const ShipmentDetails = ({
     const isShipmentDetailsComplete = useMemo(() => {
         const tracking = formData.tracking;
         const insurance = formData.insurance;
+      
         const trackingComplete = Object.values(tracking).every(
           (field) => typeof field === 'string' && field.trim() !== ""
         );
-        const insuranceComplete = Object.values(insurance).every(
-          (field) => typeof field === 'string' && field.trim() !== ""
-        );
+      
+        const insuranceComplete = Object.entries(insurance)
+          .filter(([key]) => key !== 'policy_number' && key !== 'end_date')
+          .every(([, field]) => typeof field === 'string' && field.trim() !== "");
+      
         return trackingComplete && insuranceComplete;
       }, [formData.tracking, formData.insurance]);
+      
       
 
 
