@@ -677,5 +677,108 @@ input[type="date"]:focus::-webkit-datetime-edit {
 }
 
 
+/* Inputs */
+.edit-group {
+  position: relative;
+  border-radius: 10px;
+}
+
+.edit-group label {
+  position: absolute;
+  top: 23%;
+  left: 18px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: .8rem;
+  color: #999;
+  pointer-events: none;
+  -webkit-transition: all 0.3s ease-out 0.1s;
+  transition: all 0.3s ease-out 0.1s;
+}
+
+.edit-group input,
+textarea {
+  -webkit-transition: all 0.1s ease-out 0.3s;
+  transition: all 0.1s ease-out 0.3s;
+  display: inline-block;
+  /* border-radius: 10px; */
+  border-radius: 10px;
+  width: 100%;
+  padding: 15px 20px;
+  background-color: #f6f6f6;
+  font-size: 1rem;
+  box-shadow: none;
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+/* .form-group textarea {
+  padding-top: 10px;
+  padding: 0px 10px;
+} */
+
+.edit-group input {
+  height: 100%;
+}
+
+.edit-group textarea {
+  height: 100%;
+}
+
+.edit-group textarea + label {
+  top: 28px;
+}
+
+.edit-group textarea {
+  padding-top: 30px;
+  padding-left: 20px;
+}
+
+
+.edit-group input:focus + label,
+input.has-value + label,
+textarea:focus + label,
+textarea.has-value + label {
+  top: 15px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.edit-group > input:focus,
+.edit-group input.has-value {
+  /* height: 64px; */
+  height: 58px;
+  padding-bottom: 0px;
+}
+
+.unlabeled > input:focus,
+.unlabeled input.has-value {
+  height: 100% !important;
+  padding-bottom: 15px;
+}
+
+.edit-group > input:focus,
+.edit-group > textarea:focus,
+.edit-group input.has-value,
+.edit-group textarea.has-value {
+  background-color: var(--white);
+  border-width: 1.5px;
+  /* border-color: var(--secondary); */
+  border-color: var(--primary);
+  box-shadow: 0px 0px 0px 4px #e0eaff;
+}
+
+.edit-group input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.edit-group:focus-within {
+  border: none;
+  background-color: var(--white);
+}
+
 
 

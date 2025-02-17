@@ -100,8 +100,8 @@ interface SenderInfoForm {
     description: string;
     senderInfo: SenderInfoDetails;
     receiverInfo: ReceiverInfoDetails;
-    tracking: TrackingDetails
-    insurance: InsuranceDetails
+    tracking: TrackingDetails;
+    insurance: InsuranceDetails;
     items: ItemDetails[];
 }
 
@@ -163,7 +163,7 @@ const CreateShipment = () => {
 
     const [isBasic, setIsBasic] = useState<number>(0)
 
-    const [active, setActive] = useState<number>(4)
+    const [active, setActive] = useState<number>(1)
 
     const [isLoadingButton, setLoadingButton] = useState(false);
 

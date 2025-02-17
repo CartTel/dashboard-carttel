@@ -155,19 +155,19 @@ const ShipmentDetails = ({
     const isShipmentDetailsComplete = useMemo(() => {
         const tracking = formData.tracking;
         const insurance = formData.insurance;
-      
+
         const trackingComplete = Object.values(tracking).every(
-          (field) => typeof field === 'string' && field.trim() !== ""
+            (field) => typeof field === 'string' && field.trim() !== ""
         );
-      
+
         const insuranceComplete = Object.entries(insurance)
-          .filter(([key]) => key !== 'policy_number' && key !== 'end_date')
-          .every(([, field]) => typeof field === 'string' && field.trim() !== "");
-      
+            .filter(([key]) => key !== 'policy_number' && key !== 'end_date')
+            .every(([, field]) => typeof field === 'string' && field.trim() !== "");
+
         return trackingComplete && insuranceComplete;
-      }, [formData.tracking, formData.insurance]);
-      
-      
+    }, [formData.tracking, formData.insurance]);
+
+
 
 
 
@@ -315,7 +315,7 @@ const ShipmentDetails = ({
 
                         <div className="my-10 xs:text-[10px] md:text-[13px] text-primary bg-sky-200 rounded-lg px-2 py-2 bg-opacity-50 font-[500] md:leading-7 xs:leading-5">
                             {/* <p>Choose the plan that best suits your needs:</p> */}
-                            <div className='flex mx-0 md:flex-row xs:flex-col'> 
+                            <div className='flex mx-0 md:flex-row xs:flex-col'>
                                 <div><strong>Premium Plan:</strong> 10% of the total value of your item.</div>
                                 <div><strong>Pro Plan:</strong> 7% of the total value of your item.</div>
                                 <div><strong>Basic Plan:</strong> 4% of the total value of your item.</div>
@@ -326,16 +326,16 @@ const ShipmentDetails = ({
                     </div>
                 </div>
                 <div className="flex pb-10">
-                        <div className="flex z-10 relative mt-4 w-full text-center justify-center">
-                            <button
-                                onClick={handleProviderFive}
-                                disabled={!isShipmentDetailsComplete}
-                                className={`${!isShipmentDetailsComplete ? "bg-primary opacity-40" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full !text-white`}
-                            >
-                                Continue
-                            </button>
-                        </div>
+                    <div className="flex z-10 relative mt-4 w-full text-center justify-center">
+                        <button
+                            onClick={handleProviderFive}
+                            disabled={!isShipmentDetailsComplete}
+                            className={`${!isShipmentDetailsComplete ? "bg-primary opacity-40" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full !text-white`}
+                        >
+                            Continue
+                        </button>
                     </div>
+                </div>
             </div>
         </div>
     )
