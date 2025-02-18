@@ -75,7 +75,7 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
 
             <div>
                 {
-                    (shipmentData?.status?.code === '01' || shipmentData?.status?.code === '05')?
+                    (shipmentData?.status?.code === '01' || shipmentData?.status?.code === '05') ?
                         <div className="grid md:grid-rows-2 md:grid-flow-col xs:grid-col-1 gap-0 w-full text-sm bg-[#edefee] p-2">
                             <div className="h-full row-span-2 col-span-2 bg-white p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                                 <div className='text-slate-800 text-[16px] md:item-center flex md:justify-start text-start mb-7'>Shipment Item</div>
@@ -137,7 +137,7 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                             )}
                                         </div>
                                         <div className="mb-[36px]">
-                                            {(shipmentData?.status?.code !== '01' && shipmentData?.status?.code !== '05' ) && (
+                                            {(shipmentData?.status?.code !== '01' && shipmentData?.status?.code !== '05') && (
                                                 <div>
                                                     <BMiddleRegular className="mb-[18px] text-gray-800 font-medium">Invoice:</BMiddleRegular>
 
@@ -150,7 +150,7 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                                 </div>
                                             )}
                                         </div>
-                                        
+
                                     </div>
 
                                     {/* RIGHT */}
@@ -182,31 +182,31 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
 
                                         {/* Action */}
                                         {shipmentData?.isPaid === true && (
-                    <div className="mb-[36px]">
-                      <B1 className="mb-[8px]">Action</B1>
+                                            <div className="mb-[36px]">
+                                                <B1 className="mb-[8px]">Action</B1>
 
-                      <div className="flex items-center gap-[16px] lg:flex-row flex-col">
-                        <CustomButton
-                          className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#029B5B] lg:!w-[112px] w-full !rounded-[3px]"
-                        //   onClick={toggleApproveModal}
-                        >
-                          Approve
-                        </CustomButton>
-                        <CustomButton
-                        //   onClick={toggleSeekModal}
-                          className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#F47F12] lg:!w-[112px] w-full !rounded-[3px]"
-                        >
-                          Clarify
-                        </CustomButton>
-                        <CustomButton
-                        //   onClick={toggleRejectModal}
-                          className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#EA363C] lg:!w-[112px] w-full !rounded-[3px]"
-                        >
-                          Reject
-                        </CustomButton>
-                      </div>
-                    </div>
-                  )}
+                                                <div className="flex items-center gap-[16px] lg:flex-row flex-col">
+                                                    <CustomButton
+                                                        className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#029B5B] lg:!w-[112px] w-full !rounded-[3px]"
+                                                    //   onClick={toggleApproveModal}
+                                                    >
+                                                        Approve
+                                                    </CustomButton>
+                                                    <CustomButton
+                                                        //   onClick={toggleSeekModal}
+                                                        className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#F47F12] lg:!w-[112px] w-full !rounded-[3px]"
+                                                    >
+                                                        Clarify
+                                                    </CustomButton>
+                                                    <CustomButton
+                                                        //   onClick={toggleRejectModal}
+                                                        className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#EA363C] lg:!w-[112px] w-full !rounded-[3px]"
+                                                    >
+                                                        Reject
+                                                    </CustomButton>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 <div >

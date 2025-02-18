@@ -212,17 +212,7 @@ export const fetchSingleShipmentRequest = async (id: number) => {
   }
 };
 
-export const createInvoiceShipment = async (credentials: any) => {
-  try {
-    const response = await apiClient.post(`/api/v1/shipment/create-invoice`, credentials);
-    console.log("create shipment..", response.data);
-    return response.data;
-    
-  } catch (error) {
-    console.error('Error fetching shipment:', error);
-    throw error; // Rethrow the error for handling in the component
-  }
-};
+
 
 export const getAllStates = async () => {
   try {
@@ -288,6 +278,32 @@ export const createShipment = async (credentials: any) => {
     
   } catch (error) {
     console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const createInvoiceShipment = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/create-invoice`, credentials);
+    console.log("create shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const payInvoice = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/invoice/pay-invoice`, {
+      shipment_id: credentials
+    });
+    console.log("Pay invoice..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching pay invoice:', error);
     throw error; // Rethrow the error for handling in the component
   }
 };

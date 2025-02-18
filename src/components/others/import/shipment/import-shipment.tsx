@@ -278,9 +278,9 @@ export function ImportShipment() {
                     list={shipmentData?.data}
                     pagination={{
                         perPage: 5,
-                        totalPages: Math.ceil(shipmentData?.pagination.total / 5),
-                        total: shipmentData?.pagination.total,
-                        page: shipmentData?.pagination.page,
+                        totalPages: Math.ceil(shipmentData?.pagination?.total / 5),
+                        total: shipmentData?.pagination?.total,
+                        page: shipmentData?.pagination?.page,
                     }}
                     onPageChange={(page) => console.log("Page changed to:", page)}
                 >

@@ -68,6 +68,8 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
     currency: "USD"
   });
 
+  const [userString, setUserString] = useState(localStorage.getItem("roles"));
+
   const [clientCost, setClientCost] = useState("");
 
   const handleClientCostChange = (value: string) => {
@@ -166,7 +168,7 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
       }));
     }
   }, [shipmentData]);
-  
+
 
 
 
@@ -243,25 +245,39 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
               <B1>
                 <div className="!text-[13px] text-gray-800 my-2">Additional Cost:</div>
                 {
-                  shipmentData?.status?.code === '01' ? 
-                  <CustomInput
-                    required
-                    setValue={(value) => handleClientCostChange(value as string)}
-                    value={invoiceForm.additional_cost} // Use the value from the array
-                    type="number"
-                    showLabel={false}
-                    label={"Cost"}
-                    className="!h-[38px] !w-[140px] !px-[0px] !text-[0.875rem]"
-                  />
-                  : 
-                  <div>${shipmentData?.invoice?.additional_cost}</div>
+                  shipmentData?.status?.code === '01' ?
+                    <CustomInput
+                      required
+                      setValue={(value) => handleClientCostChange(value as string)}
+                      value={invoiceForm.additional_cost} // Use the value from the array
+                      type="number"
+                      showLabel={false}
+                      label={"Cost"}
+                      className="!h-[38px] !w-[140px] !px-[0px] !text-[0.875rem]"
+                    />
+                    :
+                    <div>${shipmentData?.invoice?.additional_cost}</div>
                 }
               </B1>
 
-              {/* <div className="flex justify-center items-center">
-                <div>Total:</div>
+
+              {
+                shipmentData?.status?.code !== '01' && (
+
+                  <B1>
+                  <div className="!text-[13px] text-gray-800 my-2">Total Shipment Cost:</div>
+                  {
+                    shipmentData?.status?.code !== '01' && (
+
+                      <div>${shipmentData?.totalShipmentCost}</div>
+                    )
+
+                  }
+                </B1>
+                )
                 
-              </div> */}
+
+              }
             </div>
 
             <div className="flex justify-center">
@@ -276,47 +292,48 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
               {/* <div>{shipmentData?.status?.code}</div> */}
               {
                 shipmentData?.status?.code === '01' &&
-                  <CustomButton
-                    onClick={saveInvoices}
-                    disabled={loading}
-                    type="submit" // Explicitly set as "submit"
-                    className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-primary text-white text-center"
-                  >
-                    <div>
-                      {loading ? ( // Display spinner if userLoading is true
-                        <div className="flex justify-center items-center px-6">
-                          <div>
+                <CustomButton
+                  onClick={saveInvoices}
+                  disabled={loading}
+                  type="submit" // Explicitly set as "submit"
+                  className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-primary text-white text-center"
+                >
+                  <div>
+                    {loading ? ( // Display spinner if userLoading is true
+                      <div className="flex justify-center items-center px-6">
+                        <div>
 
-                            <Image
-                              src={'/images/Spinner.svg'}
-                              alt="logo"
-                              width={60}
-                              height={60}
-                              priority
-                              className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
-                            />
+                          <Image
+                            src={'/images/Spinner.svg'}
+                            alt="logo"
+                            width={60}
+                            height={60}
+                            priority
+                            className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                          />
 
-                          </div>
                         </div>
-                      ) : (
-                        <div className='flex justify-center'>
+                      </div>
+                    ) : (
+                      <div className='flex justify-center'>
 
-                          <span className="ml-0">Save</span>
-                        </div>
-                      )}
-                    </div>
-                  </CustomButton>
-                  
+                        <span className="ml-0">Save</span>
+                      </div>
+                    )}
+                  </div>
+                </CustomButton>
+
               }
+              {/* {userString} */}
               {
-                shipmentData?.status?.code === '05' &&
-                  <CustomButton
-                    className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-white !text-primary border-[1px] border-primary"
-                  // onClick={saveInvoices}
-                  // disabled={loading}
-                  >
-                    Message To Client
-                  </CustomButton>
+                (shipmentData?.status?.code === '05' && userString?.includes("admin") || userString?.includes("manager")) &&
+                <CustomButton
+                  className="!py-[0px] !w-[139px] !h-[48px] !text-[0.875rem] bg-white !text-primary border-[1px] border-primary"
+                // onClick={saveInvoices}
+                // disabled={loading}
+                >
+                  Message To Client
+                </CustomButton>
               }
               {
                 (shipmentData?.status?.code !== '01' && shipmentData?.status?.code !== '05') &&
@@ -329,7 +346,7 @@ export function CreateInvoice({ id }: CreateInvoiceDetailsProps) {
                 </CustomButton>
               }
 
-              
+
 
             </div>
 
