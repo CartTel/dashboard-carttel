@@ -308,6 +308,18 @@ export const payInvoice = async (credentials: any) => {
   }
 };
 
+export const approveShipment = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/approve`, credentials);
+    console.log("approve shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error approving shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

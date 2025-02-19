@@ -31,6 +31,7 @@ const activityTabs = [
     "All Request",
     "Pending",
     "Invoice",
+    "Paid",
     "Approved",
     "Started",
     "Arrival",
@@ -123,6 +124,7 @@ export function MainShipment() {
             // Map tab names to corresponding status codes
             const tabToStatusCodes: Record<string, string[]> = {
                 Pending: ["01"],
+                Paid: ["20"],
                 Approved: ["30"],
                 Intransit: ["135"],
                 Started: ["40"],

@@ -84,6 +84,9 @@ export function ShipmentCard(
                                     "Shipment Completed"
                                     ? "bg-green-600 text-green-600"
                                     : status.name ===
+                                    "Fully Paid"
+                                    ? "bg-[#0235dd] text-[#0235dd]" 
+                                    : status.name ===
                                     "Terminated"
                                     ? "bg-red-600 text-red-600" : ""
                                 }`}

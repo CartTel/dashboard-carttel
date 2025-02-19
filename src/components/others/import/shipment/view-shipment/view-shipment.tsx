@@ -190,7 +190,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                     </div>
                                 )}
                             </div>
-                            {shipmentData?.isPaid === true && (
+                            {/* {shipmentData?.isPaid === true && (
                                 <div className="mb-[36px]">
                                     <B1 className="mb-[8px]">Action</B1>
 
@@ -215,7 +215,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                         </CustomButton>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                     <div>
@@ -331,11 +331,6 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                         {shipmentData?.tracking?.tracking_number}
                                     </div>
                                 </div>
-
-
-
-
-
                             </div>
                         </div>
 

@@ -42,6 +42,7 @@ const activityTabs = [
     "All Request",
     "Pending",
     "Invoice",
+    "Paid",
     "Approved",
     "Started",
     "Arrival",
@@ -137,6 +138,7 @@ export function ImportShipment() {
             // Map tab names to corresponding status codes
             const tabToStatusCodes: Record<string, string[]> = {
                 Pending: ["01"],
+                Paid: ["20"],
                 Approved: ["30"],
                 Intransit: ["135"],
                 Started: ["40"],
@@ -339,9 +341,12 @@ export function ImportShipment() {
                                                                                             ? "bg-pink-600"
                                                                                             : shipment.status.name === "Shipment Completed"
                                                                                                 ? "bg-green-600"
-                                                                                                : shipment.status.name === "Terminated"
-                                                                                                    ? "bg-red-600"
-                                                                                                    : ""
+                                                                                                : shipment.status.name ===
+                                                                                                    "Fully Paid"
+                                                                                                    ? "bg-[#0235dd] text-[#0235dd]"
+                                                                                                    : shipment.status.name === "Terminated"
+                                                                                                        ? "bg-red-600"
+                                                                                                        : ""
                                                                     }`}
                                                             ></div>
                                                             <span className="text-xs text-gray-600 truncate">
@@ -402,23 +407,23 @@ export function ImportShipment() {
                                                                             className="rounded-[5px]"
                                                                         />
                                                                         : shipment?.receiverInfo?.country === "China" ?
-                                                                        <Image
-                                                                            src={'/images/Countries/cn.png'}
-                                                                            alt="logo"
-                                                                            width={40}
-                                                                            height={40}
-                                                                            priority
-                                                                            className="rounded-[5px]"
-                                                                        />
-                                                                        :
-                                                                        <Image
-                                                                            src={'/images/Countries/br.png'}
-                                                                            alt="logo"
-                                                                            width={40}
-                                                                            height={40}
-                                                                            priority
-                                                                            className="rounded-[5px]"
-                                                                        />
+                                                                            <Image
+                                                                                src={'/images/Countries/cn.png'}
+                                                                                alt="logo"
+                                                                                width={40}
+                                                                                height={40}
+                                                                                priority
+                                                                                className="rounded-[5px]"
+                                                                            />
+                                                                            :
+                                                                            <Image
+                                                                                src={'/images/Countries/br.png'}
+                                                                                alt="logo"
+                                                                                width={40}
+                                                                                height={40}
+                                                                                priority
+                                                                                className="rounded-[5px]"
+                                                                            />
                                                         }
                                                         <div>
                                                             <BMiddleRegular className="my-[1px] text-xs !text-gray-500 min-w-[200px]">
@@ -608,6 +613,9 @@ export function ImportShipment() {
                                                                                             ? "bg-pink-600"
                                                                                             : shipment.status.name === "Shipment Completed"
                                                                                                 ? "bg-green-600"
+                                                                                                : shipment.status.name ===
+                                                                                                "Fully Paid"
+                                                                                                ? "bg-[#0235dd] text-[#0235dd]"
                                                                                                 : shipment.status.name === "Terminated"
                                                                                                     ? "bg-red-600"
                                                                                                     : ""
@@ -671,23 +679,23 @@ export function ImportShipment() {
                                                                             className="rounded-[5px]"
                                                                         />
                                                                         : shipment?.receiverInfo?.country === "China" ?
-                                                                        <Image
-                                                                            src={'/images/Countries/cn.png'}
-                                                                            alt="logo"
-                                                                            width={40}
-                                                                            height={40}
-                                                                            priority
-                                                                            className="rounded-[5px]"
-                                                                        />
-                                                                        :
-                                                                        <Image
-                                                                            src={'/images/Countries/br.png'}
-                                                                            alt="logo"
-                                                                            width={40}
-                                                                            height={40}
-                                                                            priority
-                                                                            className="rounded-[5px]"
-                                                                        />
+                                                                            <Image
+                                                                                src={'/images/Countries/cn.png'}
+                                                                                alt="logo"
+                                                                                width={40}
+                                                                                height={40}
+                                                                                priority
+                                                                                className="rounded-[5px]"
+                                                                            />
+                                                                            :
+                                                                            <Image
+                                                                                src={'/images/Countries/br.png'}
+                                                                                alt="logo"
+                                                                                width={40}
+                                                                                height={40}
+                                                                                priority
+                                                                                className="rounded-[5px]"
+                                                                            />
                                                         }
                                                         <div>
                                                             <BMiddleRegular className="my-[1px] text-xs !text-gray-500 min-w-[200px]">

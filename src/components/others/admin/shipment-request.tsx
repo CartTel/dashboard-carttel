@@ -159,49 +159,49 @@ function ShipmentRequests() {
                             <thead className="text-left text-[#8D8D8D] font-[500] text-[1rem] bg-[#ECECEC] h-[36px]">
                                 <tr>
                                     <th className="pl-[15px] font-normal text-gray-500">Code</th>
-                                    <th className='whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-center text-gray-500'>Name</th>
-                                    <th className='whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-center text-gray-500'>Requested By</th>
-                                    <th className='whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-center text-gray-500'>Status</th>
-                                    <th className='whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-center text-gray-500'>Tracking Number</th>
-                                    <th className='whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-center text-gray-500'>Total Cost</th>
-                                    <th className="whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-center text-gray-500">Created At</th>
+                                    <th className='whitespace-nowrap xs:px-[20px] md:px-0 font-normal text-start text-gray-500'>Name</th>
+                                    <th className='whitespace-nowrap xs:px-[20px] md:px-5 font-normal text-start text-gray-500'>Requested By</th>
+                                    <th className='whitespace-nowrap xs:px-[20px] md:px-5 font-normal text-start text-gray-500'>Status</th>
+                                    <th className='whitespace-nowrap xs:px-[20px] md:px-5 font-normal text-start text-gray-500'>Tracking Number</th>
+                                    <th className='whitespace-nowrap xs:px-[20px] md:px-5 font-normal text-start text-gray-500'>Total Cost</th>
+                                    <th className="whitespace-nowrap xs:px-[20px] md:px-5 font-normal text-start text-gray-500">Created At</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {shipmentData?.map((request: shipmentInterface, index: number) => (
                                     <tr key={index} className="border-b border-b-[#EEEEEE] last:border-b-0 align-top">
                                         <td className="pl-[15px] py-7 ">
-                                            <B1 className="!text-[0.875rem] mb-[8px] w-[90%] truncate">
+                                            <B1 className="!text-[0.875rem] mb-[8px] !w-[150px] truncate">
                                                 {request.code}
                                             </B1>
                                         </td>
-                                        <td className="py-7 xs:px-[20px] md:px-0 text-center">
+                                        <td className="py-7 xs:px-[20px] md:px-0 text-start">
                                             <B1 className="!text-[0.875rem] w-[90%] truncate">
                                                 {request.name}
                                             </B1>
                                         </td>
-                                        <td className="py-7 xs:px-[20px] md:px-0 text-center">
-                                            <B1 className="!text-[0.875rem] w-[90%] truncate">
+                                        <td className="py-7 xs:px-[20px] md:px-5 text-start !w-[150px]">
+                                            <B1 className="!text-[0.875rem] w-[100%] truncate">
                                                 {request.requested_by}
                                             </B1>
                                         </td>
-                                        <td className="py-7 xs:px-[20px] md:px-0 text-center">
-                                            <B1 className="!text-[0.875rem] w-[90%] truncate">
+                                        <td className="py-7 xs:px-[20px] md:px-5 text-start !w-[200px]">
+                                            <B1 className="!text-[0.875rem] w-[100%] truncate">
                                                 {request?.status?.name}
                                             </B1>
                                         </td>
-                                        <td className="xs:px-[20px] md:px-0 py-7 text-center">
-                                            <B1 className="!text-[0.875rem] w-[90%] truncate">
+                                        <td className="xs:px-[20px] md:px-5 py-7 text-start !w-[150px]">
+                                            <B1 className="!text-[0.875rem] w-[100%] truncate">
                                                 {request.tracking?.tracking_number || 'N/A'}
                                             </B1>
                                         </td>
-                                        <td className="xs:px-[20px] md:px-0 py-7 text-center">
-                                            <B1 className="!text-[0.875rem] w-[90%] truncate">
+                                        <td className="xs:px-[20px] md:px-5 py-7 text-start !w-[150px]">
+                                            <B1 className="!text-[0.875rem] w-[100%] truncate">
                                             ${request.totalShipmentCost}
                                             </B1>
                                         </td>
-                                        <td className="xs:px-[20px] md:px-0 py-7 text-center"> 
-                                            <B1 className="!text-[0.875rem] w-[90%] truncate">
+                                        <td className="xs:px-[20px] md:px-5 py-7 text-start !w-[150px]"> 
+                                            <B1 className="!text-[0.875rem] w-[100%] truncate">
                                                 {formatDate(request.created_at)}
                                             </B1>
                                         </td>
