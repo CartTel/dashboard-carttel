@@ -63,26 +63,26 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
 
     useEffect(() => {
         if (formData.slaAmount <= 0) {
-          setFormData((prevForm: any ) => ({
-            ...prevForm,
-            slaCharge: false,
-          }));
+            setFormData((prevForm: any) => ({
+                ...prevForm,
+                slaCharge: false,
+            }));
         } else {
-          setFormData((prevForm: any) => ({
-            ...prevForm,
-            slaCharge: true,
-          }));
+            setFormData((prevForm: any) => ({
+                ...prevForm,
+                slaCharge: true,
+            }));
         }
-      }, [formData.slaAmount]);
+    }, [formData.slaAmount]);
 
     const handleSlaCostChange = (value: string) => {
         console.log("New value:", value);
-    
+
         setFormData((prevForm: any) => ({
-          ...prevForm,
-          slaAmount: parseFloat(value)
+            ...prevForm,
+            slaAmount: parseFloat(value)
         }));
-      };
+    };
 
 
 
@@ -98,21 +98,21 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
             console.log("all the ID", id)
 
             const result = await approveShipment(formData);
-            // // console.log("object tab ..", result);
 
-            console.log("all the issue..", formData)
-            // //   router.push('/dashboard/activity?tab=Scoping');
-            // // window.location.reload();
             if (result) {
                 toast({
                     title: "Success",
                     description: `Shipment Approved successfully! 🎉`,
                     variant: "destructive",
                 });
+
+                onClose()
+                setLoading(false);
+                // Delay the page reload to allow the toast and onClose to complete
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); // 1000ms = 1 second delay
             }
-            onClose()
-            setLoading(false);
-            window.location.reload();
             // Handle success
             // setSuccessMessage("Shipment Approved successfully!");
         } catch (err: any) {
@@ -162,7 +162,7 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
                                 optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
                                 optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
                                 label='Select Sla Type'
-                                setSelected={(value) => 
+                                setSelected={(value) =>
                                     setFormData((prev: any) => ({ ...prev, slaType: value }))
                                 }
                                 selected={formData?.slaType}
@@ -184,7 +184,7 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
                                 showLabel={true}
                                 type="date"
                                 value={formData?.estimatedDeliveryDate}
-                                setValue={(value) => 
+                                setValue={(value) =>
                                     setFormData((prev: any) => ({ ...prev, estimatedDeliveryDate: value }))
                                 }
                                 label="Estimated DeliveryDate"
@@ -196,7 +196,7 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
                     </div>
                     <div className="flex md:flex-row xs:flex-col gap-5 my-10">
                         <div className={` w-[100%] text-[1rem] my-0`}>
-                        
+
 
                             <CustomSelect
                                 wrapperClass='!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full'
@@ -204,7 +204,7 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
                                 optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
                                 optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
                                 label='Select Duration'
-                                setSelected={(value) => 
+                                setSelected={(value) =>
                                     setFormData((prev: any) => ({ ...prev, measurementCode: value }))
                                 }
                                 selected={formData?.measurementCode}
@@ -236,7 +236,7 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
                                 optionsClass='!text-[0.875rem] !h-[48px] !w-[100%]'
                                 optionWrapperClass=' border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto'
                                 label='Select Sla Type'
-                                setSelected={(value) => 
+                                setSelected={(value) =>
                                     setFormData((prev: any) => ({ ...prev, slaPriorityCode: value }))
                                 }
                                 selected={formData?.slaPriorityCode}
@@ -260,21 +260,21 @@ export function ApproveShipment({ onClose, id }: ApproveShipmentProps) {
 
                     </div>
                     <div className="flex md:flex-row xs:flex-col gap-5 my-10">
-                        
-                    <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
-                                <CustomInput
-                                    id="slaAmount"
-                                    name="slaAmount" // Updated name to match nested property
-                                    type="number"
-                                    min={0}
-                                    label="sla amount"
-                                    required
-                                    // showRequirement={true}
-                                    value={formData?.slaAmount}
-                                    setValue={(value) => handleSlaCostChange(value as string)}
-                                    className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
-                                />
-                            </div>
+
+                        <div className={`form-group flex w-[100%] text-[1rem] my-0`}>
+                            <CustomInput
+                                id="slaAmount"
+                                name="slaAmount" // Updated name to match nested property
+                                type="number"
+                                min={0}
+                                label="sla amount"
+                                required
+                                // showRequirement={true}
+                                value={formData?.slaAmount}
+                                setValue={(value) => handleSlaCostChange(value as string)}
+                                className="px-0 mb-[5px] md:w-full xs:w-full text-[16px]"
+                            />
+                        </div>
 
                     </div>
                 </div>

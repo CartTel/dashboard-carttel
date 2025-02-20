@@ -45,21 +45,21 @@ export function CompletedShipmentRequest({ onClose, id}: CompletedShipmentProps)
             console.log("all the ID", id)
 
             const result = await CompletedShipment(id);
-            console.log("object tab ..", result);
-
-            console.log("all the issue..", result)
-            // //   router.push('/dashboard/activity?tab=Scoping');
             if (result) {
                 toast({
                     title: "Success",
                     description: `Shipment was completed Successfully 🎉`,
                     variant: "destructive",
                 });
+
+                onClose()
+                setLoading(false);
+                // Delay the page reload to allow the toast and onClose to complete
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); // 1000ms = 1 second delay
             }
-            onClose()
-            setLoading(false);
-            // window.location.reload();
-            // Handle success
+
             setSuccessMessage("Shipment was completed Successfully!");
         } catch (err: any) {
             console.log("first", err)

@@ -21,6 +21,7 @@ import { toast } from "@/hooks/use-toast";
 import Image from 'next/image'
 import { RiTimerLine } from "react-icons/ri";
 import { SkeletonLoader } from '@/components/ui/skeletonCard';
+import { DispatchRequest } from "@/components/actions/dispatch-shipment";
 
 
 
@@ -215,7 +216,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                     </div>
                                 )}
                             </div>
-                            {shipmentData?.isPaid === true && (
+                            {/* {shipmentData?.isPaid === true && (
                                 <div className="mb-[36px]">
                                     <B1 className="mb-[8px]">Action</B1>
 
@@ -240,7 +241,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                         </CustomButton>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                     <div>
@@ -410,7 +411,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
 
             {showShipmentDispatchModal && (
                 <CustomModal onClose={toggleDispatchModal} backdrop={true}>
-                    <PayInvoice onClose={toggleDispatchModal} id={parseInt(id)} />
+                    <DispatchRequest onClose={toggleDispatchModal} id={parseInt(id)} />
                 </CustomModal>
             )}
 

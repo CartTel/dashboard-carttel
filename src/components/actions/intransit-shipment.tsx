@@ -45,21 +45,23 @@ export function IntransitShipmentRequest({ onClose, id}: IntransitShipmentProps)
             console.log("all the ID", id)
 
             const result = await IntransitShipment(id);
-            console.log("object tab ..", result);
 
-            console.log("all the issue..", result)
-            // //   router.push('/dashboard/activity?tab=Scoping');
             if (result) {
                 toast({
                     title: "Success",
                     description: `Shipment Intransit was Successfully 🎉`,
                     variant: "destructive",
                 });
+    
+                // Close the modal or any other UI element
+                onClose();
+    
+                // Delay the page reload to allow the toast and onClose to complete
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); // 1000ms = 1 second delay
             }
-            onClose()
-            setLoading(false);
-            window.location.reload();
-            // Handle success
+
             setSuccessMessage("Arrival at the warehouse Successfully!");
         } catch (err: any) {
             console.log("first", err)

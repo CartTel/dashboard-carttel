@@ -44,25 +44,25 @@ export function PayInvoice({ onClose, id }: PayInvoiceProps) {
             console.log("all the ID", id)
 
             const result = await payInvoice(id);
-            // console.log("object tab ..", result);
-
-            console.log("all the issue..", result)
-            //   router.push('/dashboard/activity?tab=Scoping');
-            // window.location.reload();
             if (result) {
                 toast({
                     title: "Success",
                     description: `${result?.invoice?.message}🎉`,
                     variant: "destructive",
-                  });
+                });
+
+                onClose()
+                setLoading(false);
+                // Delay the page reload to allow the toast and onClose to complete
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); // 1000ms = 1 second delay
             }
-            onClose()
-            setLoading(false);
-            // Handle success
+
             setSuccessMessage("payment Invoice successfully!");
         } catch (err: any) {
             console.log("first", err)
-            
+
             onClose()
             toast({
                 title: "Error",

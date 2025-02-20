@@ -84,22 +84,21 @@ export function ArrivedShipmentRequest({ onClose, id, slaId }: ArrivedShipmentPr
             console.log("all the ID", id, formData)
 
             const result = await arrivedShipment(formData);
-            // // console.log("object tab ..", result);
-
-            console.log("all the issue..", formData)
-            // //   router.push('/dashboard/activity?tab=Scoping');
-            // // window.location.reload();
             if (result) {
                 toast({
                     title: "Success",
                     description: `Shipment Arrived successfully! 🎉`,
                     variant: "destructive",
                 });
+
+                onClose()
+                setLoading(false);
+                // Delay the page reload to allow the toast and onClose to complete
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); // 1000ms = 1 second delay
             }
-            onClose()
-            setLoading(false);
-            // window.location.reload();
-            // Handle success
+
             // setSuccessMessage("Shipment Approved successfully!");
         } catch (err: any) {
             
