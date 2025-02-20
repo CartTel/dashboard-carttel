@@ -43,10 +43,10 @@ const StarRating: React.FC<StarRatingProps> = ({ totalStars = 5, onRatingChange,
                     onClick={() => handleStarClick(index)}
                 >
                     <Image
-                        src={index < rating ? '/images/star.svg' : '/images/empty-star.svg'}
+                        src={index < rating ? '/images/star-filled.svg' : '/images/star.svg'}
                         alt={index < rating ? 'filled' : 'empty'}
-                        width={20}
-                        height={20}
+                        width={50}
+                        height={50}
                     />
                 </span>
             ))}

@@ -22,6 +22,7 @@ import Image from 'next/image'
 import { RiTimerLine } from "react-icons/ri";
 import { SkeletonLoader } from '@/components/ui/skeletonCard';
 import { DispatchRequest } from "@/components/actions/dispatch-shipment";
+import { RateRequest } from "@/components/actions/rated-shipment";
 
 
 
@@ -417,7 +418,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
 
             {showShipmentRatedModal && (
                 <CustomModal onClose={toggleRatedModal} backdrop={true}>
-                    <PayInvoice onClose={toggleRatedModal} id={parseInt(id)} />
+                    <RateRequest onClose={toggleRatedModal} id={parseInt(id)} />
                 </CustomModal>
             )}
         </div>
