@@ -54,6 +54,8 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
 
     const [loading, setLoading] = useState(false);
     const [showShipmentModal, setShipmentModal] = useState(false);
+    const [showShipmentDispatchModal, setShipmentDispatchModal] = useState(false);
+    const [showShipmentRatedModal, setShipmentRatedModal] = useState(false);
 
     const [error, setError] = useState("");
 
@@ -64,6 +66,16 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
     const togglePayInvoiceModal = () => {
         // console.log("modal")
         setShipmentModal((prev) => !prev);
+    };
+
+    const toggleDispatchModal = () => {
+        // console.log("modal")
+        setShipmentDispatchModal((prev) => !prev);
+    };
+
+    const toggleRatedModal = () => {
+        // console.log("modal")
+        setShipmentRatedModal((prev) => !prev);
     };
 
 
@@ -190,7 +202,20 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                     </div>
                                 )}
                             </div>
-                            {/* {shipmentData?.isPaid === true && (
+                            <div className="mb-[36px]">
+                                {(shipmentData?.status?.code === '160') && (
+                                    <div className="">
+                                        <B1 className="mb-[8px]">Action</B1>
+                                        <CustomButton
+                                            className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-indigo-500 !text-white lg:!w-fit xs:!w-full !rounded-[3px]"
+                                            onClick={toggleRatedModal}
+                                        >
+                                            Rate Shipment
+                                        </CustomButton>
+                                    </div>
+                                )}
+                            </div>
+                            {shipmentData?.isPaid === true && (
                                 <div className="mb-[36px]">
                                     <B1 className="mb-[8px]">Action</B1>
 
@@ -215,7 +240,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                                         </CustomButton>
                                     </div>
                                 </div>
-                            )} */}
+                            )}
                         </div>
                     </div>
                     <div>
@@ -274,6 +299,19 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
                 </div>
 
                 <div className="h-full md:row-span-2 md:col-span-1 xs:col-span-2 md:border-l-[1px] md:px-1 xs:px-0 bg-white  border-gray-300">
+                    <div className="mb-[36px]">
+                        {(shipmentData?.status?.code === '160') && (
+                            <div className="flex w-full justify-center items-center my-5">
+                                {/* <B1 className="mb-[8px]">Action</B1> */}
+                                <CustomButton
+                                    className="w-fit !bg-plain font-semibold rounded-lg !text-primary md:px-6 md:py-3 xs:px-4 xs:py-2 md:!text-[15px] xs:!text-[13px] "
+                                    onClick={toggleDispatchModal}
+                                >
+                                    Package Ready For Dispatch
+                                </CustomButton>
+                            </div>
+                        )}
+                    </div>
                     <div className="h-fit md:row-span-2 md:col-span-1 xs:col-span-2 border-[1px] p-2 border-white bg-white rounded-lg">
 
                         <div className='text-slate-800 text-[16px] md:item-center flex md:justify-start text-start'>Summary</div>
@@ -367,6 +405,18 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
             {showShipmentModal && (
                 <CustomModal onClose={togglePayInvoiceModal} backdrop={true}>
                     <PayInvoice onClose={togglePayInvoiceModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
+
+            {showShipmentDispatchModal && (
+                <CustomModal onClose={toggleDispatchModal} backdrop={true}>
+                    <PayInvoice onClose={toggleDispatchModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
+
+            {showShipmentRatedModal && (
+                <CustomModal onClose={toggleRatedModal} backdrop={true}>
+                    <PayInvoice onClose={toggleRatedModal} id={parseInt(id)} />
                 </CustomModal>
             )}
         </div>

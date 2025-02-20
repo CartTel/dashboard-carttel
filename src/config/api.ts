@@ -320,6 +320,75 @@ export const approveShipment = async (credentials: any) => {
   }
 };
 
+export const startShipment = async (shipmentId: number, slaId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/started`, {
+      shipment_id: shipmentId,
+      sla_id: slaId
+    });
+    console.log("started shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching start shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const arrivalShipment = async (shipmentId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/arrival`, {
+      shipment_id: shipmentId
+    });
+    console.log("arrival shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching start shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const IntransitShipment = async (shipmentId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/intransit`, {
+      shipment_id: shipmentId
+    });
+    console.log("Intransit shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching start shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const CompletedShipment = async (shipmentId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/completed`, {
+      shipment_id: shipmentId
+    });
+    console.log("completed shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching start shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const arrivedShipment = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/shipment/arrive`, credentials);
+    console.log("arrive shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error approving shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

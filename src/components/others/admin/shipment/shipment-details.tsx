@@ -9,7 +9,13 @@ import { formatDateTime } from "@/helper/format";
 import Link from 'next/link';
 import { SkeletonLoader } from '@/components/ui/skeletonCard';
 import CustomModal from "@/components/custom-components/custom-modal";
+
 import { ApproveShipment } from "@/components/actions/approve-shipment";
+import { StartShipmentRequest } from "@/components/actions/started-shipment";
+import { ArrivalShipmentRequest } from "@/components/actions/arrival-shipment";
+import { IntransitShipmentRequest } from "@/components/actions/intransit-shipment";
+import { ArrivedShipmentRequest } from "@/components/actions/arrived-shipment";
+import { CompletedShipmentRequest } from "@/components/actions/completed-shipment";
 
 interface ShipmentRequestDetailsProps {
     id: string;
@@ -18,19 +24,34 @@ interface ShipmentRequestDetailsProps {
 
 export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
     const [showShipmentStartModal, setShipmentStartModal] = useState(false);
+    const [showShipmentApproveModal, setShipmentApproveModal] = useState(false);
+    const [showShipmentArrivalModal, setShipmentArrivalModal] = useState(false);
+    const [showShipmentIntransitModal, setShipmentIntransitModal] = useState(false);
+    const [showShipmentArrivedModal, setShipmentArrivedModal] = useState(false);
+    const [showShipmentCompletedModal, setShipmentCompletedModal] = useState(false);
 
     const toggleStartedModal = () => {
-        // console.log("modal")
         setShipmentStartModal((prev) => !prev);
     };
 
-
-
-    const [showShipmentApproveModal, setShipmentApproveModal] = useState(false);
-
     const toggleApproveModal = () => {
-        // console.log("modal")
         setShipmentApproveModal((prev) => !prev);
+    };
+
+    const toggleArrivalModal = () => {
+        setShipmentArrivalModal((prev) => !prev);
+    };
+
+    const toggleArrivedModal = () => {
+        setShipmentArrivedModal((prev) => !prev);
+    };
+
+    const toggleCompletedModal = () => {
+        setShipmentCompletedModal((prev) => !prev);
+    };
+
+    const toggleIntransitModal = () => {
+        setShipmentIntransitModal((prev) => !prev);
     };
 
     const [breadCrumbArray, setBreabCrumbArray] = useState(
@@ -434,7 +455,6 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                             </BodySmallestMedium>
                                         </div>
 
-
                                         {/* Attachment */}
                                         <div className="mb-[36px]">
                                             {!shipmentData?.invoice && (
@@ -516,7 +536,7 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                                     <B1 className="mb-[8px]">Action</B1>
                                                     <CustomButton
                                                         className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-[#029B5B] lg:!w-fit xs:!w-full !rounded-[3px]"
-                                                      onClick={toggleApproveModal}
+                                                        onClick={toggleApproveModal}
                                                     >
                                                         Approve Shipment
                                                     </CustomButton>
@@ -529,10 +549,65 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                                 <div>
                                                     <B1 className="mb-[8px]">Action</B1>
                                                     <CustomButton
-                                                        className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-plain !text-primary lg:!w-fit xs:!w-full !rounded-[3px]"
-                                                      onClick={toggleStartedModal}
+                                                        className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-cyan-400 !text-white lg:!w-fit xs:!w-full !rounded-[3px]"
+                                                        onClick={toggleStartedModal}
                                                     >
                                                         Start Shipment
+                                                    </CustomButton>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="mb-[36px]">
+                                            {(shipmentData?.status?.code === '40') && (
+                                                <div>
+                                                    <B1 className="mb-[8px]">Action</B1>
+                                                    <CustomButton
+                                                        className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-purple-400 !text-white lg:!w-fit xs:!w-full !rounded-[3px]"
+                                                        onClick={toggleArrivalModal}
+                                                    >
+                                                        Arrival at the warehouse
+                                                    </CustomButton>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="mb-[36px]">
+                                            {(shipmentData?.status?.code === '60') && (
+                                                <div>
+                                                    <B1 className="mb-[8px]">Action</B1>
+                                                    <CustomButton
+                                                        className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-[#F47F12] !text-white lg:!w-fit xs:!w-full !rounded-[3px]"
+                                                        onClick={toggleIntransitModal}
+                                                    >
+                                                        Shipment Intransit
+                                                    </CustomButton>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="mb-[36px]">
+                                            {(shipmentData?.status?.code === '135') && (
+                                                <div>
+                                                    <B1 className="mb-[8px]">Action</B1>
+                                                    <CustomButton
+                                                        className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-rose-500 !text-white lg:!w-fit xs:!w-full !rounded-[3px]"
+                                                        onClick={toggleArrivedModal}
+                                                    >
+                                                        Shipment Arrived 
+                                                    </CustomButton>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <div className="mb-[36px]">
+                                            {(shipmentData?.status?.code === '150') && (
+                                                <div>
+                                                    <B1 className="mb-[8px]">Action</B1>
+                                                    <CustomButton
+                                                        className="!text-[0.875rem] !px-4 flex justify-center items-center h-[40px] !bg-lime-500 !text-white lg:!w-fit xs:!w-full !rounded-[3px]"
+                                                        onClick={toggleCompletedModal}
+                                                    >
+                                                        Complete Shipment
                                                     </CustomButton>
                                                 </div>
                                             )}
@@ -624,7 +699,7 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
 
                             </div>
 
-                            
+
                         </div>
                 }
             </div>
@@ -635,9 +710,34 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                 </CustomModal>
             )}
 
-{showShipmentStartModal && (
+            {showShipmentStartModal && (
                 <CustomModal onClose={toggleStartedModal} backdrop={true}>
-                    <ApproveShipment onClose={toggleStartedModal} id={parseInt(id)} />
+                    <StartShipmentRequest onClose={toggleStartedModal} id={parseInt(id)} slaId={shipmentData?.sla?.id} />
+                </CustomModal>
+            )}
+
+            {showShipmentArrivalModal && (
+                <CustomModal onClose={toggleArrivalModal} backdrop={true}>
+                    <ArrivalShipmentRequest onClose={toggleArrivalModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
+
+            {showShipmentIntransitModal && (
+                <CustomModal onClose={toggleIntransitModal} backdrop={true}>
+                    <IntransitShipmentRequest onClose={toggleIntransitModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
+
+            {showShipmentArrivedModal && (
+                <CustomModal onClose={toggleArrivedModal} backdrop={true}>
+                    <ArrivedShipmentRequest onClose={toggleArrivedModal} id={parseInt(id)} slaId={shipmentData?.sla?.id}/>
+                </CustomModal>
+            )}
+
+
+            {showShipmentCompletedModal && (
+                <CustomModal onClose={toggleCompletedModal} backdrop={true}>
+                    <CompletedShipmentRequest onClose={toggleCompletedModal} id={parseInt(id)} />
                 </CustomModal>
             )}
 
