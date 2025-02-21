@@ -290,28 +290,28 @@ const ItemImport = ({
     // Helper to check if every item is complete
     const areItemsComplete = useMemo(() => {
         // Return false if no items are present
-        if (!formData.items || formData.items.length === 0) return false;
-        return formData.items.every((item) => {
+        if (!formData?.items || formData?.items.length === 0) return false;
+        return formData?.items.every((item: any) => {
             // Check that text fields are non-empty
             const textComplete =
-                item.name.trim() !== "" &&
-                item.category.trim() !== "" &&
-                item.description.trim() !== "";
+                item?.name?.trim() !== "" &&
+                item?.category?.trim() !== "" &&
+                item?.description?.trim() !== "";
 
             // Check that numeric fields are not null.
             // Adjust the condition if 0 should be considered incomplete.
             const numbersComplete =
-                item.value !== null &&
-                item.quantity !== null &&
-                item.weight !== null;
+                item?.value !== null &&
+                item?.quantity !== null &&
+                item?.weight !== null;
 
             // Check nested dimension fields
-            const dimension = item.dimension;
+            const dimension = item?.dimension;
             const dimensionComplete =
                 dimension &&
-                dimension.length !== null &&
-                dimension.width !== null &&
-                dimension.height !== null;
+                dimension?.length !== null &&
+                dimension?.width !== null &&
+                dimension?.height !== null;
 
             return textComplete && numbersComplete && dimensionComplete;
         });

@@ -17,6 +17,8 @@ import { IntransitShipmentRequest } from "@/components/actions/intransit-shipmen
 import { ArrivedShipmentRequest } from "@/components/actions/arrived-shipment";
 import { CompletedShipmentRequest } from "@/components/actions/completed-shipment";
 
+import ShipmentLogs from "@/components/ui/shipment-trail";
+
 interface ShipmentRequestDetailsProps {
     id: string;
 }
@@ -643,59 +645,68 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                         )} */}
                                     </div>
                                 </div>
-                                <div >
-                                    <div className='text-white bg-primary py-2 px-2 text-[16px] mt-14 md:item-center flex md:justify-start text-start mb-0'>Shipment Item</div>
-                                    <div className=" p-0 gap-10 w-full">
+                                <div>
+                        <div className='text-white bg-primary py-2 px-2 text-[16px] mt-14 mb-7 md:item-center flex md:justify-start text-start'>{(shipmentData?.status?.code === '01' || shipmentData?.status?.code === '05') ? "Shipment Item" : "Shipment Logs"}</div>
 
-                                        {shipmentData?.items?.map((item: any, index: number) => (
-                                            <div key={item.id} className="px-1 mb-4">
-                                                <div className="bg-plain py-2 w-full px-2 my-3 font-semibold text-primary">Items {(index) + 1}</div>
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
-                                                    <div>
-                                                        <BMiddleRegular className="mb-1 text-gray-800 font-medium">
-                                                            Name:
-                                                        </BMiddleRegular>
-                                                        <BodySmallestMedium className="text-gray-600 uppercase">
-                                                            {item?.name}
-                                                        </BodySmallestMedium>
-                                                    </div>
-                                                    <div>
-                                                        <BMiddleRegular className="mb-1 text-gray-800 font-medium">
-                                                            Quantity:
-                                                        </BMiddleRegular>
-                                                        <BodySmallestMedium className="text-gray-600 uppercase">
-                                                            {item?.quantity}
-                                                        </BodySmallestMedium>
-                                                    </div>
-                                                    <div>
-                                                        <BMiddleRegular className="mb-1 text-gray-800 font-medium">
-                                                            Description:
-                                                        </BMiddleRegular>
-                                                        <BodySmallestMedium className="text-gray-600 uppercase">
-                                                            {item?.description}
-                                                        </BodySmallestMedium>
-                                                    </div>
-                                                    <div>
-                                                        <BMiddleRegular className="mb-1 text-gray-800 font-medium">
-                                                            Weight:
-                                                        </BMiddleRegular>
-                                                        <BodySmallestMedium className="text-gray-600 uppercase">
-                                                            {item?.weight}kg
-                                                        </BodySmallestMedium>
-                                                    </div>
-                                                    <div>
-                                                        <BMiddleRegular className="mb-1 text-gray-800 font-medium">
-                                                            Value:
-                                                        </BMiddleRegular>
-                                                        <BodySmallestMedium className="text-gray-600 uppercase">
-                                                            ${item?.value}
-                                                        </BodySmallestMedium>
-                                                    </div>
-                                                </div>
+                        {(shipmentData?.status?.code === '01' || shipmentData?.status?.code === '05') ? (
+                            <div className=" p-0 gap-10 w-full">
+
+                                {shipmentData?.items?.map((item: any, index: number) => (
+                                    <div key={item.id} className="px-1 mb-4">
+                                        <div className="bg-plain py-2 w-full px-2 my-3 font-semibold text-primary">Items {(index) + 1}</div>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-10">
+                                            <div>
+                                                <BMiddleRegular className="mb-1 text-gray-800 font-medium">
+                                                    Name:
+                                                </BMiddleRegular>
+                                                <BodySmallestMedium className="text-gray-600 uppercase">
+                                                    {item?.name}
+                                                </BodySmallestMedium>
                                             </div>
-                                        ))}
+                                            <div>
+                                                <BMiddleRegular className="mb-1 text-gray-800 font-medium">
+                                                    Quantity:
+                                                </BMiddleRegular>
+                                                <BodySmallestMedium className="text-gray-600 uppercase">
+                                                    {item?.quantity}
+                                                </BodySmallestMedium>
+                                            </div>
+                                            <div>
+                                                <BMiddleRegular className="mb-1 text-gray-800 font-medium">
+                                                    Description:
+                                                </BMiddleRegular>
+                                                <BodySmallestMedium className="text-gray-600 uppercase">
+                                                    {item?.description}
+                                                </BodySmallestMedium>
+                                            </div>
+                                            <div>
+                                                <BMiddleRegular className="mb-1 text-gray-800 font-medium">
+                                                    Weight:
+                                                </BMiddleRegular>
+                                                <BodySmallestMedium className="text-gray-600 uppercase">
+                                                    {item?.weight}kg
+                                                </BodySmallestMedium>
+                                            </div>
+                                            <div>
+                                                <BMiddleRegular className="mb-1 text-gray-800 font-medium">
+                                                    Value:
+                                                </BMiddleRegular>
+                                                <BodySmallestMedium className="text-gray-600 uppercase">
+                                                    ${item?.value}
+                                                </BodySmallestMedium>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div>
+                                <ShipmentLogs logs={shipmentData?.logs} />
+                            </div>
+                        )
+
+                        }
+                    </div>
 
 
                             </div>
