@@ -57,7 +57,7 @@ function ShipmentLogs({ logs = [] }: LogInterface) {
                     </li>
                 ))}
 
-                <div className="absolute border-[1px] border-[#029B5B] h-[100%] top-[0px] lg:left-[15px] left-[15px] border-dashed" />
+                <div className="absolute border-[1px] border-[#029B5B] h-[100%] top-[0px] lg:left-[15px] left-[15px] xs:left-[10px] border-dashed" />
             </ul>
         </div>
     );
