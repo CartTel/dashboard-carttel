@@ -44,7 +44,7 @@ const fetchAllShipment = async () => {
             params: {
                 associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs'], // Specify the relationships to include
                 sortOrder: 'DESC',
-                sortBy: 'created_at',
+                sortBy: 'updated_at',
                 page: 1,
                 perPage: 1000,
             },

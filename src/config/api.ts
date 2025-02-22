@@ -212,8 +212,6 @@ export const fetchSingleShipmentRequest = async (id: number) => {
   }
 };
 
-
-
 export const getAllStates = async () => {
   try {
     const response = await apiClient.get('/api/v1/get-all-states');
@@ -389,7 +387,26 @@ export const arrivedShipment = async (credentials: any) => {
   }
 };
 
+export const fetchSingleProcurementRequest = async (id: number) => {
+  try {
 
+    const response = await apiClient.get(`/api/v1/procurement/single-procurement/${id}`, {
+      params: {
+        associations: ['items', 'logs'], // Specify the relationships to include
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    console.log("all procurement..", response.data);
+    return response.data.procurement;
+  } catch (error) {
+    console.error('Error fetching procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 

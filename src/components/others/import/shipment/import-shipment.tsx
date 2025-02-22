@@ -80,7 +80,7 @@ const fetchAllShipment = async () => {
             params: {
                 associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs', 'user', 'senderInfo', 'receiverInfo'], // Specify the relationships to include
                 sortOrder: 'DESC',
-                sortBy: 'created_at',
+                sortBy: 'updated_at',
                 byUserId: user.user.id,
                 page: 1,
                 perPage: 1000,
@@ -173,7 +173,7 @@ export function ImportShipment() {
                     params: {
                         associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs', 'user', 'senderInfo', 'receiverInfo'], // Specify the relationships to include
                         sortOrder: 'DESC',
-                        sortBy: 'created_at',
+                        sortBy: 'updated_at',
                         byUserId: user.user.id,
                         // byStatusCodes: ["05"],
                         byStatusCodes,

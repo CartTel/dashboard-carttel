@@ -16,7 +16,7 @@ import {
 
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { rateJob } from "@/config/api";
+// import { rateJob } from "@/config/api";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import StarRating from "../ui/star-rating";
@@ -50,25 +50,25 @@ export function RateRequest({ onClose, id }: RateJobProps) {
 
         try {
             // Call the API to approve the request
-            console.log("all the ID", id, remark, rating)
+            // console.log("all the ID", id, remark, rating)
 
-            const result = await rateJob(id, remark, rating);
-            if (result) {
-                toast({
-                    title: "Success",
-                    description: `Shipment Rated successfully! 🎉`,
-                    variant: "destructive",
-                });
+            // const result = await rateJob(id, remark, rating);
+            // if (result) {
+            //     toast({
+            //         title: "Success",
+            //         description: `Shipment Rated successfully! 🎉`,
+            //         variant: "destructive",
+            //     });
 
-                onClose()
-                setLoading(false);
-                // Delay the page reload to allow the toast and onClose to complete
-                setTimeout(() => {
-                    window.location.reload();
-                }, 5000); // 1000ms = 1 second delay
-            }
-            // Handle success
-            setSuccessMessage("Request Rated successfully!");
+            //     onClose()
+            //     setLoading(false);
+            //     // Delay the page reload to allow the toast and onClose to complete
+            //     setTimeout(() => {
+            //         window.location.reload();
+            //     }, 5000); // 1000ms = 1 second delay
+            // }
+            // // Handle success
+            // setSuccessMessage("Request Rated successfully!");
         } catch (err: any) {
             // Handle error
             setError(err.message || "An error occurred while stop the request.");

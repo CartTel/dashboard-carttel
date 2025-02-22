@@ -8,7 +8,8 @@ import {
 import { H2, H1, BMiddleRegular, BodySmallestMedium } from "@/components/custom-typography";
 import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { ShipmentCard } from "./shipment-card";
+// import { ShipmentCard } from "../shipment";
+import { ProcurementCard } from "./procurement-card";
 import CustomModal from "@/components/custom-components/custom-modal";
 import PaginationV2 from "@/components/wrappers/pagination";
 
@@ -23,20 +24,18 @@ const breadCrumb = [
         link: "/dashboard/admin",
     },
     {
-        label: "Shipment",
+        label: "Procurement",
     },
 ];
+
 
 const activityTabs = [
     "All Request",
     "Pending",
-    "Invoice",
-    "Paid",
+    "Restart",
+    "Awaiting",
+    "Confirmed",
     "Approved",
-    "Started",
-    "Arrival",
-    "Intransit",
-    "Arrived",
     "Completed"
 ];
 
@@ -45,11 +44,13 @@ interface StatusCount {
     count: number;
 }
 
-const fetchAllShipment = async () => {
+
+
+const fetchAllProcurement = async () => {
     try {
-        const response = await apiClient.get(`/api/v1/shipment/get-all-shipments`, {
+        const response = await apiClient.get(`/api/v1/procurement/get-all-procurements`, {
             params: {
-                associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs'], // Specify the relationships to include
+                associations: ['items', 'logs'],
                 sortOrder: 'DESC',
                 sortBy: 'updated_at',
                 page: 1,
@@ -59,52 +60,32 @@ const fetchAllShipment = async () => {
                 return qs.stringify(params, { arrayFormat: 'brackets' });
             },
         });
-        console.log("all shipment Request..", response.data);
+        console.log("all procurement Request..", response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching shipment:', error);
+        console.error('Error fetching procurement:', error);
         throw error; // Rethrow the error for handling in the component
     }
 };
 
-export function MainShipment() {
+export function MainProcurement() {
     const [currentTab, setCurrentTab] = useState("");
 
     const router = useRouter();
     const queryParams = useSearchParams();
 
     const [currentActivityTab, setCurrentActivityTab] = useState("Pending"); // Default tab
-    const [shipment, setShipment] = useState<any>([]);
+    const [procurement, setProcurement] = useState<any>([]);
 
-    const { data: shipmentData, isLoading: isLoadingShipment, isError: isErrorUsers, error: shipmentsError } = useQuery({
-        queryKey: ["allShipments"],
-        queryFn: fetchAllShipment,
-        staleTime: Infinity, // Data is always stale
+    const { data: procurementData, isLoading: isLoadingprocurement, isError: isErrorUsers, error: procurementError } = useQuery({
+        queryKey: ["allProcurement"],
+        queryFn: fetchAllProcurement,
+        staleTime: Infinity, 
         retry: false,
     });
 
-    const [statusCounts, setStatusCounts] = useState<StatusCount[]>([]);
 
-    useEffect(() => {
-        // console.log("rate..", shipmentData);
-        if (shipmentData?.data.length > 0) {
-            const counts: Record<string, number> = shipmentData?.data.reduce((acc: any, shipment: any) => {
-                const statusName = shipment.status?.name;
-                if (statusName) {
-                    acc[statusName] = (acc[statusName] || 0) + 1;
-                }
-                return acc;
-            }, {} as Record<string, number>);
-
-            // Convert counts into an array of objects
-            const formattedCounts = Object.entries(counts).map(([name, count]) => ({
-                name,
-                count,
-            }));
-
-            setStatusCounts(formattedCounts);
-        }
-    }, [shipmentData]);
+    
 
 
     useEffect(() => {
@@ -118,29 +99,26 @@ export function MainShipment() {
 
 
     useEffect(() => {
-        const fetchAllShipmentData = async () => {
+        const fetchAllProcurementData = async () => {
             // console.log("current tab..", currentActivityTab);
 
             // Map tab names to corresponding status codes
             const tabToStatusCodes: Record<string, string[]> = {
                 Pending: ["01"],
-                Paid: ["20"],
-                Approved: ["30"],
-                Intransit: ["135"],
-                Started: ["40"],
-                Completed: ["160"],
-                Invoice: ["05"],
-                Arrival: ["60"],
-                Arrived: ["150"]
+                Restart: ["10"],
+                Awaiting: ["15"],
+                Confirmed: ["50"],
+                Approved: ["60"],
+                Completed: ["80"]
             };
 
             const byStatusCodes = tabToStatusCodes[currentActivityTab] || [];
             // console.log("status code..", byStatusCodes, tabToStatusCodes.Pending);
 
             try {
-                const response = await apiClient.get(`/api/v1/shipment/get-all-shipments`, {
+                const response = await apiClient.get(`/api/v1/procurement/get-all-procurements`, {
                     params: {
-                        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs'], // Specify the relationships to include
+                        associations: ['items', 'logs'],
                         sortOrder: 'DESC',
                         sortBy: 'updated_at',
                         // byStatusCodes: ["05"],
@@ -153,21 +131,21 @@ export function MainShipment() {
                     },
                 });
 
-                setShipment(response.data)
+                setProcurement(response.data)
                 // console.log("all Request..", response.data);
                 return response.data;
             } catch (error) {
-                console.error('Error fetching shipment:', error);
+                console.error('Error fetching procurement:', error);
                 throw error; // Rethrow the error for handling in the component
             }
         };
-        fetchAllShipmentData(); // Fetch data when the component mounts
+        fetchAllProcurementData(); // Fetch data when the component mounts
     }, [currentActivityTab]);
 
     const updateTab = (tab: string) => {
         // console.log("current string..", tab);
         setCurrentActivityTab(tab)
-        router.push(`/dashboard/admin/shipment?tab=${tab}`);
+        router.push(`/dashboard/admin/procurement?tab=${tab}`);
     };
 
     return (
@@ -175,28 +153,10 @@ export function MainShipment() {
             {/* BREADCRUMB */}
             <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
             <div className="my-[14px] flex lg:items-center justify-between lg:flex-row flex-col mb-[0px]">
-                <H1 className="">Shipments</H1>
+                <H1 className="">Procurements</H1>
             </div>
 
-            <div className="flex flex-col gap-4 my-[14px]">
-                <ul className="grid lg:grid-cols-5 xs:grid-cols-1 gap-4 py-5 w-full justify-between">
-                    {statusCounts.map((status, index) => (
-                        <li key={index} className="flex justify-between items-center gap-2 rounded-md border-[1px] shadow-md border-gray-200 pb-2 px-3">
-
-                            {/* <div className="text-xl text-gray-500"><TbFileInvoice /></div> */}
-                            <BMiddleRegular className="my-[10px] text-xs text-gray-600 truncate">
-                                {status.name}
-                            </BMiddleRegular>
-                            <BMiddleRegular className="my-[10px] text-xs text-primary truncate bg-plain rounded-full px-3 py-1 flex justify-center items-center">
-                                {status.count}
-                            </BMiddleRegular>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-
-            <ul className="my-[14px] flex items-center gap-[29px] border-b-[0.5px] border-b-gray mb-[33px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-hide lg:overflow-x-visible">
+            <ul className="my-[14px] mt-16 flex items-center gap-[29px] border-b-[0.5px] border-b-gray mb-[33px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-hide lg:overflow-x-visible">
                 {activityTabs.map((tab, index) => (
                     <li
                         key={index}
@@ -213,12 +173,12 @@ export function MainShipment() {
 
             {currentTab === "All Request" && (
                 <PaginationV2
-                    list={shipmentData?.data}
+                    list={procurementData?.data}
                     pagination={{
                         perPage: 5,
-                        totalPages: Math.ceil(shipmentData?.pagination.total / 5),
-                        total: shipmentData?.pagination.total,
-                        page: shipmentData?.pagination.page,
+                        totalPages: Math.ceil(procurementData?.pagination.total / 5),
+                        total: procurementData?.pagination.total,
+                        page: procurementData?.pagination.page,
                     }}
                     onPageChange={(page) => console.log("Page changed to:", page)}
                 >
@@ -228,7 +188,7 @@ export function MainShipment() {
                                paginatedList?.length > 0 ? 
                                 <div className="grid lg:grid-cols-3 gap-4">
                                     {paginatedList?.map((activity: any, index: number) => (
-                                        <ShipmentCard {...activity} key={index} />
+                                        <ProcurementCard {...activity} key={index} />
                                     ))}
                                 </div>
                                : 
@@ -242,12 +202,12 @@ export function MainShipment() {
 
             {currentTab !== "All Request" && (
                 <PaginationV2
-                    list={shipment?.data}
+                    list={procurement?.data}
                     pagination={{
                         perPage: 5,
-                        totalPages: Math.ceil(shipment?.pagination?.total / 5),
-                        total: shipment?.pagination?.total,
-                        page: shipment?.pagination?.page,
+                        totalPages: Math.ceil(procurement?.pagination?.total / 5),
+                        total: procurement?.pagination?.total,
+                        page: procurement?.pagination?.page,
                     }}
                     onPageChange={(page) => console.log("Page changed to:", page)}
                 >
@@ -257,7 +217,7 @@ export function MainShipment() {
                                paginatedList?.length > 0 ? 
                                 <div className="grid lg:grid-cols-3 gap-4">
                                     {paginatedList?.map((activity: any, index: number) => (
-                                        <ShipmentCard {...activity} key={index} />
+                                        <ProcurementCard {...activity} key={index} />
                                     ))}
                                 </div>
                                : 
