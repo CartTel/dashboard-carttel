@@ -19,6 +19,9 @@ import { useQuery } from "@tanstack/react-query";
 import { TbFileInvoice } from "react-icons/tb";
 import { ProcurementImportCard } from "./procurement-import-card";
 
+import Image from "next/image";
+import Link from "next/link";
+
 const breadCrumb = [
     {
         label: "Home",
@@ -98,12 +101,12 @@ export function ImportProcurement() {
     const { data: procurementData, isLoading: isLoadingprocurement, isError: isErrorUsers, error: procurementError } = useQuery({
         queryKey: ["allProcurements"],
         queryFn: fetchAllProcurement,
-        staleTime: Infinity, 
+        staleTime: Infinity,
         retry: false,
     });
 
 
-    
+
 
 
     useEffect(() => {
@@ -191,6 +194,31 @@ export function ImportProcurement() {
                 <H1 className="">Procurements</H1>
             </div>
 
+            <div className="md:my-0 xs:my-1 flex md:justify-end w-full">
+                <div className="block font-semibold">
+                    <Link
+                        className="link flex font-semibold"
+                        href="/dashboard/import/procurement/create"
+                    >
+                        <div
+                            className="w-full flex justify-end items-center cursor rounded-md bg-primary font-medium px-4 py-2 text-white sm:text-xs xs:text-[12px] lg:text-[0.65rem] xl:text-[0.75rem]"
+                        >
+                            <span className="mr-2 text-xl">
+                                <Image
+                                    src={"/images/Package/sealed-box.svg"}
+                                    alt="checked"
+                                    width={40}
+                                    height={40}
+                                    className="z-[50] text-white"
+                                />
+                            </span>
+                            <span className="w-full  whitespace-nowrap">Create Procurement</span>
+                        </div>
+                    </Link>
+                </div>
+            </div>
+
+
             <ul className="my-[14px] mt-16 flex items-center gap-[29px] border-b-[0.5px] border-b-gray mb-[33px] overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scrollbar-hide lg:overflow-x-visible">
                 {activityTabs.map((tab, index) => (
                     <li
@@ -220,14 +248,14 @@ export function ImportProcurement() {
                     {(paginatedList) => (
                         <div>
                             {
-                               paginatedList?.length > 0 ? 
-                                <div className="grid lg:grid-cols-3 gap-4">
-                                    {paginatedList?.map((activity: any, index: number) => (
-                                        <ProcurementImportCard {...activity} key={index} />
-                                    ))}
-                                </div>
-                               : 
-                               <div className="flex w-full justify-center items-center h-full">No Data Found!</div>
+                                paginatedList?.length > 0 ?
+                                    <div className="grid lg:grid-cols-3 gap-4">
+                                        {paginatedList?.map((activity: any, index: number) => (
+                                            <ProcurementImportCard {...activity} key={index} />
+                                        ))}
+                                    </div>
+                                    :
+                                    <div className="flex w-full justify-center items-center h-full">No Data Found!</div>
                             }
 
                         </div>
@@ -249,14 +277,14 @@ export function ImportProcurement() {
                     {(paginatedList) => (
                         <div>
                             {
-                               paginatedList?.length > 0 ? 
-                                <div className="grid lg:grid-cols-3 gap-4">
-                                    {paginatedList?.map((activity: any, index: number) => (
-                                        <ProcurementImportCard {...activity} key={index} />
-                                    ))}
-                                </div>
-                               : 
-                               <div className="flex w-full justify-center items-center h-full">No Data Found!</div>
+                                paginatedList?.length > 0 ?
+                                    <div className="grid lg:grid-cols-3 gap-4">
+                                        {paginatedList?.map((activity: any, index: number) => (
+                                            <ProcurementImportCard {...activity} key={index} />
+                                        ))}
+                                    </div>
+                                    :
+                                    <div className="flex w-full justify-center items-center h-full">No Data Found!</div>
                             }
 
                         </div>

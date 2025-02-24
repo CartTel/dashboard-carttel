@@ -408,6 +408,72 @@ export const fetchSingleProcurementRequest = async (id: number) => {
   }
 };
 
+export const createProcurementRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/create`, credentials);
+    console.log("create procurement..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const updateProcurementRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/update-request`, credentials);
+    console.log("update procurement..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error update procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const RestartProcessRequest = async (procurementId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/restart`, {
+      procurement_id: procurementId
+    });
+    console.log(response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const ConfirmProcessRequest = async (procurementId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/confirm`, {
+      procurement_id: procurementId
+    });
+    console.log(response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const ApprovedProcessRequest = async (procurementId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/approve`, {
+      procurement_id: procurementId
+    });
+    console.log(response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

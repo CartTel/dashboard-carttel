@@ -24,13 +24,17 @@ import { SkeletonLoader } from '@/components/ui/skeletonCard';
 import { DispatchRequest } from "@/components/actions/dispatch-shipment";
 import { RateRequest } from "@/components/actions/rated-shipment";
 import ShipmentLogs from "@/components/ui/shipment-trail";
+import { RestartProcess } from "@/components/actions/Procurement/restart-process";
+// import { ConfirmProcess } from "@/components/actions/Procurement/approved-procurement";
+import { ConfirmProcess } from "@/components/actions/Procurement/confirmed-procurement";
+import { ApprovedProcess } from "@/components/actions/Procurement/approved-procurement";
 
 
 
 const breadCrumb = [
     {
         label: "Home",
-        link: "/dashboard/import",
+        link: "/dashboard/admin",
     },
     {
         label: "Procurement",
@@ -40,6 +44,21 @@ const breadCrumb = [
         label: "View Procurement",
     },
 ];
+
+const breadCrumbArray = [
+    {
+        label: "Home",
+        link: "/dashboard/import",
+    },
+    {
+        label: "Procurement",
+        link: "/dashboard/import/procurement",
+    },
+    {
+        label: "View Procurement",
+    },
+];
+
 
 interface EditShipmentDetailsProps {
     id: string;
@@ -55,15 +74,17 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
         staleTime: 0, // data becomes stale immediately for refetching
     });
 
+    const savedRole = localStorage.getItem("roles");
+
     // const formatValue = (value: string): string | number => {
     //     const valueFormat = parseInt(value)
     //     return valueFormat.toLocaleString("en-US");
     // };
 
     const [loading, setLoading] = useState(false);
-    const [showShipmentModal, setShipmentModal] = useState(false);
-    const [showShipmentDispatchModal, setShipmentDispatchModal] = useState(false);
-    const [showShipmentRatedModal, setShipmentRatedModal] = useState(false);
+    const [showApproveModal, setApproveModal] = useState(false);
+    const [showConfirmModal, setConfirmModal] = useState(false);
+    const [showRestartModal, setRestartModal] = useState(false);
 
     const [error, setError] = useState("");
 
@@ -71,19 +92,16 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
         return value.toLocaleString("en-US");
     };
 
-    const togglePayInvoiceModal = () => {
-        // console.log("modal")
-        setShipmentModal((prev) => !prev);
+    const toggleRestartModal = () => {
+        setRestartModal((prev) => !prev);
     };
 
-    const toggleDispatchModal = () => {
-        // console.log("modal")
-        setShipmentDispatchModal((prev) => !prev);
+    const toggleConfirmModal = () => {
+        setConfirmModal((prev) => !prev);
     };
 
-    const toggleRatedModal = () => {
-        // console.log("modal")
-        setShipmentRatedModal((prev) => !prev);
+    const toggleApproveModal = () => {
+        setApproveModal((prev) => !prev);
     };
 
 
@@ -94,78 +112,166 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
     return (
         <div>
             {/* BREADCRUMB */}
-            <div className="mb-[14px] flex items-center justify-between">
-                <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
-            </div>
+            {savedRole === 'admin' &&
+                <div className="mb-[14px] flex items-center justify-between">
+                    <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
+                </div>
+            }
+            {savedRole === 'manager' &&
+                <div className="mb-[14px] flex items-center justify-between">
+                    <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
+                </div>
+            }
+            {savedRole === 'import' &&
+                <div className="mb-[14px] flex items-center justify-between">
+                    <CustomBreadCrumb items={breadCrumbArray} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
+                </div>
+            }
             <H2 className="my-[36px] font-semibold text-primary">
-            View Procurement
+                View Procurement
             </H2>
 
             <div>
-            <div className="grid md:grid-cols-2 xs:grid-col-1 gap-0 w-full text-sm bg-[#edefee] p-2">
-                            <div className="h-full row-span-2 col-span-2 bg-white p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                                <div className='text-slate-800 text-[16px] md:item-center flex md:justify-start text-start mb-7'>Procurement Details</div>
+                <div className="grid md:grid-cols-2 xs:grid-col-1 gap-0 w-full text-sm bg-[#edefee] p-2">
+                    <div className="h-full row-span-2 col-span-2 bg-white p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                        <div className='text-slate-800 text-[16px] md:item-center flex md:justify-start text-start mb-7'>Procurement Details</div>
 
-                                <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-5 ">
-                                    <div className="">
+                        <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-5 ">
+                            <div className="">
 
-                                        {/* Name */}
-                                        <div className="mb-[36px]">
-                                            <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Name:</BMiddleRegular>
-                                            <BodySmallestMedium className="!text-gray-400 uppercase">
-                                                {procurementData?.name}
-                                            </BodySmallestMedium>
+                                {/* Name */}
+                                <div className="mb-[36px]">
+                                    <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Name:</BMiddleRegular>
+                                    <BodySmallestMedium className="!text-gray-400 uppercase">
+                                        {procurementData?.name}
+                                    </BodySmallestMedium>
+                                </div>
+
+
+                                <div className="mb-[36px]">
+                                    {
+                                        procurementData?.totalValue && (
+                                            <div>
+
+                                                <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Value:</BMiddleRegular>
+                                                <BodySmallestMedium className="!text-gray-400 uppercase">
+                                                    {/* formatValue{procurementData?.totalValue} */}
+                                                    ${formatValue(procurementData?.totalValue)}
+                                                </BodySmallestMedium>
+                                            </div>
+
+                                        )
+                                    }
+
+                                </div>
+
+                                {
+                                    (savedRole === 'manager' || savedRole === 'admin')
+                                    && (procurementData?.status?.code === '01' || procurementData?.status?.code === '05')
+                                    && (
+                                        <div>
+                                            <BMiddleRegular className="mb-[18px] text-gray-800 font-medium">Items:</BMiddleRegular>
+
+                                            <Link
+                                                className="!text-[14px] text-white !bg-[#555454] w-fit !rounded-lg px-4 py-3"
+                                                href={`/dashboard/admin/procurement/update-procurement/${procurementData?.id}`}
+                                            >
+                                                Update Procurement details
+                                            </Link>
                                         </div>
+                                    )
+                                }
+                            </div>
 
-                                        {/* Code */}
-                                        <div className="mb-[36px]">
-                                            {
-                                                procurementData?.totalValue && (
-                                                    <div>
+                            {/* RIGHT */}
+                            <div className="">
+                                {/* Additional Info */}
+                                <div className="mb-[36px]">
 
-                                                    <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Value:</BMiddleRegular>
-                                                    <BodySmallestMedium className="!text-gray-400 uppercase">
-                                                        {/* formatValue{procurementData?.totalValue} */}
-                                                        ${formatValue(procurementData?.totalValue)}
-                                                    </BodySmallestMedium>
-                                                    </div>
+                                    <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Description:</BMiddleRegular>
+                                    <BodySmallestMedium className="!text-gray-400 uppercase">
+                                        {procurementData?.description}
+                                    </BodySmallestMedium>
+                                </div>
 
-                                                )
-                                            }
+                                {/* Date */}
+                                <div className="mb-[36px]">
+                                    <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Date/Time:</BMiddleRegular>
+                                    <BodySmallestMedium className="!text-gray-400 uppercase">
+                                        {formatDateTime(procurementData?.created_at)}
+                                    </BodySmallestMedium>
+                                </div>
+
+                                {/* Status */}
+                                <div className="mb-[36px]">
+                                    <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Status:</BMiddleRegular>
+                                    <BodySmallestMedium className="!text-gray-400 uppercase">
+                                        {procurementData?.status?.name}
+                                    </BodySmallestMedium>
+                                </div>
+
+                                {/* Action */}
+                                {(procurementData?.status?.code === '01' && procurementData.totalValue) && (savedRole === 'manager' || savedRole === 'admin') && (
+                                    <div className="mb-[36px]">
+                                        <B1 className="mb-[8px]">Action</B1>
+
+                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col">
+                                            <CustomButton
+                                                className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#029B5B] lg:!w-[150px] w-full !rounded-[3px] flex justify-center items-center"
+                                                onClick={toggleConfirmModal}
+                                            >
+                                                <Image
+                                                    src={"/images/checked.svg"}
+                                                    alt="checked"
+                                                    width={20}
+                                                    height={20}
+                                                    className="z-[10] text-white"
+                                                />
+                                                <div className="ml-3">Confirm</div>
+                                            </CustomButton>
+                                            <CustomButton
+                                                onClick={toggleRestartModal}
+                                                className="!text-[0.875rem] !py-[0] h-[40px] !bg-[#F47F12] lg:!w-[150px] w-full !rounded-[3px] flex justify-center items-center"
+                                            >
+                                                <Image
+                                                    src={"/images/restart.svg"}
+                                                    alt="checked"
+                                                    width={20}
+                                                    height={20}
+                                                    className="z-[10] text-white"
+                                                />
+                                                <div className="ml-3">Restart</div>
+                                            </CustomButton>
 
                                         </div>
                                     </div>
+                                )}
 
-                                    {/* RIGHT */}
-                                    <div className="">
-                                        {/* Additional Info */}
-                                        <div className="mb-[36px]">
+                                {(procurementData?.status?.code === '50' && procurementData.totalValue) && (savedRole === 'manager' || savedRole === 'admin') && (
+                                    <div className="mb-[36px]">
+                                        <B1 className="mb-[8px]">Action</B1>
 
-                                            <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Description:</BMiddleRegular>
-                                            <BodySmallestMedium className="!text-gray-400 uppercase">
-                                                {procurementData?.description}
-                                            </BodySmallestMedium>
+                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col">
+                                            <CustomButton
+                                                className="!text-[0.875rem] !py-[0] h-[40px] !bg-purple-400 lg:!w-[150px] w-full !rounded-[3px] flex justify-center items-center"
+                                                onClick={toggleApproveModal}
+                                            >
+                                                <Image
+                                                    src={"/images/done.svg"}
+                                                    alt="checked"
+                                                    width={20}
+                                                    height={20}
+                                                    className="z-[10] text-white"
+                                                />
+                                                <div className="ml-3">Approve</div>
+                                            </CustomButton>
+
+
                                         </div>
+                                    </div>
+                                )}
 
-                                        {/* Date */}
-                                        <div className="mb-[36px]">
-                                            <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Date/Time:</BMiddleRegular>
-                                            <BodySmallestMedium className="!text-gray-400 uppercase">
-                                                {formatDateTime(procurementData?.created_at)}
-                                            </BodySmallestMedium>
-                                        </div>
-
-                                        {/* Status */}
-                                        <div className="mb-[36px]">
-                                            <BMiddleRegular className="mb-[8px] text-gray-800 font-medium">Status:</BMiddleRegular>
-                                            <BodySmallestMedium className="!text-gray-400 uppercase">
-                                                {procurementData?.status?.name}
-                                            </BodySmallestMedium>
-                                        </div>
-
-                                        {/* Action */}
-
-                                        {/* <div className="mb-[36px]">
+                                {/* <div className="mb-[36px]">
                                             {(procurementData?.status?.code === '20') && (
                                                 <div>
                                                     <B1 className="mb-[8px]">Action</B1>
@@ -249,7 +355,7 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                         </div> */}
 
 
-                                        {/* {procurementData?.isPaid === true && (
+                                {/* {procurementData?.isPaid === true && (
                                             <div className="mb-[36px]">
                                                 <B1 className="mb-[8px]">Action</B1>
 
@@ -275,22 +381,40 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                                 </div>
                                             </div>
                                         )} */}
-                                    </div>
-                                </div>
-                                <div>
-                        <div className='text-white bg-primary py-2 px-2 text-[16px] mt-14 mb-7 md:item-center flex md:justify-start text-start'>Procurement Logs</div>
+                            </div>
+                        </div>
                         <div>
+                            <div className='text-white bg-primary py-2 px-2 text-[16px] mt-14 mb-7 md:item-center flex md:justify-start text-start'>Procurement Logs</div>
+                            <div>
                                 <ShipmentLogs logs={procurementData?.logs} />
                             </div>
-                        
+
+                        </div>
+
+
                     </div>
 
 
-                            </div>
-
-
-                        </div>
+                </div>
             </div>
+
+            {showRestartModal && (
+                <CustomModal onClose={toggleRestartModal} backdrop={true}>
+                    <RestartProcess onClose={toggleRestartModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
+
+            {showConfirmModal && (
+                <CustomModal onClose={toggleConfirmModal} backdrop={true}>
+                    <ConfirmProcess onClose={toggleConfirmModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
+
+{showApproveModal && (
+                <CustomModal onClose={toggleApproveModal} backdrop={true}>
+                    <ApprovedProcess onClose={toggleApproveModal} id={parseInt(id)} />
+                </CustomModal>
+            )}
 
             {/* {showShipmentApproveModal && (
                 <CustomModal onClose={toggleApproveModal} backdrop={true}>

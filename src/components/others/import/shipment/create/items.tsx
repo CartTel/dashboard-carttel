@@ -544,13 +544,13 @@ const ItemImport = ({
 
                     <div className="flex">
                         <div className="flex justify-end z-10 relative mt-4 mr-3">
-                        <button
-            onClick={handleProviderFour}
-            disabled={!areItemsComplete}
-            className={`${!areItemsComplete ? "bg-primary opacity-40" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full !text-white`}
-          >
-            Next
-          </button>
+                            <button
+                                onClick={handleProviderFour}
+                                disabled={!areItemsComplete}
+                                className={`${!areItemsComplete ? "bg-primary opacity-40" : "bg-primary"} flex text-center justify-center font-semibold z-10 relative md:text-[16px] rounded-lg md:py-2 md:px-16 xs:text-[15px] xs:py-4 xs:px-10 w-full !text-white`}
+                            >
+                                Next
+                            </button>
                         </div>
                     </div>
                     <div className="flex justify-end z-10 relative mt-4 ">

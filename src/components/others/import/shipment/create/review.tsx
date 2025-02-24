@@ -176,10 +176,15 @@ const ReviewDetails = ({
                     description: `Shipment Created Successfully`,
                     variant: "default",
                 });
-            }
-            router.push('/dashboard/import/shipment');
 
-            setLoading(false);
+                setLoading(false);
+                router.push('/dashboard/import/shipment');
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 5000); 
+            }
+
             
 
         } catch (error: any) {

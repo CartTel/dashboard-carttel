@@ -15,26 +15,26 @@ import {
 
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { CompletedShipment, RestartProcessRequest } from "@/config/api";
+import { ConfirmProcessRequest, ApprovedProcessRequest} from "@/config/api";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 
 
 
-type RestartProcessProps = {
+type ApprovedProcessProps = {
     onClose: () => void; // Function to close the modal
     id: number; // ID of the request to approve
     // slaId: number;
 };
 
-export function RestartProcess({ onClose, id}: RestartProcessProps) {
+export function ApprovedProcess({ onClose, id}: ApprovedProcessProps) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const router = useRouter();
 
-    const handleRestartProcess = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleApprovedProcess = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         setLoading(true);
         setError("");
@@ -44,11 +44,11 @@ export function RestartProcess({ onClose, id}: RestartProcessProps) {
             // Call the API to approve the request
             console.log("all the ID", id)
 
-            const result = await RestartProcessRequest(id);
+            const result = await ApprovedProcessRequest(id);
             if (result) {
                 toast({
                     title: "Success",
-                    description: `Restart Process Successfully 🎉`,
+                    description: `Approved Procurement Successfully 🎉`,
                     variant: "destructive",
                 });
 
@@ -60,7 +60,7 @@ export function RestartProcess({ onClose, id}: RestartProcessProps) {
                 }, 5000); // 1000ms = 1 second delay
             }
 
-            setSuccessMessage("Restart Process Successfully!");
+            setSuccessMessage("Approved Procurement Successfully!");
         } catch (err: any) {
             console.log("first", err)
             
@@ -81,7 +81,7 @@ export function RestartProcess({ onClose, id}: RestartProcessProps) {
 
     return (
         <form
-            onSubmit={handleRestartProcess}
+            onSubmit={handleApprovedProcess}
             className="py-[38px] lg:px-[30px] px-4 bg-white rounded-[10px] shadow md:w-[574.18px] xs:w-full">
 
             <div className="w-full flex justify-center items-center">
@@ -94,7 +94,7 @@ export function RestartProcess({ onClose, id}: RestartProcessProps) {
             </div>
 
             <div className="text-center w-full">
-                <SecondaryText className="mb-[23px]">Restart Process</SecondaryText>
+                <SecondaryText className="mb-[23px]">Approve Request</SecondaryText>
             </div>
 
             <div className="flex items-center justify-center gap-[20px] lg:flex-row xs:flex-col w-full lg:w-auto">
@@ -110,7 +110,7 @@ export function RestartProcess({ onClose, id}: RestartProcessProps) {
                 <CustomButton
                     disabled={loading}
                     // loaderState={loading}
-                    className={`!bg-[#F47F12] !py-[0px] !h-[58px] lg:!w-[175px] xs:!w-[300px] !text-md`}
+                    className={`!bg-purple-400 !py-[0px] !h-[58px] lg:!w-[175px] xs:!w-[300px] !text-md`}
                 >
                     <div>
                         {loading ? ( // Display spinner if userLoading is true
