@@ -346,13 +346,13 @@ export function ShipmentRequestDetails({ id }: ShipmentRequestDetailsProps) {
                                             <div className='my-4'>
                                                 <div className='font-semibold text-gray-800'>From address:</div>
                                                 <div className="text-gray-600 font-[400]">
-                                                    {shipmentData?.receiverInfo?.address_line_1}, {shipmentData?.receiverInfo?.city}, {shipmentData?.receiverInfo?.country}
+                                                    {shipmentData?.receiverInfo?.address_line_1}, {shipmentData?.receiverInfo?.city}, {shipmentData?.receiverInfo?.state}, {shipmentData?.receiverInfo?.country}
                                                 </div>
                                             </div>
                                             <div className='my-4'>
                                                 <div className='font-semibold text-gray-800'>To address:</div>
                                                 <div className="text-gray-600 font-[400]">
-                                                    {shipmentData?.senderInfo?.address_line_1}, {shipmentData?.senderInfo?.city}, {shipmentData?.senderInfo?.country}
+                                                    {shipmentData?.senderInfo?.address_line_1}, {shipmentData?.senderInfo?.city}, {shipmentData?.senderInfo?.state}, {shipmentData?.senderInfo?.country}
                                                 </div>
                                             </div>
 

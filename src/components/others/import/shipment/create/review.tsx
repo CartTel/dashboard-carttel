@@ -168,7 +168,7 @@ const ReviewDetails = ({
         try {
             // const valid = validateForm();
             console.log("form in the code FOR now ..", formData);
-            const { data } = await createShipment(formData);
+            const data = await createShipment(formData);
             // window.location.reload();
             if (data) {
                 toast({

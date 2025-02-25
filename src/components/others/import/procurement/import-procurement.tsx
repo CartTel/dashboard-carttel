@@ -190,11 +190,11 @@ export function ImportProcurement() {
         <div className="h-[100%] w-full">
             {/* BREADCRUMB */}
             <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
-            <div className="my-[14px] flex lg:items-center justify-between lg:flex-row flex-col mb-[0px]">
+            <div className="my-[20px] flex lg:items-center justify-between lg:flex-row flex-col mb-[0px]">
                 <H1 className="">Procurements</H1>
             </div>
 
-            <div className="md:my-0 xs:my-1 flex md:justify-end w-full">
+            <div className="md:my-0 xs:my-5 flex md:justify-end w-full">
                 <div className="block font-semibold">
                     <Link
                         className="link flex font-semibold"

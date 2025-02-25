@@ -475,6 +475,18 @@ export const ApprovedProcessRequest = async (procurementId: number) => {
 };
 
 
+export const awaitingProcessRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/awaiting`, credentials);
+    console.log("procurement..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

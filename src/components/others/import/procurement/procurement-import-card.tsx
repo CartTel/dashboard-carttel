@@ -5,6 +5,7 @@ import { formatDate } from '@/helper/format';
 import { SkeletonLoader } from "@/components/ui/skeletonCard";
 import Image from 'next/image';
 import { formatDateTime } from '@/helper/format';
+import { RiArrowRightSLine } from "react-icons/ri";
 
 interface ISla {
     actualDeliveryDate: string;
@@ -230,9 +231,10 @@ export function ProcurementImportCard(
                     <div className="flex justify-center z-50 relative mt-4  bg-primary rounded-md py-2">
                         <Link
                             href={`/dashboard/import/procurement/${id}`}
-                            className="flex justify-end z-50 relative  w-fit"
+                            className="flex justify-center items-center z-50 relative  w-fit"
                         >
                             <div className="text-white ">View Details</div>
+                            <div className='text-white text-xl'>< RiArrowRightSLine/></div>
                         </Link>
                     </div>
 

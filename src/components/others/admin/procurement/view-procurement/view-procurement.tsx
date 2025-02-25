@@ -271,6 +271,32 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                     </div>
                                 )}
 
+                                {(procurementData?.status?.code === '10' && procurementData.totalValue) && (savedRole === 'import') && (
+                                    <div className="mb-[36px]">
+                                        <B1 className="mb-[8px]">Action</B1>
+
+                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col lg:!w-[150px] xs:!w-full ">
+                                            <Link href={`/dashboard/import/procurement/await/${id}`} className="ml-1 cursor-pointer lg:!w-[150px] xs:!w-full">
+                                                <div
+                                                    className="!text-[0.875rem] !py-[0] h-[40px] !bg-pink-400 !text-white lg:!w-[150px] xs:!w-full !rounded-[3px] flex justify-center items-center"
+                                                >
+                                                    <Image
+                                                        src={"/images/awaiting.svg"}
+                                                        alt="checked"
+                                                        width={20}
+                                                        height={20}
+                                                        className="z-[10] text-white"
+                                                    />
+                                                    <div className="ml-3">Restart</div>
+                                                </div>
+                                            </Link>
+
+
+
+                                        </div>
+                                    </div>
+                                )}
+
                                 {/* <div className="mb-[36px]">
                                             {(procurementData?.status?.code === '20') && (
                                                 <div>
@@ -410,7 +436,7 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                 </CustomModal>
             )}
 
-{showApproveModal && (
+            {showApproveModal && (
                 <CustomModal onClose={toggleApproveModal} backdrop={true}>
                     <ApprovedProcess onClose={toggleApproveModal} id={parseInt(id)} />
                 </CustomModal>
