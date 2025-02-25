@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 import { SkeletonLoader } from '@/components/ui/skeletonCard';
 import { BsCheckLg, BsChevronLeft, BsShopWindow, BsXCircle, BsChevronRight, BsCheckCircle } from "react-icons/bs";
-import { createShipment } from '@/config/api';
+import { createShipmentForProcurement } from '@/config/api';
 
 
 
@@ -39,47 +39,21 @@ interface ReceiverInfoDetails {
     city: string
 }
 
-interface TrackingDetails {
-    tracking_id: string,
-    tracking_url: string,
-    tracking_number: string,
-    third_party_tracking_id: string,
-    third_party_tracking_name: string
-}
-
 interface InsuranceDetails {
     insurance_type: "",
-    policy_number: "",
-    start_date: Date | any,
-    end_date: Date | null
-}
-
-interface ItemDetails {
-    name: string;
-    quantity: number;
-    value: number;
-    description: string;
-    weight: number;
-    category: string;
-    dimension: {
-        length: number;
-        width: number;
-        height: number;
-    };
+    // policy_number: "",
+    start_date: Date | null,
+    // end_date: Date | null
 }
 
 interface SenderInfoForm {
-    userId: number | any;
-    name: string;
-    description: string;
+    procurement_id: number | null;
     senderInfo: SenderInfoDetails;
     receiverInfo: ReceiverInfoDetails;
-    tracking: TrackingDetails
     insurance: InsuranceDetails
-    items: ItemDetails[];
 }
 
-interface ReviewDetailsProps {
+interface SenderInfoImportProps {
     active: number;
     setActive: (active: number) => void;
     isLoadingButton: boolean;
@@ -88,29 +62,29 @@ interface ReviewDetailsProps {
 }
 
 
-const ReviewDetails = ({
+const ReviewProcurementDetails = ({
     active,
     setActive,
     isLoadingButton,
     formData,
     setFormData
-}: ReviewDetailsProps) => {
+}: SenderInfoImportProps) => {
 
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-
 
     const handleProviderFive = () => {
         console.log("form data..", formData);
         // setActive(active + 1);
     };
+
     const submitClientRequest = async () => {
         // e?.preventDefault();
         setLoading(true);
         try {
             // const valid = validateForm();
             console.log("form in the code FOR now ..", formData);
-            const data = await createShipment(formData);
+            const data = await createShipmentForProcurement(formData);
             // window.location.reload();
             if (data) {
                 toast({
@@ -126,8 +100,6 @@ const ReviewDetails = ({
                     window.location.reload();
                 }, 5000); 
             }
-
-            
 
         } catch (error: any) {
             if (error) {
@@ -242,7 +214,7 @@ const ReviewDetails = ({
                                             Step 3
                                         </div>
                                         <div className="lg:text-md xs:text-[14px] font-[400] h-full flex justify-start items-center text-slate-800">
-                                            Item Details
+                                            Insurance
                                         </div>
                                     </div>
 
@@ -254,32 +226,6 @@ const ReviewDetails = ({
                                 </div>
                             </button>
 
-                            <button
-                                className="bg-white rounded-lg shadow-xl border-[1px] flex items-center py-5 px-2 cursor-pointer"
-                                onClick={() => { setActive(4) }}
-                            >
-                                <div className="h-full flex justify-center items-center ">
-                                    <div className="xl:text-5xl xs:text-4xl font-light text-green-600">
-                                        <BsCheckCircle />
-                                    </div>
-                                </div>
-                                <div className=" flex w-full  justify-between h-full px-2">
-                                    <div className="flex justify-start flex-col">
-                                        <div className="lg:text-xl xs:text-sm font-medium text-gray-500 text-start  w-full md:text-xs h-full flex items-center  ">
-                                            Step 4
-                                        </div>
-                                        <div className="lg:text-md xs:text-[14px] font-[400] h-full flex justify-start items-center text-slate-800">
-                                            Shipment Details
-                                        </div>
-                                    </div>
-
-                                    <div className=" flex justify-center items-center flex-col">
-                                        <div className="text-lg font-extralight text-gray-500 h-full flex justify-center items-center">
-                                            <BsChevronRight />
-                                        </div>
-                                    </div>
-                                </div>
-                            </button>
                         </div>
                     </div>
 
@@ -317,4 +263,4 @@ const ReviewDetails = ({
     )
 }
 
-export default ReviewDetails
+export default ReviewProcurementDetails

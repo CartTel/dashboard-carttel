@@ -21,7 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 const breadCrumb = [
     {
         label: "Home",
-        link: "/dashboard/import=",
+        link: "/dashboard/import",
     },
     {
         label: "Procurement",

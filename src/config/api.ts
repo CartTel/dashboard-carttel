@@ -488,6 +488,18 @@ export const awaitingProcessRequest = async (credentials: any) => {
 };
 
 
+export const createShipmentForProcurement = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/procurement/create-procurement-shipping`, credentials);
+    console.log("create shipment for procurement..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 
 

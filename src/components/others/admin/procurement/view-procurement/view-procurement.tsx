@@ -295,6 +295,29 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                     </div>
                                 )}
 
+                                {(procurementData?.status?.code === '60' && procurementData.totalValue) && (savedRole === 'import') && (
+                                    <div className="mb-[36px]">
+                                        <B1 className="mb-[8px]">Action</B1>
+
+                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col lg:!w-fit xs:!w-full ">
+                                            <Link href={`/dashboard/import/procurement/create-shipment/${id}`} className="ml-1 cursor-pointer lg:!w-fit xs:!w-full">
+                                                <div
+                                                    className="!text-[0.875rem] !py-[0] h-[40px] px-5 !bg-rose-500 !text-white lg:!w-fit xs:!w-full !rounded-[3px] flex justify-center items-center"
+                                                >
+                                                    <Image
+                                                        src={"/images/Package/wrapped-box.svg"}
+                                                        alt="checked"
+                                                        width={20}
+                                                        height={20}
+                                                        className="z-[10] text-white"
+                                                    />
+                                                    <div className="ml-3">Create Shipment</div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                )}
+
 
                                 {/* <div className="mb-[36px]">
                                             {(procurementData?.status?.code === '20') && (
