@@ -155,19 +155,6 @@ const UpdateProcurementDetails = ({ id }: UpdateProcurementDetailsProps) => {
         }
     };
 
-    // const handleCategoriesChange = (value: string) => {
-    //     const selectedCitiesObj = categoriesData?.data?.find(
-    //         (state: any) => state.id === value
-    //     );
-    //     // Use the label if found; otherwise, fall back to the value.
-    //     const selectedCitiesName = selectedCitiesObj ? selectedCitiesObj.name : value;
-
-    //     setItems((prev: any) => ({
-    //         ...prev,
-    //         category: value
-    //     }));
-    // };
-
     const handleRemoveItem = (index: number) => {
         setFormData((prev) => ({
             ...prev,

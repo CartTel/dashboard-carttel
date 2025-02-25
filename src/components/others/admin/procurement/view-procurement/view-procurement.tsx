@@ -164,10 +164,11 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                     }
 
                                 </div>
+                                {/* (["01", "05", "15"].includes(workRequest?.status.code) && authorizedUser('work-requests.approve')) */}
 
                                 {
                                     (savedRole === 'manager' || savedRole === 'admin')
-                                    && (procurementData?.status?.code === '01' || procurementData?.status?.code === '05')
+                                    && (["01", "05", "15"].includes(procurementData?.status?.code))
                                     && (
                                         <div>
                                             <BMiddleRegular className="mb-[18px] text-gray-800 font-medium">Items:</BMiddleRegular>
@@ -211,7 +212,7 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                 </div>
 
                                 {/* Action */}
-                                {(procurementData?.status?.code === '01' && procurementData.totalValue) && (savedRole === 'manager' || savedRole === 'admin') && (
+                                {((["01", "15"].includes(procurementData?.status?.code)) && procurementData.totalValue) && (savedRole === 'manager' || savedRole === 'admin') && (
                                     <div className="mb-[36px]">
                                         <B1 className="mb-[8px]">Action</B1>
 
@@ -290,12 +291,10 @@ export function ViewProcurement({ id }: EditShipmentDetailsProps) {
                                                     <div className="ml-3">Restart</div>
                                                 </div>
                                             </Link>
-
-
-
                                         </div>
                                     </div>
                                 )}
+
 
                                 {/* <div className="mb-[36px]">
                                             {(procurementData?.status?.code === '20') && (
