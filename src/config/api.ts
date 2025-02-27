@@ -500,6 +500,42 @@ export const createShipmentForProcurement = async (credentials: any) => {
   }
 };
 
+export const fetchAllPlans = async () => {
+  try {
+    const response = await apiClient.get(`/api/v1/plans/get-all-plans`, {
+      params: {
+        associations: ['currency', 'measurement'], // Specify the relationships to include
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+    });
+    // console.log("all plan..", response.data.plans);
+    return response.data.plans;
+  } catch (error) {
+    console.error('Error fetching plan:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+
+
+export const createPlan = async (planId: number, userId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/user-plan/create`, {
+      userId: userId,
+      planId: planId
+    });
+
+    // console.log("create plan..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create plan:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 
