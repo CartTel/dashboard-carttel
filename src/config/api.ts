@@ -537,6 +537,65 @@ export const createPlan = async (planId: number, userId: number) => {
   }
 };
 
+export const createAddress = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/address/create`, credentials);
+
+    // console.log("create plan..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create address:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const deleteAddress = async (deleteId: number) => {
+  try {
+    const response = await apiClient.delete(`/api/v1/delete-address/${deleteId}`);
+
+    // console.log("create plan..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create address:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const fetchSingleAddress = async (id: number) => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/get-address/${id}`, {
+      params: {
+        associations: ['user'], // Specify the relationships to include
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    // console.log("all single data..", response.data);
+    return response.data.addresses;
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+
+export const updateAddressRequest = async (addressId: number, credentials: any) => {
+  try {
+    const response = await apiClient.put(`/api/v1/update-address/${addressId}`, credentials);
+    // console.log("update address..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error update address:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 

@@ -27,6 +27,7 @@ interface IPaginationV2 {
   children: (paginatedList: any[]) => React.ReactNode;
   rowStatus?: boolean;
   color?: boolean;
+  show?: boolean;
 }
 
 export function PaginationV2({
@@ -35,7 +36,8 @@ export function PaginationV2({
   onPageChange,
   children,
   rowStatus = false,
-  color = false
+  color = false,
+  show = true
 }: IPaginationV2) {
 
 
@@ -164,15 +166,20 @@ export function PaginationV2({
           className={`flex lg:flex-row flex-col items-center justify-between mt-[48px] p-4 gap-10  ${rowStatus ? "w-fit" : "w-full"
             }`}
         >
-          <div className="md:flex xs:hidden items-center justify-center  h-full">
-            <BMiddle className="!text-gray808">
-              {/* {(currentPage - 1) + 1} */}
-              Showing {" "}
-              {(currentPage - 1) + 1} to{" "}
-              {pagination?.page * pagination?.perPage} of{" "}
-              {pagination?.perPage * pagination?.totalPages} records
-            </BMiddle>
-          </div>
+          {
+            show && (
+
+            <div className="md:flex xs:hidden items-center justify-center  h-full">
+              <BMiddle className="!text-gray808">
+                {/* {(currentPage - 1) + 1} */}
+                Showing {" "}
+                {(currentPage - 1) + 1} to{" "}
+                {pagination?.page * pagination?.perPage} of{" "}
+                {pagination?.perPage * pagination?.totalPages} records
+              </BMiddle>
+            </div>
+            )
+          }
           <div className="flex flex-wrap items-center gap-[33px]  h-full justify-center">
             <button
               onClick={() => handlePageChange(currentPage - 1)}

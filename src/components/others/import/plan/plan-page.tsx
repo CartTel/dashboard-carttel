@@ -204,36 +204,39 @@ const PlanPage = () => {
     useEffect(() => {
         const fetchUserPlan = async () => {
 
-            console.log("good plan..", userId)
+            // console.log("good plan..", userId)
 
-            try {
-                const response = await apiClient.get(`/api/v1/user-plan/get-all-user-plans`, {
-                    params: {
-                        associations: ['plan', 'user'], // Specify the relationships to include
-                        sortOrder: 'ASC',
-                        sortBy: 'created_at',
-                        // byUserId: parseInt(userId),
-                        page: 1,
-                        perPage: 100,
-                    },
-                    paramsSerializer: (params) => {
-                        return qs.stringify(params, { arrayFormat: 'brackets' });
-                    },
-                });
-
-                setUserPlan(response?.data?.data)
-
-                const lastItem = response?.data?.data[response?.data?.data.length - 1];
-
-                console.log("data item ..", lastItem);
-                console.log("all Request..", response?.data?.data);
-
-                setUserPlan(lastItem)
-                return response.data;
-            } catch (error) {
-                console.error('Error fetching user plan:', error);
-                throw error; // Rethrow the error for handling in the component
+            if (userId) {
+                try {
+                    const response = await apiClient.get(`/api/v1/user-plan/get-all-user-plans`, {
+                        params: {
+                            associations: ['plan', 'user'], // Specify the relationships to include
+                            sortOrder: 'ASC',
+                            sortBy: 'created_at',
+                            byUserId: parseInt(userId),
+                            page: 1,
+                            perPage: 100,
+                        },
+                        paramsSerializer: (params) => {
+                            return qs.stringify(params, { arrayFormat: 'brackets' });
+                        },
+                    });
+    
+                    setUserPlan(response?.data?.data)
+    
+                    const lastItem = response?.data?.data?.[response?.data?.data.length - 1];
+    
+                    // console.log("data item ..", lastItem);
+                    // console.log("all Request..", response?.data?.data);
+    
+                    setUserPlan(lastItem)
+                    return response.data;
+                } catch (error) {
+                    console.error('Error fetching user plan:', error);
+                    throw error; // Rethrow the error for handling in the component
+                }
             }
+
         };
         fetchUserPlan(); // Fetch data when the component mounts
     }, [userId]);

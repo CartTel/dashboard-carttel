@@ -147,7 +147,7 @@ export function ImportDashboardWrapper({ children }: ImportDashboardWrapper) {
   };
 
   useEffect(() => {
-    console.log("all the user..", user);
+    // console.log("all the user..", user);
     setIsClient(true);
   }, [user]);
 
