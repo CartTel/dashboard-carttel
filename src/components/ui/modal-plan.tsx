@@ -51,7 +51,7 @@ export default function ModalPlan({ planId, selectDate, selectPriceOne, selectPl
 
     const oneYearFromNow = new Date(today);
     oneYearFromNow.setFullYear(today.getFullYear() + 1);
-    
+
 
     const handleCreatePlan = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
@@ -83,14 +83,12 @@ export default function ModalPlan({ planId, selectDate, selectPriceOne, selectPl
             // setSuccessMessage("Shipment Approved successfully!");
         } catch (err: any) {
             console.log("first", err)
-
             onClose()
             toast({
                 title: "Error",
                 description: `${err?.response?.data?.message}`,
                 variant: "destructive",
             });
-
             // Handle error
             setError(err.message || "An error occurred while approving the request.");
         } finally {
@@ -107,7 +105,7 @@ export default function ModalPlan({ planId, selectDate, selectPriceOne, selectPl
                     <div className="w-full px-4 bg-white flex items-center justify-between py-1  rounded-t">
                         <div
                             className="md:text-[15px] xs:text-[12px] text-slate-800 font-medium"
-                        
+
                         >
                             Subscription Summary
                         </div>
@@ -189,45 +187,45 @@ export default function ModalPlan({ planId, selectDate, selectPriceOne, selectPl
                                         <span className="text-rose-500"> {selectDate === "Monthly" ? `${formatDate(oneMonthFromNow)}` : `${formatDate(oneYearFromNow)}`}. </span>
                                     </div>
                                     <div className="flex flex-wrap">
-                                        
+
                                     </div>
                                 </span>
                             </div>
 
-                            
+
 
                             <CustomButton
-                    disabled={loading}
-                    // loaderState={loading}
-                    className="md:text-xs xs:text-[12px] !bg-[#fbc421] !text-slate-800 font-[700] uppercase text-xs px-3 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-full"
-                >
-                    <div>
-                        {loading ? ( // Display spinner if userLoading is true
-                            <div className="flex items-center justify-center px-6">
+                                disabled={loading}
+                                // loaderState={loading}
+                                className="md:text-xs xs:text-[12px] !bg-[#fbc421] !text-slate-800 font-[700] uppercase text-xs px-3 py-3 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 w-full"
+                            >
                                 <div>
+                                    {loading ? ( // Display spinner if userLoading is true
+                                        <div className="flex items-center justify-center px-6">
+                                            <div>
 
-                                    <Image
-                                        src={'/images/Spinner.svg'}
-                                        alt="logo"
-                                        width={60}
-                                        height={60}
-                                        priority
-                                        className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
-                                    />
+                                                <Image
+                                                    src={'/images/Spinner.svg'}
+                                                    alt="logo"
+                                                    width={60}
+                                                    height={60}
+                                                    priority
+                                                    className="text-[1px] md:w-full md:h-full xs:w-full xs:h-full"
+                                                />
+
+                                            </div>
+
+                                        </div>
+                                    ) : (
+                                        <div className='flex items-center justify-center text-[13px]'>
+
+                                            <span className="ml-0">Pay Now</span>
+                                        </div>
+                                    )}
+
 
                                 </div>
-
-                            </div>
-                        ) : (
-                            <div className='flex items-center justify-center text-[13px]'>
-
-                                <span className="ml-0">Pay Now</span>
-                            </div>
-                        )}
-
-
-                    </div>
-                </CustomButton>
+                            </CustomButton>
                         </div>
                     </div>
                 </div>
