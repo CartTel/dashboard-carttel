@@ -142,7 +142,7 @@ const FinancialOverview = () => {
                             </div>
                             <div className="flex w-full">
                                 <div className="ml-auto">
-                                    <Link href='/dashboard/import/upgrade-plan' className="bg-indigo-900 rounded-lg py-3 px-3 text-white text-xs">
+                                    <Link href='/dashboard/import/plan' className="bg-indigo-900 rounded-lg py-3 px-3 text-white text-xs">
                                         Upgrade Your Plan
                                     </Link>
                                 </div>
