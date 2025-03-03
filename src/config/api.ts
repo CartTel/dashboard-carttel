@@ -537,6 +537,8 @@ export const createPlan = async (planId: number, userId: number) => {
   }
 };
 
+// ADDRESS ENDPOINT 
+
 export const createAddress = async (credentials: any) => {
   try {
     const response = await apiClient.post(`/api/v1/address/create`, credentials);
@@ -598,6 +600,35 @@ export const updateAddressRequest = async (addressId: number, credentials: any) 
 };
 
 
+// WAREHOUSING ENDPOINT 
+
+export const createWarehouseRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/warehouse/create`, credentials);
+
+    console.log("create warehouse..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create warehouse:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+
+// PICKUP ENDPOINT 
+export const createPickupRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/pickup/create`, credentials);
+
+    console.log("create pickup..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create pickup:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 

@@ -254,7 +254,7 @@ export function WarehousePage() {
                                         <div className='flex flex-col bg-transparent justify-center items-center my-8 rounded-lg xs:px-5 md:px-20'>
                                             {/* <img alt="" src={OpenBox} className="text-[1px] w-44 h-44 flex justify-center items-center" /> */}
                                             <Image
-                                                src={'/images/Referral/warehouse-item.svg'}
+                                                src={'/images/Referral/warehouse.svg'}
                                                 alt="logo"
                                                 width={40}
                                                 height={40}

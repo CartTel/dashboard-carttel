@@ -94,7 +94,7 @@ const ReviewProcurementDetails = ({
                 });
 
                 setLoading(false);
-                router.push('/dashboard/import/shipment');
+                router.push("/dashboard/import/shipment");
 
                 setTimeout(() => {
                     window.location.reload();

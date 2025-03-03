@@ -40,9 +40,9 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
     const [dispatchLink, setDispatchLink] = useState<any>({
         nameOne: "DropOff",
         nameTwo: "Pickup",
-        nameThree: "Inventory",
-        nameFour: "Vendor",
-        nameFive: "Retailer",
+        nameThree: "Warehouse",
+        // nameFour: "Vendor",
+        // nameFive: "Retailer",
     });
 
     return (
@@ -114,11 +114,11 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
                                         className={`cursor-pointer my-4 flex justify-between md:flex-row xs:flex-col md:gap-10 xs:gap-2 rounded-md md:py-3 xs:py-2 px-3 ${dispatchName === dispatchLink?.nameThree ? "border-[1px] border-indigo-500" : "border-[1px] border-indigo-200"}`}
                                     >
                                         <div className=''>
-                                            <div className='font-[500] text-gray-800 md:text-[15px] xs:text-[13px] md:text-start xs:text-center'>
-                                                Dispatch Package to Inventory
+                                            <div className='capitalize font-[500] text-gray-800 md:text-[15px] xs:text-[13px] md:text-start xs:text-center'>
+                                                Dispatch Item to our warehouse
                                             </div>
-                                            <div className='font-[400] text-gray-500 md:text-[12px] xs:text-[10px] md:leading-5 xs:leading-3 md:text-start xs:text-center'>
-                                                Re-stock your CartTel on-line store with this Items
+                                            <div className='capitalize font-[400] text-gray-500 md:text-[12px] xs:text-[10px] md:leading-5 xs:leading-3 md:text-start xs:text-center'>
+                                                Store your item for a period of time before you either choose to dropoff or pickup item.
                                             </div>
                                         </div>
                                         
@@ -133,54 +133,7 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div
-                                        onClick={() => setDispatchName(dispatchLink.nameFour)}
-                                        className={`cursor-pointer my-4 flex justify-between md:flex-row xs:flex-col md:gap-10 xs:gap-2 rounded-md md:py-3 xs:py-2 px-3 ${dispatchName === dispatchLink?.nameFour ? "border-[1px] border-indigo-500" : "border-[1px] border-indigo-200"}`}
-                                    >
-                                        <div className=''>
-                                            <div className='font-[500] text-gray-800 md:text-[15px] xs:text-[13px] md:text-start xs:text-center'>
-                                                Dispatch Your Package to Our Vendor Page
-                                            </div>
-                                            <div className='font-[400] text-gray-500 md:text-[12px] xs:text-[10px] md:leading-5 xs:leading-3 md:text-start xs:text-center'>
-                                                Send Item to our vendor page for other vendors to see and make purchase
-                                            </div>
-                                        </div>
-                                        <div className='float-left flex items-center justify-center'>
-                                            <div className="text-gray-600 font-[500] uppercase md:text-end xs:text-center flex md:justify-end xs:justify-center">
-                                                <span className={`rounded-full w-5 h-5 flex items-center justify-center ${dispatchName === dispatchLink?.nameFour ? "border-[1px] border-indigo-500" : "border-[1px] border-indigo-500"}`}>
-                                                    <span className={`rounded-full w-3 h-3 flex items-center justify-center ${dispatchName === dispatchLink?.nameFour ? "bg-indigo-500" : "bg-white"}`} />
-                                                </span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <div
-                                        onClick={() => setDispatchName(dispatchLink.nameFive)}
-                                        className={`cursor-pointer my-4 flex justify-between md:flex-row xs:flex-col md:gap-10 xs:gap-2 rounded-md md:py-3 xs:py-2 px-3 ${dispatchName === dispatchLink?.nameFive ? "border-[1px] border-indigo-500" : "border-[1px] border-indigo-200"}`}
-                                    >
-                                        
-                                        <div className=''>
-                                            <div className='font-[500] text-gray-800 md:text-[15px] xs:text-[13px] md:text-start xs:text-center md:leading-5 xs:leading-4'>
-                                                Connect Your Package to Our Retail Channel
-                                            </div>
-                                            <div className='font-[400] text-gray-500 md:text-[12px] xs:text-[10px] md:leading-5 xs:leading-3 md:text-start xs:text-center'>
-                                                Through our Distribution Channel, We can distribute your item to Retailers and End-Users
-                                            </div>
-                                        </div>
-                                        <div className='float-left flex items-center justify-center '>
-                                            <div className="text-gray-600 font-[500] uppercase md:text-end xs:text-center flex md:justify-end xs:justify-center">
-                                                <span className={`rounded-full w-5 h-5 flex items-center justify-center ${dispatchName === dispatchLink?.nameFive ? "border-[1px] border-indigo-500" : "border-[1px] border-indigo-500"}`}>
-                                                    <span className={`rounded-full w-3 h-3 flex items-center justify-center ${dispatchName === dispatchLink?.nameFive ? "bg-indigo-500" : "bg-white"}`} />
-                                                </span>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
                                 <div className="w-full py-2">
                                     <div className=" bg-white overflow-hidden w-full sm:w-full xs:w-full">
@@ -189,12 +142,14 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
 
                                                 <div className='w-full flex justify-center items-center my-2'>
                                                     <Link
-                                                        href="/admin/dropoff"
+                                                        href={`/dashboard/import/dropoff/create-dropoff/${id}`}
                                                         className="w-fit bg-plain font-semibold rounded-lg text-primary md:px-6 md:py-3 xs:px-4 xs:py-2 md:text-[15px] xs:text-[13px] "
                                                     >
                                                         <span
                                                             className="w-fit capitalize md:px-1 md:py-2 xs:px-0 xs:py-1 font-[500] rounded-lg md:text-[14px] xs:text-[12px] text-center"
-                                                        >Create DropOff for Package</span>
+                                                        >
+                                                            Create DropOff for Package
+                                                        </span>
                                                     </Link>
                                                 </div>
                                             </>
@@ -206,7 +161,7 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
                                             <>
                                                 <div className='w-full flex justify-center items-center my-2'>
                                                     <Link
-                                                        href="/admin/pickups"
+                                                        href={`/dashboard/import/pickup/create-pickup/${id}`}
                                                         className="w-fit bg-plain font-semibold rounded-lg text-primary md:px-6 md:py-3 xs:px-4 xs:py-2 md:text-[15px] xs:text-[13px] "
                                                     >
                                                         <div className="flex ">
@@ -214,7 +169,9 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
                                                         </div>
                                                         <span
                                                             className="w-fit capitalize md:px-1 md:py-2 xs:px-0 xs:py-1 font-[500] rounded-lg md:text-[14px] xs:text-[12px] text-center"
-                                                        >Schedule PickUps for Arrived Package</span>
+                                                        >
+                                                            Schedule PickUps for Arrived Package
+                                                        </span>
                                                     </Link>
                                                 </div>
                                             </>
@@ -222,11 +179,12 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
                                     </div>
 
                                     <div className=" bg-white overflow-hidden w-full">
-                                        {dispatchName === "Inventory" && (
+                                        {dispatchName === "Warehouse" && (
                                             <>
                                                 <div className='w-full flex justify-center items-center my-2'>
                                                     <Link
-                                                        href="/admin/address-book"
+                                                        
+                                                        href={`/dashboard/import/warehouse/create-warehouse/${id}`}
                                                         className="w-fit bg-plain font-semibold rounded-lg text-primary md:px-6 md:py-3 xs:px-4 xs:py-2 md:text-[15px] xs:text-[13px] "
                                                     >
                                                         <div className="flex ">
@@ -234,46 +192,9 @@ export function DispatchRequest({ onClose, id }: PayInvoiceProps) {
                                                         </div>
                                                         <span
                                                             className="w-fit capitalize md:px-1 md:py-2 xs:px-0 xs:py-1 font-[500] rounded-lg md:text-[14px] xs:text-[12px] text-center"
-                                                        >Dispatch Item to your Online Inventory</span>
-                                                    </Link>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-
-                                    <div className=" bg-white overflow-hidden w-full">
-                                        {dispatchName === "Vendor" && (
-                                            <>
-                                                <div className='w-full flex justify-center items-center my-2'>
-                                                    <Link
-                                                        href="/admin/procurement"
-                                                        className="w-fit bg-plain font-semibold rounded-lg text-primary md:px-6 md:py-3 xs:px-4 xs:py-2 md:text-[15px] xs:text-[13px] "
-                                                    >
-                                                        <div className="flex ">
-                                                        </div>
-                                                        <span
-                                                            className="w-fit capitalize md:px-1 md:py-2 xs:px-0 xs:py-1 font-[500] rounded-lg md:text-[14px] xs:text-[12px] text-center"
-                                                        >Make Item visible to other Vendors</span>
-                                                    </Link>
-                                                </div>
-                                            </>
-                                        )}
-                                    </div>
-
-                                    <div className=" bg-white overflow-hidden w-full">
-                                        {dispatchName === "Retailer" && (
-                                            <>
-                                                <div className='w-full flex justify-center items-center my-2'>
-                                                    <Link
-                                                        href="/admin/wallet"
-                                                        className="w-fit bg-plain font-semibold rounded-lg text-primary md:px-6 md:py-3 xs:px-4 xs:py-2 md:text-[15px] xs:text-[13px] "
-                                                    >
-                                                        <div className="flex ">
-
-                                                        </div>
-                                                        <span
-                                                            className="w-fit capitalize md:px-1 md:py-2 xs:px-0 xs:py-1 font-[500] rounded-lg md:text-[14px] xs:text-[12px] text-center"
-                                                        >Dispatch Item through Our Retail Channel</span>
+                                                        >
+                                                            Dispatch Arrived Item to our warehouse
+                                                        </span>
                                                     </Link>
                                                 </div>
                                             </>
