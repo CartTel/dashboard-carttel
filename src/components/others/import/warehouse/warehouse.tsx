@@ -150,6 +150,7 @@ export function WarehousePage() {
                                     {!warehoused ? (
                                         warehoused?.map((schedule: any, index: number) => (
                                             <div
+                                            key={schedule}
                                                 className={`mx-2 cursor-pointer my-4 flex justify-between md:flex-row xs:flex-col md:gap-10 xs:gap-2 rounded-md md:py-3 xs:py-2 px-3 border-[1px] border-plain bg-white `}
                                             >
                                                 <div className=''>
@@ -253,6 +254,14 @@ export function WarehousePage() {
                                     ) : (
                                         <div className='flex flex-col bg-transparent justify-center items-center my-8 rounded-lg xs:px-5 md:px-20'>
                                             {/* <img alt="" src={OpenBox} className="text-[1px] w-44 h-44 flex justify-center items-center" /> */}
+                                            {/* <Image
+                                                src={'/images/Referral/warehouse-animated.gif'}
+                                                alt="logo"
+                                                width={40}
+                                                height={40}
+                                                priority
+                                                className="text-[1px] w-44 h-44 flex justify-center items-center"
+                                            /> */}
                                             <Image
                                                 src={'/images/Referral/warehouse.svg'}
                                                 alt="logo"

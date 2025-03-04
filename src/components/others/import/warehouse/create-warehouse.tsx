@@ -91,9 +91,9 @@ export function CreateWarehouse({ id }: CreateWarehouseDetailsProps) {
                 setLoading(false);
                 router.push('/dashboard/import/warehouse');
                 // Delay the page reload to allow the toast and onClose to complete
-                setTimeout(() => {
-                    window.location.reload();
-                }, 5000); 
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 5000); 
             }
         } catch (error: any) {
             if (error) {

@@ -286,8 +286,14 @@ export function AddressBook() {
                                                 <div className="flex w-full justify-center items-center h-full">
                                                     <div>
                                                         <div className="w-full flex flex-col justify-center items-center p-2">
-                                                            <Image
+                                                            {/* <Image
                                                                 src={"/images/Assets/location-indicator.svg"}
+                                                                alt="check"
+                                                                width={200}
+                                                                height={200}
+                                                            /> */}
+                                                            <Image
+                                                                src={"/images/Referral/place-marker.gif"}
                                                                 alt="check"
                                                                 width={200}
                                                                 height={200}

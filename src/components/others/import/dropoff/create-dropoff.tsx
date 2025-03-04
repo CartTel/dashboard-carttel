@@ -9,7 +9,7 @@ import { CustomInputDate } from "@/components/custom-components";
 import { B1, BMiddle, H2, BMiddleRegular, BodySmallestMedium, B1Regular } from "@/components/custom-typography";
 
 import React, { useEffect, useState, useMemo } from "react";
-import { fetchSingleShipmentRequest, createInvoiceShipment, createPickupRequest } from "@/config/api";
+import { fetchSingleShipmentRequest, createInvoiceShipment, createDropoffRequest } from "@/config/api";
 import { useQuery } from "@tanstack/react-query";
 
 import Link from 'next/link';
@@ -30,53 +30,33 @@ const breadCrumb = [
         link: "/dashboard/import",
     },
     {
-        label: "Pickup",
-        link: "/dashboard/import/pickup",
+        label: "Dropoff",
+        link: "/dashboard/import/dropoff",
     },
     {
-        label: "Create Pickup",
+        label: "Create Dropoff",
     },
 ];
 
-interface CreatePickupDetailsProps {
+interface CreateDropoffDetailsProps {
     id: string;
 }
 
-const TimeSlot = ({ id, value, label, selectedTime, onChange }: any) => {
-    return (
-        <li>
-            <input
-                type="radio"
-                id={id}
-                className="hidden peer"
-                name="timetable"
-                value={value}
-                checked={selectedTime === value}
-                onChange={onChange}
-            />
-            <label
-                htmlFor={id}
-                className="inline-flex items-center justify-center w-full p-2 text-sm font-medium text-center bg-white border rounded-lg cursor-pointer text-gray-900 border-gray-300 dark:hover:text-white dark:border-primary dark:peer-checked:border-primary peer-checked:border-primary peer-checked:bg-primary hover:text-gray-900 peer-checked:text-white hover:bg-blue-500 dark:text-blue-500 dark:bg-gray-900 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:peer-checked:bg-primary"
-            >
-                {label}
-            </label>
-        </li>
-    );
-};
 
-
-
-export function CreatePickup({ id }: CreatePickupDetailsProps) {
+export function CreateDropoff({ id }: CreateDropoffDetailsProps) {
 
     const [selectedTime, setSelectedTime] = useState('');
     const userString = localStorage.getItem("user");
     const [currentFormKey, setCurrentFormKey] = useState(0);
 
+
+    const [userAddress, setUserAddress] = useState<any>([]);
+
     const [formData, setFormData] = useState<any>({
         shipment_id: null,
-        pickupLocation: "",
-        pickupTime: "",
-        pickupDate: null,
+        deliveryFrom: "",
+        deliveryTo: "",
+        deliveryDate: null,
     });
     const router = useRouter();
     const [userId, setUserId] = useState<any>(null);
@@ -87,11 +67,12 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
 
     const [pickupSet, setPickupSet] = useState("Lagos Nigeria Branch");
     const [selectedBusinessOption, setSelectedBusinessOption] = useState("");
+
+    const [selectedDeliveryLocation, setSelectedDeliveryLocation] = useState("");
     var [selectedArray, setSelectedArray] = useState([]);
 
     const [formSteps] = useState([
         { name: "PickUp Location", index: 0 },
-        // { name: "PickUp Item", index: 1 },
         { name: "PickUp Calendar", index: 1 },
         { name: "PickUp Time", index: 2 },
     ]);
@@ -109,30 +90,27 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
     const handlePickupClick = () => {
         const address = "Suite 004, Ground Floor, Right Wing. Airport Business Hub, Along Murtala Muhammad International Airport Road, Ikeja, Lagos";
         setPickupSet(pickupName.nameOne);
-
         setFormData((prevFormData: any) => ({
             ...prevFormData,
-            pickupLocation: address,
+            deliveryFrom: address,
         }));
     };
 
     const handlePickupClickThree = () => {
         const address = "Shop A24-25 Danziya Plaza Opp. NNPC Mega Filling Station, Central Business District Fct, Abuja, Nigeria";
         setPickupSet(pickupName.nameThree);
-
         setFormData((prevFormData: any) => ({
             ...prevFormData,
-            pickupLocation: address,
+            deliveryFrom: address,
         }));
     };
 
     const handlePickupClickTwo = () => {
         const address = "2nd Floor, Kojo Bruce House, No. 5 Ayikai Street Adabraka, Accra, Ghana";
         setPickupSet(pickupName.nameTwo);
-
         setFormData((prevFormData: any) => ({
             ...prevFormData,
-            pickupLocation: address,
+            deliveryFrom: address,
         }));
     };
 
@@ -160,8 +138,24 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
     };
 
     const handleSelect = (value: string) => {
+        // console.log("user unit ..", value);
         setSelectedBusinessOption(value);
     };
+
+    const handleDeliveryLocation = (value: string) => {
+        // console.log("user unit ..", value, userAddress);
+
+        const filteredLocation = userAddress.filter((location: any) => location.value === value)
+
+        // console.log("first unit", filteredLocation)
+
+        setFormData((prevFormData: any) => ({
+            ...prevFormData,
+            deliveryTo: filteredLocation[0]?.label,
+        }));
+        setSelectedDeliveryLocation(value);
+    };
+
 
     const handleSearch = () => {
         const filteredLinks: any = Object.values(pickupName).filter((value: any) => {
@@ -169,29 +163,29 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
         });
         setSelectedArray(filteredLinks)
         // Update the UI or perform any other actions with the filtered links
-        console.log(filteredLinks, "all the value..", selectedArray);
+        // console.log(filteredLinks, "all the value..", selectedArray);
         return filteredLinks;
     };
 
 
-    const handleCreatePickup = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleCreateDropOff = async (e: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault();
         setLoading(true);
         // console.log("object food", formData);
         try {
-            const data = await createPickupRequest(formData);
+            const data = await createDropoffRequest(formData);
 
-            console.log("response for warehouse ..", data);
+            // console.log("response for warehouse ..", data);
 
             if (data) {
                 toast({
                     title: "Success",
-                    description: `${data?.pickup?.message}🎉`,
+                    description: `${data?.dropoff?.message}🎉`,
                     variant: "destructive",
                 });
 
                 setLoading(false);
-                router.push('/dashboard/import/pickup');
+                router.push("/dashboard/import/dropoff");
                 // Delay the page reload to allow the toast and onClose to complete
                 // setTimeout(() => {
                 //     window.location.reload();
@@ -237,12 +231,15 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
     }, [shipmentData]);
 
     useEffect(() => {
-        const fetchUserPlan = async () => {
+        const fetchAddressList = async () => {
+
+            // console.log("good plan..", userId)
+            setLoading(true);
             if (userId) {
                 try {
-                    const response = await apiClient.get(`/api/v1/user-plan/get-all-user-plans`, {
+                    const response = await apiClient.get(`/api/v1/get-all-address`, {
                         params: {
-                            associations: ['plan', 'user'], // Specify the relationships to include
+                            associations: ['user'], // Specify the relationships to include
                             sortOrder: 'ASC',
                             sortBy: 'created_at',
                             byUserId: parseInt(userId),
@@ -254,23 +251,25 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
                         },
                     });
 
-                    setUserPlan(response?.data?.data)
+                    const transformedData: any = response?.data?.data.map((user: any) => ({
+                        label: `${user.address}, ${user.city} ${user.state}, ${user.country}`,
+                        value: user.id,
+                    }));
 
-                    const lastItem = response?.data?.data?.[response?.data?.data.length - 1];
+                    // console.log("all Address..", response?.data?.data, "data ..", transformedData);
 
-                    // console.log("data item ..", lastItem);
-                    // console.log("all Request..", response?.data?.data);
-
-                    setUserPlan(lastItem)
-                    return response.data;
+                    setLoading(false);
+                    setUserAddress(transformedData)
+                    return response.data.data;
                 } catch (error) {
-                    console.error('Error fetching user plan:', error);
+                    console.error('Error fetching user address:', error);
                     throw error; // Rethrow the error for handling in the component
+                } finally {
+                    setLoading(false);
                 }
             }
-
         };
-        fetchUserPlan(); // Fetch data when the component mounts
+        fetchAddressList(); // Fetch data when the component mounts
     }, [userId]);
 
     // LOGIC FOR THE CALENDAR FOR WAREHOUSE
@@ -279,9 +278,9 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
         return textComplete
     }, [selectedBusinessOption]);
 
-    const arePickupItems = useMemo(() => {
+    const areDropoffItems = useMemo(() => {
 
-        const textComplete = formData.pickupDate !== null && formData.pickupTime?.trim() !== "";
+        const textComplete = formData.deliveryDate !== null && formData.deliveryTo?.trim() !== "";
         return textComplete
     }, [formData]);
 
@@ -295,28 +294,9 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
 
     };
 
-    const timeSlots = [
-        { id: '10-am', value: '10:00 AM', label: '10:00 AM' },
-        { id: '10-30-am', value: '10:30 AM', label: '10:30 AM' },
-        { id: '11-am', value: '11:00 AM', label: '11:00 AM' },
-        { id: '11-30-am', value: '11:30 AM', label: '11:30 AM' },
-        { id: '12-am', value: '12:00 AM', label: '12:00 AM' },
-        { id: '12-30-pm', value: '12:30 PM', label: '12:30 PM' },
-        { id: '1-pm', value: '1:00 PM', label: '1:00 PM' },
-        { id: '1-30-pm', value: '1:30 PM', label: '1:30 PM' },
-        { id: '2-pm', value: '2:00 PM', label: '2:00 PM' },
-        { id: '2-30-pm', value: '2:30 PM', label: '2:30 PM' },
-        { id: '3-pm', value: '3:00 PM', label: '3:00 PM' },
-        { id: '3-30-pm', value: '3:30 PM', label: '3:30 PM' },
-        { id: '4-pm', value: '4:00 PM', label: '4:00 PM' },
-        { id: '4-30-pm', value: '4:30 PM', label: '4:30 PM' },
-        { id: '5-pm', value: '5:00 PM', label: '5:00 PM' },
-        { id: '5-30-pm', value: '5:30 PM', label: '5:30 PM' },
-        { id: '6-pm', value: '6:00 PM', label: '6:00 PM' },
-        { id: '6-30-pm', value: '6:30 PM', label: '6:30 PM' }
-    ];
 
-    if (isLoadingShipment) {
+
+    if (isLoadingShipment && userAddress) {
         return <SkeletonLoader number={4} />
     }
 
@@ -327,64 +307,34 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
                 <CustomBreadCrumb items={breadCrumb} className="bg-gray-200 font-[500] text-primary w-fit px-5 py-1 rounded-lg" />
             </div>
             <H2 className="my-[36px] font-semibold text-primary">
-                Create Pickup
+                Create Dropoff
             </H2>
 
             <div className="py-[30px]">
                 <div className="">
                     <div className="relative ">
-
                         <div className=" relative flex flex-col  w-full">
-                            <div className="px-2 bg-white flex items-center justify-center">
-                                <div
-                                    className="md:text-lg xs:text-[15px] text-primary font-[500] capitalize"
-                                    style={{ width: "fit-content" }}
-                                >
-                                    Dispatch Your items to our closest location
-                                </div>
-
-                            </div>
                             {isThisForm(0) && (
                                 <div>
                                     <div className='text-center my-2 mx-2 block w-full pb-0 text-md font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
-                                        Select Your PickUp Location
+                                        Select The Office Location
                                     </div>
 
                                     <div className="group relative mt-2 mx-2">
-                                        {/* <div className='text-start my-2 mx-2 block w-full pb-0 text-[14px] font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
-                                                Search For PickUp Location
-                                            </div> */}
                                         <div className='flex gap-2 justify-center items-center w-full '>
-                                            {/* <select
-                                                value={selectedBusinessOption}
-                                                onChange={handleSelect}
-                                                className="text-[14px] h-10 peer px-4 py-2 w-full rounded-md border border-gray-200 bg-gray-50 outline-none drop-shadow-sm transition-all duration-200 ease-in-out focus:bg-white "
-                                            >
-                                                <option value="null">Select PickUp Location</option>
-                                                {businessOptions.map((businessOption) => (
-                                                    <option
-                                                        key={businessOption.index}
-                                                        value={businessOption.value}
-                                                    >
-                                                        {businessOption.label}
-                                                    </option>
-                                                ))}
-                                            </select> */}
                                             <div className="group relative mt-0 md:!w-[500px] xs:w-full flex justify-center items-center">
                                                 <CustomSelect
                                                     wrapperClass="!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full"
                                                     labelClass="!text-[0.875rem] text-gray-500 w-full"
                                                     optionsClass="!text-[0.875rem] !h-[48px] !w-[100%]"
                                                     optionWrapperClass="border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto"
-                                                    label="Select PickUp Location"
+                                                    label="Select Office Location"
                                                     setSelected={handleSelect}
                                                     selected={selectedBusinessOption}
                                                     options={businessOptions}
                                                 />
-
                                             </div>
                                             <button onClick={handleSearch} className="bg-[#fbc41d] !h-[48px] rounded-lg text-sm font-semibold md:px-8 xs:px-4 py-2 xs:mx-0  md:ml-4 text-primary">Search</button>
-
                                         </div>
                                     </div>
 
@@ -549,29 +499,40 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
                             {isThisForm(1) && (
                                 <div>
                                     <div className=''>
-                                        {/* <div className='text-center my-2 mx-0 block w-full pb-0 text-md font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
-                                            Select Your Warehouisng Date
-                                        </div> */}
-                                        <div className='flex items-center justify-center text-center my-4 mx-2 w-full pb-0 text-md font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
-                                            <span className='font-[400] ml-5 text-gray-600 '> Current Plan </span>
-                                            {/* <span className='font-[600] ml-5 text-primary '>Pro Plan</span> */}
-                                            <span className="font-semibold text-primary uppercase mx-1"> {userPlan?.isExpired === true ? "BASIC PLAN" : `${userPlan?.plan?.name} PLAN`} </span>
+
+                                        <div className='text-center my-2  block w-full pb-0 text-md font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
+                                            Select Your Destination Location
                                         </div>
-                                            <div className='text-center my-2  block w-full pb-0 text-md font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
-                                                Select PickUp Date
+                                        <div className="group relative mt-2 mx-2">
+                                            <div className='flex gap-2 justify-center items-center w-full '>
+                                                <div className="group relative mt-0 md:!w-[500px] xs:w-full flex justify-center items-center">
+                                                    <CustomSelect
+                                                        wrapperClass="!border-[0.5px] !border-gray !h-[58px] md:w-full xs:w-full"
+                                                        labelClass="!text-[0.875rem] text-gray-500 w-full"
+                                                        optionsClass="!text-[0.875rem] !h-[48px] !w-[100%]"
+                                                        optionWrapperClass="border-[1px] border-gray-400 w-[100%] !w-full xl:left-[0px] !left-[0px] !h-[200px] !bottom-[-205px] overflow-y-auto"
+                                                        label="Select Office Location"
+                                                        setSelected={handleDeliveryLocation}
+                                                        selected={selectedDeliveryLocation}
+                                                        options={userAddress}
+                                                    />
+                                                </div>
+                                                {/* <button onClick={handleSearch} className="bg-[#fbc41d] !h-[48px] rounded-lg text-sm font-semibold md:px-8 xs:px-4 py-2 xs:mx-0  md:ml-4 text-primary">Search</button> */}
                                             </div>
+                                        </div>
+
                                         <div className="group relative mt-2 md:!w-full xs:w-full flex justify-center items-center ">
                                             <div className="gap-10 md:h-[30vh] xs:h-[30vh] md:!w-[500px] xs:w-full flex justify-center items-center">
                                                 <div className={`form-group text-[1rem] my-0 group relative mt-0 md:!w-[500px] xs:w-full flex justify-center items-center`}>
                                                     <CustomInputDate
-                                                        id="pickup_date"
+                                                        id="delivery_date"
                                                         showLabel={true}
                                                         type="date"
-                                                        value={formData?.pickupDate}
+                                                        value={formData?.deliveryDate}
                                                         setValue={(value) =>
-                                                            setFormData((prev: any) => ({ ...prev, pickupDate: value }))
+                                                            setFormData((prev: any) => ({ ...prev, deliveryDate: value }))
                                                         }
-                                                        label="Pickup Date"
+                                                        label="Delivery Date"
                                                         required
                                                         className=""
                                                     />
@@ -581,37 +542,8 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
                                         </div>
                                     </div>
 
-                                    <div className="flex px-5 md:w-full xs:full justify-center items-center flex-col md:gap-10 xs:gap-4">
-                                        <div className='text-center my-2 mx-2 block w-full pb-0 text-md font-medium text-gray-800 transition-all duration-200 ease-in-out group-focus-within:text-blue-400'>
-                                            Select PickUp Time
-                                        </div>
 
-                                        <div className="border-gray-200 dark:border-gray-800 md:w-[700px] xs:full mt-0 sm:mt-0">
-                                            <ul id="timetable" className="grid w-full grid-cols-3 md:gap-5 xs:gap-4 mt-5">
-                                                {timeSlots.map((slot) => (
-                                                    <TimeSlot
-                                                        key={slot.id}
-                                                        id={slot.id}
-                                                        value={slot.value}
-                                                        label={slot.label}
-                                                        selectedTime={selectedTime}
-                                                        onChange={handleInputChange}
-                                                    />
-                                                ))}
-                                            </ul>
-                                        </div>
-
-                                        {selectedTime && (
-                                            <div className="my-5">
-                                                <h2 className='text-center font-[500]'>PickUp Time:</h2>
-                                                <div className='text-center text-primary font-[500]'>
-                                                    {selectedTime}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <div className="flex items-center justify-center gap-[20px] lg:flex-row xs:flex-col w-full lg:w-auto">
+                                    <div className="flex mt-20 items-center justify-center gap-[20px] lg:flex-row xs:flex-col w-full lg:w-auto">
                                         {
                                             <CustomButton
 
@@ -622,13 +554,13 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
                                             </CustomButton>
                                         }
                                         <CustomButton
-                                            
+
                                             // className={`!bg-rose-500 !py-[0px] !h-[58px] lg:!w-[175px] xs:!w-[300px] !text-md`}
-                                            onClick={handleCreatePickup}
-                                            disabled={loading || !arePickupItems}
+                                            onClick={handleCreateDropOff}
+                                            disabled={loading || !areDropoffItems}
                                             // loaderState={loading}
 
-                                            className={`${loading || !arePickupItems ? "!bg-plain opacity-40 text-white" : "!bg-plain text-primary"} !py-[0px] !h-[58px] lg:!w-[175px] xs:!w-[300px] !text-md`}
+                                            className={`${loading || !areDropoffItems ? "!bg-plain opacity-40 text-white" : "!bg-plain text-primary"} !py-[0px] !h-[58px] lg:!w-[175px] xs:!w-[300px] !text-md`}
                                         >
                                             <div>
                                                 {loading ? ( // Display spinner if userLoading is true
@@ -650,7 +582,7 @@ export function CreatePickup({ id }: CreatePickupDetailsProps) {
                                                 ) : (
                                                     <div className='flex items-center justify-center text-[13px]'>
 
-                                                        <span className="ml-0">Create Pickup</span>
+                                                        <span className="ml-0">Create Dropoff</span>
                                                     </div>
                                                 )}
 

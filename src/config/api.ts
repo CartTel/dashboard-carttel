@@ -631,6 +631,19 @@ export const createPickupRequest = async (credentials: any) => {
 };
 
 
+// DROPOFF ENDPOINT 
+export const createDropoffRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/dropoff/create`, credentials);
+
+    console.log("create dropoff..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create dropoff:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 

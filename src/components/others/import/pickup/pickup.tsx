@@ -160,6 +160,7 @@ export function PickupPage() {
                                     {!scheduled ? (
                                         scheduled?.map((schedule: any, index: number) => (
                                             <div
+                                                key={schedule}
                                                 className={`mx-2 cursor-pointer my-4 flex justify-between md:flex-row xs:flex-col md:gap-10 xs:gap-2 rounded-md md:py-3 xs:py-2 px-3 border-[1px] border-plain bg-white `}
                                             >
                                                 <div className=''>
@@ -262,7 +263,7 @@ export function PickupPage() {
                                         ))
                                     ) : (
                                         <div className='flex flex-col bg-transparent justify-center items-center my-8 rounded-lg xs:px-5 md:px-20'>
-                                            {/* <img alt="" src={OpenBox} className="text-[1px] w-44 h-44 flex justify-center items-center" /> */}
+
                                             <Image
                                                 src={'/images/Referral/open-box.svg'}
                                                 alt="logo"
@@ -271,6 +272,14 @@ export function PickupPage() {
                                                 priority
                                                 className="text-[1px] w-44 h-44 flex justify-center items-center"
                                             />
+                                            {/* <Image
+                                                src={'/images/Referral/pickup-delivery.gif'}
+                                                alt="logo"
+                                                width={40}
+                                                height={40}
+                                                priority
+                                                className="text-[1px] w-44 h-44 flex justify-center items-center bg-transparent"
+                                            /> */}
                                             <div className='font-medium md:text-lg xs:text-md my-5 w-full'>
                                                 <div className='font-semibold md:text-[17px] xs:text-[14px] w-full flex justify-center items-center'>
                                                     No Current Scheduled Pickups Made Yet

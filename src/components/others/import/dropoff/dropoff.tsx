@@ -137,7 +137,6 @@ export function DropOffPage() {
                                     <div>
                                         <div className='my-20 flex md:px-5 xs:px-0 w-full justify-center items-center  '>
                                             <div className='flex flex-col bg-transparent justify-center items-center my-8 rounded-lg xs:px-5 md:px-20'>
-                                                {/* <img alt="" src={Scooter} className="text-[1px] w-40 h-40 flex justify-center items-center" /> */}
                                                 <Image
                                                     src={'/images/Referral/scooter.svg'}
                                                     alt="logo"
@@ -146,6 +145,14 @@ export function DropOffPage() {
                                                     priority
                                                     className="text-[1px] w-40 h-40 flex justify-center items-center"
                                                 />
+                                                {/* <Image
+                                                    src={'/images/Referral/warehouse-dropoff.gif'}
+                                                    alt="logo"
+                                                    width={40}
+                                                    height={40}
+                                                    priority
+                                                    className="text-[1px] w-40 h-40 flex justify-center items-center"
+                                                /> */}
 
                                                 <div className='font-medium md:text-lg xs:text-md my-5 w-full'>
                                                     <div className='font-semibold md:text-[17px] xs:text-[14px] w-full flex justify-center items-center'>
