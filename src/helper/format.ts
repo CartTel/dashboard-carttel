@@ -80,3 +80,13 @@ export function formatTime(dateString: string | Date): string {
     return `${formattedTime}`;
 }
 
+export function convertTime(timeString: string): string {
+    const [hour, minute] = timeString.split(":");
+    let hourNum = parseInt(hour, 10);
+    const ampm = hourNum >= 12 ? "PM" : "AM";
+    hourNum = hourNum % 12 || 12; // Convert "0" to "12" for midnight
+    return `${hourNum}:${minute} ${ampm}`;
+}
+
+
+

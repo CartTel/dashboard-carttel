@@ -630,6 +630,92 @@ export const createPickupRequest = async (credentials: any) => {
   }
 };
 
+export const approvedPickupRequest = async (pickupId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/pickup/approve`, {
+      pickup_id: pickupId
+    });
+    console.log(response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error procurement:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const rescheduledPickupRequest = async (pickupTime: any, userId: number, pickUpId: number, pickupDate: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/pickup/rescheduled`, {
+      user_id: userId,
+      pickup_id: pickUpId,
+      pickupTime: pickupTime,
+      pickupDate: pickupDate
+    });
+
+    console.log("rescheduled pickup..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create plan:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const cancelledPickupRequest = async (userId: number, pickUpId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/pickup/cancelled`, {
+      user_id: userId,
+      pickup_id: pickUpId,
+    });
+
+    console.log("cancelled pickup..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create plan:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const completedPickupRequest = async (actualPickupTime: any, pickUpId: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/pickup/completed`, {
+      actual_pickup_time: actualPickupTime,
+      pickup_id: pickUpId,
+    });
+
+    console.log("completed pickup..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error create plan:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const fetchSinglePickupRequest = async (id: number) => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/pickup/single-pickup/${id}`, {
+      params: {
+        associations: ['shipment', 'logs'], // Specify the relationships to include
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    console.log("all pickup..", response.data);
+    return response.data.pickup;
+  } catch (error) {
+    console.error('Error fetching pickup:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+
 
 // DROPOFF ENDPOINT 
 export const createDropoffRequest = async (credentials: any) => {
