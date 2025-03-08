@@ -615,6 +615,34 @@ export const createWarehouseRequest = async (credentials: any) => {
   }
 };
 
+export const approvedWarehouseRequest = async (warehouse_id: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/warehouse/approve`, {
+      warehouse_id
+    });
+    console.log("approved warehouse",response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error warehouse:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const completedWarehouseRequest = async (warehouse_id: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/warehouse/completed`, {
+      warehouse_id
+    });
+    console.log("completed warehouse",response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error warehouse:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 
 // PICKUP ENDPOINT 
 export const createPickupRequest = async (credentials: any) => {
@@ -731,6 +759,99 @@ export const createDropoffRequest = async (credentials: any) => {
   }
 };
 
+export const fetchSingleDropoffRequest = async (id: number) => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/dropoff/single-dropoff/${id}`, {
+      params: {
+        associations: ['shipment', 'logs'], // Specify the relationships to include
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    console.log("all dropoff.", response.data);
+    return response.data.dropoffs;
+  } catch (error) {
+    console.error('Error fetching pickup:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+
+export const createInvoiceDropoff = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/dropoff/create-invoice`, credentials);
+    console.log("create shipment..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching shipment:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const payForDropoffRequest = async (dropoff_id: number, shipment_id: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/invoice/pay-dropoff`, 
+      {
+        dropoff_id,
+        shipment_id
+      }
+    );
+    console.log("invoice for dropoff..", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error fetching dropoff:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+
+export const approvedDropoffRequest = async (dropoff_id: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/dropoff/approve`, {
+      dropoff_id
+    });
+    console.log("approved dropoff",response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error dropoff:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const intransitDropoffRequest = async (dropoff_id: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/dropoff/intransit`, {
+      dropoff_id
+    });
+    console.log("intransit dropoff", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error dropoff:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const deliveredDropoffRequest = async (dropoff_id: number) => {
+  try {
+    const response = await apiClient.post(`/api/v1/dropoff/delivered`, {
+      dropoff_id
+    });
+    console.log("delivered dropoff", response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error dropoff:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
 
 
 
