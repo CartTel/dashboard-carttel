@@ -1,4 +1,5 @@
-import { buttonVariants } from '@/components/ui/Button'
+// import { buttonVariants } from '@/components/ui/Button'
+
 import { toast } from '@/hooks/use-toast'
 import Link from 'next/link'
 
@@ -12,7 +13,8 @@ export const useCustomToasts = () => {
         <Link
           onClick={() => dismiss()}
           href='/sign-in'
-          className={buttonVariants({ variant: 'outline' })}>
+          // className={buttonVariants({ variant: 'outline' })}
+          >
           Login
         </Link>
       ),

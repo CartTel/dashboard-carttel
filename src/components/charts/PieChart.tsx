@@ -4,7 +4,7 @@ import { IPieChart } from "@/libs/interfaces";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { BodySmallest } from "@/components/custom-typography";
-import { useUtils } from "../custom-hooks";
+// import { useUtils } from "../custom-hooks";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 export function PieChart({ labels, data, colors }: IPieChart) {
