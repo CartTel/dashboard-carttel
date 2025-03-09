@@ -147,8 +147,6 @@ export function MainPickup() {
                         associations: ['shipment', 'logs'],
                         sortOrder: 'DESC',
                         sortBy: 'updated_at',
-                        // byUserId: user.user.id,
-                        // byStatusCodes: ["05"],
                         byStatusCodes,
                         page: 1,
                         perPage: 1000,
