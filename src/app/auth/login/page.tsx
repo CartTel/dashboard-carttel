@@ -202,7 +202,7 @@ function Login() {
                                 <div className=" text-start justify-start mx-auto text-primary cursor-pointer w-full flex">
                                     <div className="w-[200px]">
                                         <Image
-                                            src={'/images/Logo/CARTEL.png'}
+                                            src={'/images/Logo/CARTEL-removebg.png'}
                                             alt="logo"
                                             width={136}
                                             height={60}
