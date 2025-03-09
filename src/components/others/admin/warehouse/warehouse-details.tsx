@@ -233,7 +233,7 @@ export function WarehouseDetails({ id }: WarehouseDetailsProps) {
                                     </div>
                                 )}
 
-                                {(((warehouseData?.status?.code === '50'))) && (savedRole === 'manager' || savedRole === 'admin') && (
+                                {(((warehouseData?.status?.code === '50'))) && (savedRole === 'import') && (
                                     <div className="mb-[36px]">
                                         <B1 className="mb-[8px]">Action</B1>
 

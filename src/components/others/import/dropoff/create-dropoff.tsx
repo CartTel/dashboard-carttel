@@ -16,9 +16,7 @@ import Link from 'next/link';
 import { toast } from "@/hooks/use-toast";
 import Image from 'next/image'
 import { useSearchParams, useRouter } from "next/navigation";
-import { createWarehouseRequest } from "@/config/api";
 
-import { TiLocationOutline, TiClipboard } from "react-icons/ti";
 import apiClient from "@/config/api-clients";
 import qs from 'qs';
 import { SkeletonLoader } from "@/components/ui/skeletonCard";

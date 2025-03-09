@@ -178,7 +178,7 @@ export function PickupWarehouse({ onClose, id }: PickupWarehouseProps) {
 
                 onClose()
                 setLoading(false);
-                // router.push('/dashboard/import/pickup');
+                router.push('/dashboard/import/pickup');
                 // Delay the page reload to allow the toast and onClose to complete
                 setTimeout(() => {
                     window.location.reload();
@@ -310,7 +310,7 @@ export function PickupWarehouse({ onClose, id }: PickupWarehouseProps) {
                 <div className="">
                     <div className="relative ">
 
-                        <div className=" relative flex flex-col  w-full px-2">
+                        <div className=" relative flex flex-col w-full px-2">
                             <div className="px-2 bg-white flex items-center justify-center">
                                 <div
                                     className="md:text-lg xs:text-[15px] text-primary font-[500] capitalize"
@@ -486,7 +486,6 @@ export function PickupWarehouse({ onClose, id }: PickupWarehouseProps) {
                                                             />
 
                                                         </div>
-
                                                     </div>
                                                 ) : (
                                                     <div className='flex items-center justify-center text-[13px]'>
@@ -494,8 +493,6 @@ export function PickupWarehouse({ onClose, id }: PickupWarehouseProps) {
                                                         <span className="ml-0">Next</span>
                                                     </div>
                                                 )}
-
-
                                             </div>
                                         </CustomButton>
                                     </div>
