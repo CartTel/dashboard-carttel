@@ -137,7 +137,7 @@ export function DropoffDetails({ id }: DropoffDetailsProps) {
             <div>
                 <div className="grid md:grid-cols-2 xs:grid-col-1 gap-0 w-full text-sm bg-[#edefee] p-2">
                     <div className="h-full row-span-2 col-span-2 bg-white p-3 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                        <div className='text-slate-800 text-[16px] md:item-center flex md:justify-start text-start mb-7'>Procurement Details</div>
+                        <div className='text-slate-800 text-[16px] md:item-center flex md:justify-start text-start mb-7'>Dropoff Details</div>
 
                         <div className="grid md:grid-cols-2 xs:grid-cols-1 gap-5 ">
                             <div className="">
@@ -294,77 +294,6 @@ export function DropoffDetails({ id }: DropoffDetailsProps) {
                                         </div>
                                     )}
                                 </div>
-
-                                {/* {(procurementData?.status?.code === '50' && procurementData.totalValue) && (savedRole === 'manager' || savedRole === 'admin') && (
-                                    <div className="mb-[36px]">
-                                        <B1 className="mb-[8px]">Action</B1>
-
-                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col">
-                                            <CustomButton
-                                                className="!text-[0.875rem] !py-[0] h-[40px] !bg-purple-400 lg:!w-[150px] w-full !rounded-[3px] flex justify-center items-center"
-                                                onClick={toggleApproveModal}
-                                            >
-                                                <Image
-                                                    src={"/images/done.svg"}
-                                                    alt="checked"
-                                                    width={20}
-                                                    height={20}
-                                                    className="z-[10] text-white"
-                                                />
-                                                <div className="ml-3">Approve</div>
-                                            </CustomButton>
-
-
-                                        </div>
-                                    </div>
-                                )}
-
-                                {(procurementData?.status?.code === '10' && procurementData.totalValue) && (savedRole === 'import') && (
-                                    <div className="mb-[36px]">
-                                        <B1 className="mb-[8px]">Action</B1>
-
-                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col lg:!w-[150px] xs:!w-full ">
-                                            <Link href={`/dashboard/import/procurement/await/${id}`} className="ml-1 cursor-pointer lg:!w-[150px] xs:!w-full">
-                                                <div
-                                                    className="!text-[0.875rem] !py-[0] h-[40px] !bg-pink-400 !text-white lg:!w-[150px] xs:!w-full !rounded-[3px] flex justify-center items-center"
-                                                >
-                                                    <Image
-                                                        src={"/images/awaiting.svg"}
-                                                        alt="checked"
-                                                        width={20}
-                                                        height={20}
-                                                        className="z-[10] text-white"
-                                                    />
-                                                    <div className="ml-3">Restart</div>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {(procurementData?.status?.code === '60' && procurementData.totalValue) && (savedRole === 'import') && (
-                                    <div className="mb-[36px]">
-                                        <B1 className="mb-[8px]">Action</B1>
-
-                                        <div className="flex items-center gap-[16px] lg:flex-row flex-col lg:!w-fit xs:!w-full ">
-                                            <Link href={`/dashboard/import/procurement/create-shipment/${id}`} className="ml-1 cursor-pointer lg:!w-fit xs:!w-full">
-                                                <div
-                                                    className="!text-[0.875rem] !py-[0] h-[40px] px-5 !bg-rose-500 !text-white lg:!w-fit xs:!w-full !rounded-[3px] flex justify-center items-center"
-                                                >
-                                                    <Image
-                                                        src={"/images/Package/wrapped-box.svg"}
-                                                        alt="checked"
-                                                        width={20}
-                                                        height={20}
-                                                        className="z-[10] text-white"
-                                                    />
-                                                    <div className="ml-3">Create Shipment</div>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )} */}
-
                             </div>
                         </div>
                         <div>
@@ -372,13 +301,8 @@ export function DropoffDetails({ id }: DropoffDetailsProps) {
                             <div>
                                 <ShipmentLogs logs={dropoffData?.logs} />
                             </div>
-
                         </div>
-
-
                     </div>
-
-
                 </div>
             </div>
 

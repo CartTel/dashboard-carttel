@@ -77,7 +77,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
     };
 
     const toggleRatedModal = () => {
-        // console.log("modal")
+        // console.log("modal", shipmentData?.dropOff === null)
         setShipmentRatedModal((prev) => !prev);
     };
 
@@ -312,7 +312,7 @@ export function ViewShipment({ id }: EditShipmentDetailsProps) {
 
                 <div className="h-full md:row-span-2 md:col-span-1 xs:col-span-2 md:border-l-[1px] md:px-1 xs:px-0 bg-white  border-gray-300">
                     <div className="mb-[36px]">
-                        {(shipmentData?.status?.code === '160') && (
+                        {(shipmentData?.status?.code === '160') && (shipmentData?.wareHouse === null && shipmentData?.pickUp === null && shipmentData?.dropOff === null) && (
                             <div className="flex w-full justify-center items-center my-5">
                                 {/* <B1 className="mb-[8px]">Action</B1> */}
                                 <CustomButton

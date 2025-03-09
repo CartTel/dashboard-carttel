@@ -196,7 +196,7 @@ export const fetchSingleShipmentRequest = async (id: number) => {
 
     const response = await apiClient.get(`/api/v1/shipment/single-shipment/${id}`, {
       params: {
-        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs', 'senderInfo', 'receiverInfo'], // Specify the relationships to include
+        associations: ['invoice', 'tracking', 'sla', 'insurance', 'items', 'logs', 'senderInfo', 'receiverInfo', 'pickUp', 'wareHouse', 'dropOff'], // Specify the relationships to include
       },
       paramsSerializer: (params) => {
         // Serialize params to ensure arrays are properly formatted as associations[]
@@ -615,6 +615,27 @@ export const createWarehouseRequest = async (credentials: any) => {
   }
 };
 
+export const fetchSingleWarehouseRequest = async (id: number) => {
+  try {
+
+    const response = await apiClient.get(`/api/v1/warehouse/single-warehouse/${id}`, {
+      params: {
+        associations: ['plan', 'logs'], // Specify the relationships to include
+      },
+      paramsSerializer: (params) => {
+        // Serialize params to ensure arrays are properly formatted as associations[]
+        return qs.stringify(params, { arrayFormat: 'brackets' });
+      },
+
+    });
+    console.log("all warehouse..", response.data);
+    return response.data.warehouse;
+  } catch (error) {
+    console.error('Error fetching warehouse:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
 export const approvedWarehouseRequest = async (warehouse_id: number) => {
   try {
     const response = await apiClient.post(`/api/v1/warehouse/approve`, {
@@ -634,6 +655,30 @@ export const completedWarehouseRequest = async (warehouse_id: number) => {
     const response = await apiClient.post(`/api/v1/warehouse/completed`, {
       warehouse_id
     });
+    console.log("completed warehouse",response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error warehouse:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const warehouseForDropoffRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/warehouse/other-service`, credentials);
+    console.log("completed warehouse",response.data);
+    return response.data;
+    
+  } catch (error) {
+    console.error('Error warehouse:', error);
+    throw error; // Rethrow the error for handling in the component
+  }
+};
+
+export const warehouseForPickupRequest = async (credentials: any) => {
+  try {
+    const response = await apiClient.post(`/api/v1/warehouse/other-service`, credentials);
     console.log("completed warehouse",response.data);
     return response.data;
     
